@@ -172,6 +172,22 @@ export const postInit = (): ThunkAction => (dispatch: Dispatch, getState: GetSta
                     // dispatch( push(initialPathname) );
                 } else {
 
+        if (devices.length > 0) {
+            const unacquired: ?TrezorDevice = devices.find(d => d.unacquired);
+            if (unacquired) {
+                dispatch( onSelectDevice(unacquired) );
+            } else {
+                const latest: Array<TrezorDevice> = sortDevices(devices);
+                const firstConnected: ?TrezorDevice = latest.find(d => d.connected);
+                dispatch( onSelectDevice(firstConnected || latest[0]) );
+
+                // TODO
+                if (initialParams) {
+                    if (!initialParams.hasOwnProperty("network") && initialPathname !== getState().router.location.pathname) {
+                        // dispatch( push(initialPathname) );
+                    } else {
+
+                    }
                 }
             }
         }
