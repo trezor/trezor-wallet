@@ -41,7 +41,7 @@ const mergeDevices = (current: TrezorDevice, upcoming: Device | TrezorDevice): T
     }
 
     if (upcoming.type === 'acquired') {
-        return { ...upcoming, ...extended }; 
+        return { ...upcoming, ...extended };
     } else if (upcoming.type === 'unacquired' && current.features && current.state) {
         // corner-case: trying to merge unacquired device with acquired
         // make sure that sensitive fields will not be changed and device will remain acquired
@@ -72,8 +72,8 @@ const addDevice = (state: State, device: Device): State => {
         }
         otherDevices = state.filter(d => affectedDevices.indexOf(d) === -1);
     } else {
-        affectedDevices = state.filter(d => 
-            d.features && 
+        affectedDevices = state.filter(d =>
+            d.features &&
             device.features &&
             d.features.device_id === device.features.device_id);
         const unacquiredDevices = state.filter(d => d.path.length > 0 && d.path === device.path);
@@ -131,7 +131,7 @@ const addDevice = (state: State, device: Device): State => {
         //     changedDevices.push(newDevice);
         // }
 
-        const changedDevices: Array<TrezorDevice> = affectedDevices.filter(d => 
+        const changedDevices: Array<TrezorDevice> = affectedDevices.filter(d =>
             d.features && device.features &&
             d.features.passphrase_protection === device.features.passphrase_protection).map(d => {
                 const extended: Object = { connected: true, available: true }
@@ -174,7 +174,7 @@ const changeDevice = (state: State, device: Device | TrezorDevice, extended: Obj
 
     // find devices with the same device_id and passphrase_protection settings
     // or devices with the same path (TODO: should be that way?)
-    const affectedDevices: Array<TrezorDevice> = state.filter(d => 
+    const affectedDevices: Array<TrezorDevice> = state.filter(d =>
         (d.features && device.features && d.features.device_id === device.features.device_id && d.features.passphrase_protection === device.features.passphrase_protection)
         || (d.features && d.path.length > 0 && d.path === device.path));
 
