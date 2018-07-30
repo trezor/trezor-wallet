@@ -16,7 +16,6 @@ import { resolveAfter } from '../utils/promiseUtils';
 
 import type {
     Device,
-    ResponseMessage,
     DeviceMessage,
     UiMessage,
     TransportMessage,
