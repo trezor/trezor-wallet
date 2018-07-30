@@ -112,7 +112,7 @@ const addDevice = (state: State, device: Device): State => {
         //     changedDevices.push(newDevice);
         // }
 
-        const changedDevices: Array<TrezorDevice> = affectedDevices.filter(d => d.features && d.features.passphrase_protection === device.features.passphrase_protection).map(d => mergeDevices(d, { ...device, connected: true, available: true }));
+        const changedDevices: Array<TrezorDevice> = affectedDevices.filter(d => d.features && device.features && d.features.passphrase_protection === device.features.passphrase_protection).map(d => mergeDevices(d, { ...device, connected: true, available: true }));
         if (changedDevices.length !== affectedDevices.length) {
             changedDevices.push(newDevice);
         }
@@ -150,7 +150,7 @@ const changeDevice = (state: State, device: Device): State => {
 
     // find devices with the same device_id and passphrase_protection settings
     // or devices with the same path (TODO: should be that way?)
-    const affectedDevices: Array<TrezorDevice> = state.filter(d => (d.features && d.features.device_id === device.features.device_id && d.features.passphrase_protection === device.features.passphrase_protection)
+    const affectedDevices: Array<TrezorDevice> = state.filter(d => (d.features && device.features && d.features.device_id === device.features.device_id && d.features.passphrase_protection === device.features.passphrase_protection)
         || (d.features && d.path.length > 0 && d.path === device.path));
 
     const otherDevices: Array<TrezorDevice> = state.filter(d => affectedDevices.indexOf(d) === -1);
