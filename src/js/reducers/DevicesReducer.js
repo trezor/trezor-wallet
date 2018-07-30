@@ -65,7 +65,7 @@ const addDevice = (state: State, device: Device): State => {
         }
         otherDevices = state.filter(d => affectedDevices.indexOf(d) === -1);
     } else {
-        affectedDevices = state.filter(d => d.features && d.features.device_id === device.features.device_id);
+        affectedDevices = state.filter(d => d.features && device.features && d.features.device_id === device.features.device_id);
         const unacquiredDevices = state.filter(d => d.path.length > 0 && d.path === device.path);
         otherDevices = state.filter(d => affectedDevices.indexOf(d) < 0 && unacquiredDevices.indexOf(d) < 0);
     }
@@ -251,10 +251,9 @@ export default function devices(state: State = initialState, action: Action): St
 
         case DEVICE.CHANGED:
             return changeDevice(state, { ...action.device, connected: true, available: true });
-            // TODO: check if available will propagate to unavailable
+        // TODO: check if available will propagate to unavailable
 
         case DEVICE.DISCONNECT:
-        case DEVICE.DISCONNECT_UNACQUIRED:
             return disconnectDevice(state, action.device);
 
         case WALLET.SET_SELECTED_DEVICE:
