@@ -169,7 +169,7 @@ export const postInit = (): ThunkAction => (dispatch: Dispatch, getState: GetSta
                 } else {
 
         if (devices.length > 0) {
-            const unacquired: ?TrezorDevice = devices.find(d => d.unacquired);
+            const unacquired: ?TrezorDevice = devices.find(d => d.type === 'unacquired');
             if (unacquired) {
                 dispatch( onSelectDevice(unacquired) );
             } else {
@@ -260,7 +260,7 @@ export const switchToFirstAvailableDevice = (): AsyncAction => async (dispatch: 
         // 1. First Unacquired
         // 2. First connected
         // 3. Saved with latest timestamp
-        const unacquired = devices.find(d => d.unacquired);
+        const unacquired = devices.find(d => d.type === 'unacquired');
         if (unacquired) {
             dispatch(initConnectedDevice(unacquired));
         } else {

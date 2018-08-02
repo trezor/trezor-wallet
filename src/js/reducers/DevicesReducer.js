@@ -44,8 +44,8 @@ const mergeDevices = (current: TrezorDevice, upcoming: Device | TrezorDevice): T
     };
     // corner-case: trying to merge unacquired device with acquired
     // make sure that sensitive fields will not be changed and device will remain acquired
-    if (upcoming.unacquired && current.state) {
-        dev.unacquired = false;
+    if (upcoming.type === 'unacquired' && current.state) {
+        dev.type = 'unacquired';
         dev.features = current.features;
         dev.label = current.label;
     }
@@ -184,7 +184,8 @@ const devicesFromStorage = (devices: Array<TrezorDevice>): State => devices.map(
     path: '',
     acquiring: false,
     featuresNeedsReload: false,
-    isUsedElsewhere: false,
+    //isUsedElsewhere: false,
+    status: 'available',
 }));
 
 // Remove all device reference from State
@@ -204,11 +205,11 @@ const disconnectDevice = (state: State, device: Device): State => {
     const otherDevices: State = state.filter(d => affectedDevices.indexOf(d) === -1);
 
     if (affectedDevices.length > 0) {
-        const acquiredDevices = affectedDevices.filter(d => !d.unacquired && d.state);
+        const acquiredDevices = affectedDevices.filter(d => d.type !== 'unacquired' && d.type !== 'unreadable' && d.state);
         return otherDevices.concat(acquiredDevices.map((d) => {
             d.connected = false;
             d.available = false;
-            d.isUsedElsewhere = false;
+            d.status = 'used';
             d.featuresNeedsReload = false;
             d.path = '';
             return d;
