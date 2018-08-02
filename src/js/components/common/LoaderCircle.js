@@ -8,7 +8,7 @@ export default (props: { size: string, label?: string, className?: string }): Re
     const style = {
         width: `${props.size}px`,
         height: `${props.size}px`,
-    };
+    }
 
     return (
         <div className={ className } style={style}>
