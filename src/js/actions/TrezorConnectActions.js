@@ -173,7 +173,7 @@ export const postInit = (): ThunkAction => (dispatch: Dispatch, getState: GetSta
                 } else {
 
         if (devices.length > 0) {
-            const unacquired: ?TrezorDevice = devices.find(d => d.unacquired);
+            const unacquired: ?TrezorDevice = devices.find(d => d.type === 'unacquired');
             if (unacquired) {
                 dispatch( onSelectDevice(unacquired) );
             } else {

@@ -68,7 +68,7 @@ export type UnknownDevice = $Exact<{
     +label: string,
     +features: null,
     state: ?string,
-    
+
     remember: boolean; // device should be remembered
     connected: boolean; // device is connected
     available: boolean; // device cannot be used because of features.passphrase_protection is different then expected
