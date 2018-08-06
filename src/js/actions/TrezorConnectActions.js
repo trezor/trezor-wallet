@@ -117,7 +117,12 @@ export const init = (): AsyncAction => async (dispatch: Dispatch, getState: GetS
                 debug: false,
                 popup: false,
                 webusb: true,
-                pendingTransportEvent: (getState().devices.length < 1)
+                pendingTransportEvent: (getState().devices.length < 1),
+
+                // Use this if running 'yarn dev:local'
+                connectSrc: window.location.origin + '/',
+                // iframeSrc: window.location.origin + '/iframe.html',
+                // webusbSrc: window.location.origin + '/webusb.html',
             });
         } catch (error) {
             // dispatch({
