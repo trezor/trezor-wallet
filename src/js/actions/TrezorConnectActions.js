@@ -111,25 +111,25 @@ export const init = (): AsyncAction => async (dispatch: Dispatch, getState: GetS
         });
     });
 
-        try {
-            await TrezorConnect.init({
-                transportReconnect: true,
-                debug: false,
-                popup: false,
-                webusb: true,
-                pendingTransportEvent: (getState().devices.length < 1),
+    try {
+        await TrezorConnect.init({
+            connectSrc: 'http://localhost:8081/',
+            transportReconnect: true,
+            debug: false,
+            popup: false,
+            webusb: true,
+            pendingTransportEvent: (getState().devices.length < 1),
 
-                // Use this if running 'yarn dev:local'
-                connectSrc: window.location.origin + '/',
-                // iframeSrc: window.location.origin + '/iframe.html',
-                // webusbSrc: window.location.origin + '/webusb.html',
-            });
-        } catch (error) {
-            // dispatch({
-            //     type: CONNECT.INITIALIZATION_ERROR,
-            //     error
-            // })
-        }
+            // Use this if running 'yarn dev:local'
+            connectSrc: window.location.origin + '/',
+            // iframeSrc: window.location.origin + '/iframe.html',
+            // webusbSrc: window.location.origin + '/webusb.html',
+        });
+    } catch (error) {
+        // dispatch({
+        //     type: CONNECT.INITIALIZATION_ERROR,
+        //     error
+        // })
     }
 };
 
@@ -159,36 +159,20 @@ export const postInit = (): ThunkAction => (dispatch: Dispatch, getState: GetSta
     }
 
     if (devices.length > 0) {
-        const unacquired: ?TrezorDevice = devices.find(d => d.unacquired);
+        const unacquired: ?TrezorDevice = devices.find(d => d.type === 'unacquired');
         if (unacquired) {
-            dispatch(onSelectDevice(unacquired));
+            dispatch( onSelectDevice(unacquired) );
         } else {
             const latest: Array<TrezorDevice> = sortDevices(devices);
             const firstConnected: ?TrezorDevice = latest.find(d => d.connected);
-            dispatch(onSelectDevice(firstConnected || latest[0]));
+            dispatch( onSelectDevice(firstConnected || latest[0]) );
 
             // TODO
             if (initialParams) {
-                if (!initialParams.hasOwnProperty('network') && initialPathname !== getState().router.location.pathname) {
+                if (!initialParams.hasOwnProperty("network") && initialPathname !== getState().router.location.pathname) {
                     // dispatch( push(initialPathname) );
                 } else {
 
-        if (devices.length > 0) {
-            const unacquired: ?TrezorDevice = devices.find(d => d.type === 'unacquired');
-            if (unacquired) {
-                dispatch( onSelectDevice(unacquired) );
-            } else {
-                const latest: Array<TrezorDevice> = sortDevices(devices);
-                const firstConnected: ?TrezorDevice = latest.find(d => d.connected);
-                dispatch( onSelectDevice(firstConnected || latest[0]) );
-
-                // TODO
-                if (initialParams) {
-                    if (!initialParams.hasOwnProperty("network") && initialPathname !== getState().router.location.pathname) {
-                        // dispatch( push(initialPathname) );
-                    } else {
-
-                    }
                 }
             }
         }
@@ -335,14 +319,13 @@ export const deviceDisconnect = (device: Device): AsyncAction => async (dispatch
             dispatch(DiscoveryActions.stop(selected));
         }
 
-            const instances = getState().devices.filter(d => d.features && d.state && !d.remember && device.features && d.features.device_id === device.features.device_id);
-            if (instances.length > 0) {
-                dispatch({
-                    type: CONNECT.REMEMBER_REQUEST,
-                    device: instances[0],
-                    instances,
-                });
-            }
+        const instances = getState().devices.filter(d => d.features && d.state && !d.remember && device.features && d.features.device_id === device.features.device_id);
+        if (instances.length > 0) {
+            dispatch({
+                type: CONNECT.REMEMBER_REQUEST,
+                device: instances[0],
+                instances,
+            });
         }
     }
 };
