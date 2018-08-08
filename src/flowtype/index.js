@@ -53,11 +53,13 @@ export type TrezorDevice = {
     instanceLabel: string;
     instanceName: ?string;
     features?: Features;
-    unacquired?: boolean;
-    isUsedElsewhere?: boolean;
+    // unacquired?: boolean; // device.type === 'unacquired' && device.type !== 'unreadable'
+    // isUsedElsewhere?: boolean; // device.status === 'occupied'
+    type: 'acquired' | 'unacquired' | 'unreadable';
+    status: 'available' | 'occupied' | 'used';
     featuresNeedsReload?: boolean;
     ts: number;
-}
+};
 
 export type RouterLocationState = LocationState;
 

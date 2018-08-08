@@ -5,6 +5,8 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Loader from '../common/LoaderCircle';
+
 import * as NOTIFICATION from '~/js/actions/constants/notification';
 import * as NotificationActions from '~/js/actions/NotificationActions';
 import type { Action, State, Dispatch } from '~/flowtype';
@@ -21,7 +23,8 @@ type NProps = {
     title: string;
     message?: string;
     actions?: Array<any>;
-    close?: typeof NotificationActions.close
+    close?: typeof NotificationActions.close,
+    loading?: boolean;
 }
 
 export const Notification = (props: NProps): React$Element<string> => {
@@ -47,6 +50,11 @@ export const Notification = (props: NProps): React$Element<string> => {
                 <div className="notification-action">
                     { actionButtons }
                 </div>
+            ) : null }
+            { props.loading ? (
+                <Loader
+                    className="info"
+                    size="50" />
             ) : null }
 
         </div>

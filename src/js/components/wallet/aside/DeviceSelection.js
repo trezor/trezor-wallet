@@ -26,11 +26,11 @@ export const DeviceSelect = (props: Props) => {
         css += ' unavailable';
         deviceStatus = 'Unavailable';
     } else {
-        if (selected.unacquired) {
+        if (selected.type === 'unacquired') {
             css += ' unacquired';
             deviceStatus = 'Used in other window';
         }
-        if (selected.isUsedElsewhere) {
+        if (selected.status === 'occupied') {
             css += ' used-elsewhere';
             deviceStatus = 'Used in other window';
         } else if (selected.featuresNeedsReload) {
@@ -147,7 +147,7 @@ export class DeviceDropdown extends Component<Props> {
         if (selected.features) {
             const deviceMenuItems: Array<DeviceMenuItem> = [];
 
-            if (selected.isUsedElsewhere) {
+            if (selected.status === 'occupied') {
                 deviceMenuItems.push({ type: 'reload', label: 'Renew session' });
             } else if (selected.featuresNeedsReload) {
                 deviceMenuItems.push({ type: 'reload', label: 'Renew session' });
@@ -177,7 +177,7 @@ export class DeviceDropdown extends Component<Props> {
 
             let deviceStatus: string = 'Connected';
             let css: string = 'device item';
-            if (dev.unacquired || dev.isUsedElsewhere) {
+            if (dev.type === 'unacquired' || dev.status === 'occupied') {
                 deviceStatus = 'Used in other window';
                 css += ' unacquired';
             } else if (!dev.connected) {
