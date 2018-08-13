@@ -5,8 +5,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Loader from '../common/LoaderCircle';
-
 import * as NOTIFICATION from '~/js/actions/constants/notification';
 import * as NotificationActions from '~/js/actions/NotificationActions';
 import type { Action, State, Dispatch } from '~/flowtype';
