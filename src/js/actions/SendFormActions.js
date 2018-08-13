@@ -833,25 +833,6 @@ export const onSend = (): AsyncAction => async (dispatch: Dispatch, getState: Ge
         device: {
             path: selected.path,
             instance: selected.instance,
-            state: selected.state
-        },
-        useEmptyPassphrase: !selected.instance,
-        path: txData.address_n,
-        transaction: {
-            to: strip(txData.to),
-            value: strip(txData.value),
-            gasPrice: strip(txData.gasPrice),
-            gasLimit: strip(txData.gasLimit),
-            nonce: strip(txData.nonce),
-            data: strip(txData.data),
-            chainId: txData.chainId,
-            r: txData.r,
-            s: txData.s,
-            v: txData.v,
-        },
-        device: {
-            path: selected.path,
-            instance: selected.instance,
             state: selected.state,
         },
         useEmptyPassphrase: !selected.instance,
