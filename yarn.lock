@@ -8787,11 +8787,10 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-trezor-connect@^5.0.28:
-  version "5.0.28"
-  resolved "https://registry.yarnpkg.com/trezor-connect/-/trezor-connect-5.0.28.tgz#eb39bb0aa2a7555623251f0fb301233886fcdd09"
+trezor-connect@5.0.29:
+  version "5.0.29"
+  resolved "https://registry.yarnpkg.com/trezor-connect/-/trezor-connect-5.0.29.tgz#b26f955532d0654eac78468dbcbc9a6622350cea"
   dependencies:
-    babel-polyfill "^6.26.0"
     babel-runtime "^6.26.0"
     events "^1.1.1"
     whatwg-fetch "^2.0.4"
