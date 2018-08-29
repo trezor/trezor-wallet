@@ -137,6 +137,14 @@ export default class PinModal extends Component<Props, State> {
                 match: this.state.singleInput || this.state.passphraseRevision === value,
                 passphrase: value,
             });
+
+            if (this.state.visible && this.passphraseRevisionInput) {
+                this.setState({
+                    match: true,
+                    passphraseRevision: value,
+                });
+                this.passphraseRevisionInput.value = value;
+            }
         } else {
             this.setState({
                 match: this.state.passphrase === value,
@@ -174,12 +182,28 @@ export default class PinModal extends Component<Props, State> {
         this.setState({
             visible: true,
         });
+        if (this.passphraseRevisionInput) {
+            this.passphraseRevisionInput.disabled = true;
+            this.passphraseRevisionInput.value = this.state.passphrase;
+            this.setState(previousState => ({
+                passphraseRevision: previousState.passphrase,
+                match: true,
+            }));
+        }
     }
 
     onPassphraseHide = (): void => {
         this.setState({
             visible: false,
         });
+        if (this.passphraseRevisionInput) {
+            this.passphraseRevisionInput.value = '';
+            this.setState({
+                passphraseRevision: '',
+                match: false,
+            });
+            this.passphraseRevisionInput.disabled = false;
+        }
     }
 
     submit = (empty: boolean = false): void => {
