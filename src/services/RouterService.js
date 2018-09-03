@@ -85,7 +85,6 @@ const RouterService: Middleware = (api: MiddlewareAPI) => (next: MiddlewareDispa
         __unloading = true;
     } else if (action.type === LOCATION_CHANGE && !__unloading) {
         const { location } = api.getState().router;
-        const { web3 } = api.getState();
         const { devices } = api.getState();
         const { error } = api.getState().connect;
 
@@ -105,8 +104,8 @@ const RouterService: Middleware = (api: MiddlewareAPI) => (next: MiddlewareDispa
             redirectPath = '/';
         } else {
             const isModalOpened: boolean = api.getState().modal.opened;
-            // if web3 wasn't initialized yet or there are no devices attached or initialization error occurs
-            const landingPage: boolean = web3.length < 1 || devices.length < 1 || error !== null;
+            // there are no devices attached or initialization error occurs
+            const landingPage: boolean = devices.length < 1 || error !== null;
 
             // modal is still opened and currentPath is still valid
             // example 1 (valid blocking): url changes while passphrase modal opened but device is still connected (we want user to finish this action)

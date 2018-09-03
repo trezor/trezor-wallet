@@ -52,8 +52,7 @@ export const updateSelectedValues = (prevState: State, action: Action): AsyncAct
             || prevState.accounts !== state.accounts
             || prevState.discovery !== state.discovery
             || prevState.tokens !== state.tokens
-            || prevState.pending !== state.pending
-            || prevState.web3 !== state.web3) {
+            || prevState.pending !== state.pending) {
         if (locationChange) {
             // dispose current account view
             dispatch(dispose());
@@ -64,7 +63,6 @@ export const updateSelectedValues = (prevState: State, action: Action): AsyncAct
         const discovery = stateUtils.getDiscoveryProcess(state);
         const tokens = stateUtils.getAccountTokens(state, account);
         const pending = stateUtils.getAccountPendingTx(state.pending, account);
-        const web3 = stateUtils.getWeb3(state);
 
         const payload: $ElementType<State, 'selectedAccount'> = {
             location: location.pathname,
@@ -73,7 +71,6 @@ export const updateSelectedValues = (prevState: State, action: Action): AsyncAct
             discovery,
             tokens,
             pending,
-            web3,
         };
 
         let needUpdate: boolean = false;

@@ -9,8 +9,6 @@ import TrezorConnect, {
 import * as TrezorConnectActions from 'actions/TrezorConnectActions';
 import * as DiscoveryActions from 'actions/DiscoveryActions';
 import * as ModalActions from 'actions/ModalActions';
-import { init as initWeb3 } from 'actions/Web3Actions';
-import * as WEB3 from 'actions/constants/web3';
 import * as STORAGE from 'actions/constants/localStorage';
 import * as CONNECT from 'actions/constants/TrezorConnect';
 import * as NOTIFICATION from 'actions/constants/notification';
@@ -40,9 +38,8 @@ const TrezorConnectService: Middleware = (api: MiddlewareAPI) => (next: Middlewa
     } else if (action.type === TRANSPORT.ERROR) {
         // TODO: check if modal is open
         // api.dispatch( push('/') );
-    } else if (action.type === TRANSPORT.START && api.getState().web3.length < 1) {
-        api.dispatch(initWeb3());
-    } else if (action.type === WEB3.READY) {
+    } else if (action.type === TRANSPORT.START) {
+        // api.dispatch({ type: WEB3.READY });
         api.dispatch(TrezorConnectActions.postInit());
     } else if (action.type === DEVICE.DISCONNECT) {
         api.dispatch(TrezorConnectActions.deviceDisconnect(action.device));

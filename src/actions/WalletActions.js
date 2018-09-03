@@ -6,13 +6,11 @@ import * as WALLET from 'actions/constants/wallet';
 import * as CONNECT from 'actions/constants/TrezorConnect';
 import * as stateUtils from 'reducers/utils';
 
-import type
-{
+import type {
     Account,
     Coin,
     Discovery,
     Token,
-    Web3Instance,
     Device,
     TrezorDevice,
     RouterLocationState,
