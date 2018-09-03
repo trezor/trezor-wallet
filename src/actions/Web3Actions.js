@@ -32,6 +32,8 @@ import * as AccountsActions from './AccountsActions';
 export type Web3Action = {
     type: typeof WEB3.READY,
 } | {
+    type: typeof WEB3.START,
+} | {
     type: typeof WEB3.CREATE,
     instance: Web3Instance
 }
