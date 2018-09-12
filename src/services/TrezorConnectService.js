@@ -4,10 +4,11 @@
 import { push } from 'react-router-redux';
 
 import TrezorConnect, {
-    TRANSPORT, DEVICE_EVENT, UI_EVENT, UI, DEVICE,
+    TRANSPORT, DEVICE_EVENT, UI_EVENT, UI, DEVICE, BLOCKCHAIN
 } from 'trezor-connect';
 import * as TrezorConnectActions from 'actions/TrezorConnectActions';
 import * as DiscoveryActions from 'actions/DiscoveryActions';
+import * as BlockchainActions from 'actions/BlockchainActions';
 import * as ModalActions from 'actions/ModalActions';
 import * as STORAGE from 'actions/constants/localStorage';
 import * as CONNECT from 'actions/constants/TrezorConnect';
@@ -40,6 +41,9 @@ const TrezorConnectService: Middleware = (api: MiddlewareAPI) => (next: Middlewa
         // api.dispatch( push('/') );
     } else if (action.type === TRANSPORT.START) {
         api.dispatch(TrezorConnectActions.postInit());
+
+        api.dispatch( BlockchainActions.subscribe('ropsten') );
+
     } else if (action.type === DEVICE.DISCONNECT) {
         api.dispatch(TrezorConnectActions.deviceDisconnect(action.device));
     } else if (action.type === CONNECT.REMEMBER_REQUEST) {
@@ -67,6 +71,10 @@ const TrezorConnectService: Middleware = (api: MiddlewareAPI) => (next: Middlewa
         api.dispatch(TrezorConnectActions.onSelectDevice(action.device));
     } else if (action.type === CONNECT.COIN_CHANGED) {
         api.dispatch(TrezorConnectActions.coinChanged(action.payload.network));
+    } else if (action.type === BLOCKCHAIN.BLOCK) {
+        // api.dispatch(BlockchainActions.onBlockMined(action.payload.coin));
+    } else if (action.type === BLOCKCHAIN.NOTIFICATION) {
+        // api.dispatch(BlockchainActions.onNotification(action.payload));
     }
 
     return action;

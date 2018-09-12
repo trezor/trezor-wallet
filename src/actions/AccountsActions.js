@@ -2,11 +2,12 @@
 
 import * as ACCOUNT from 'actions/constants/account';
 import type { Action, TrezorDevice } from 'flowtype';
-import type { State } from 'reducers/AccountsReducer';
+import type { Account, State } from 'reducers/AccountsReducer';
 
 export type AccountAction =
     AccountFromStorageAction
   | AccountCreateAction
+  | AccountUpdateAction
   | AccountSetBalanceAction
   | AccountSetNonceAction;
 
@@ -17,11 +18,12 @@ export type AccountFromStorageAction = {
 
 export type AccountCreateAction = {
     type: typeof ACCOUNT.CREATE,
-    device: TrezorDevice,
-    network: string,
-    index: number,
-    path: Array<number>,
-    address: string
+    payload: Account,
+}
+
+export type AccountUpdateAction = {
+    type: typeof ACCOUNT.UPDATE,
+    payload: Account,
 }
 
 export type AccountSetBalanceAction = {
@@ -54,4 +56,9 @@ export const setNonce = (address: string, network: string, deviceState: string, 
     network,
     deviceState,
     nonce,
+});
+
+export const update = (account: Account): Action => ({
+    type: ACCOUNT.UPDATE,
+    payload: account
 });
