@@ -52,7 +52,7 @@ export type Web3Action = {
 } | Web3UpdateBlockAction
   | Web3UpdateGasPriceAction;
 
-export const initWeb3 = (network: string, urlIndex: number = 0): PromiseAction<Web3Instance> => async (dispatch: Dispatch, getState: GetState): Promise<Web3Instance> => new Promise(async (resolve, reject) => {
+export const initWeb3 = (network: string): PromiseAction<Web3Instance> => async (dispatch: Dispatch, getState: GetState): Promise<Web3Instance> => new Promise(async (resolve, reject) => {
     // check if requested web was initialized before
     const instance = getState().web3.find(w3 => w3.network === network);
     if (instance && instance.web3.currentProvider.connected) {
@@ -70,8 +70,11 @@ export const initWeb3 = (network: string, urlIndex: number = 0): PromiseAction<W
         return;
     }
 
-    // get first url
-    const url = coin.web3[urlIndex];
+    // get random url from config
+    const urlCount = coin.web3.length;
+    const randomIndex = Math.floor(Math.random() * urlCount);
+    const url = coin.web3[randomIndex];
+
     if (!url) {
         reject(new Error('Web3 backend is not responding'));
         return;
@@ -113,7 +116,7 @@ export const initWeb3 = (network: string, urlIndex: number = 0): PromiseAction<W
         } else {
             // backend initialization error for given url, try next one
             try {
-                const web3 = await dispatch(initWeb3(network, urlIndex + 1));
+                const web3 = await dispatch(initWeb3(network));
                 resolve(web3);
             } catch (error) {
                 reject(error);
