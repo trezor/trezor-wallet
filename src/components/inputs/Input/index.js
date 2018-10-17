@@ -39,9 +39,9 @@ const StyledInput = styled.input`
     padding: 5px ${props => (props.hasIcon ? '40px' : '12px')} 6px 12px;
 
     line-height: 1.42857143;
-    font-size: ${FONT_SIZE.SMALL};
+    font-size: ${props => (props.isSmallText ? `${FONT_SIZE.SMALLER}` : `${FONT_SIZE.SMALL}`)};
     font-weight: ${FONT_WEIGHT.BASE};
-    color: ${props => (props.color ? props.color : colors.TEXT_SECONDARY)};
+    color: ${props => (props.color ? props.color : colors.TEXT)};
 
     border-radius: 2px;
     
@@ -55,6 +55,7 @@ const StyledInput = styled.input`
 
     background-color: ${colors.WHITE};
     transition: ${TRANSITION.HOVER};
+
     &:disabled {
         pointer-events: none;
         background: ${colors.GRAY_LIGHT};
@@ -171,7 +172,7 @@ class Input extends PureComponent {
                         <Overlay isPartiallyHidden={this.props.isPartiallyHidden} />
                         {this.props.icon}
                         <StyledInput
-                            trezorAction={this.props.trezorAction}
+                            isSmallText={this.props.isSmallText}
                             hasIcon={this.getIcon(this.props.state).length > 0}
                             innerRef={this.props.innerRef}
                             hasAddon={!!this.props.sideAddons}
@@ -230,7 +231,7 @@ Input.propTypes = {
     sideAddons: PropTypes.arrayOf(PropTypes.node),
     isDisabled: PropTypes.bool,
     name: PropTypes.string,
-    isPartiallyHidden: PropTypes.bool,
+    isSmallText: PropTypes.string,
 };
 
 Input.defaultProps = {
