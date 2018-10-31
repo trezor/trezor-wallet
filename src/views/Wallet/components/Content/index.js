@@ -17,7 +17,7 @@ const Loading = styled.div`
     flex: 1;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
 `;
 
 const Text = styled.div`
@@ -26,32 +26,16 @@ const Text = styled.div`
     margin-left: 10px;
 `;
 
-const Message = styled.div`
-    font-size: ${FONT_SIZE.SMALL};
-    color: ${colors.TEXT_PRIMARY};
-`;
-
-const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
 const Content = ({
     children,
-    title,
-    message,
-    type,
     isLoading = false,
 }) => (
     <Wrapper>
-        {(!isLoading) && children}
-        {isLoading && (type === 'progress' || type === 'info') && (
+        {!isLoading && children}
+        {isLoading && (
             <Loading>
-                <Row>
-                    {type === 'progress' && <Loader size={30} />}
-                    <Text>{title || 'Initializing accounts'}</Text>
-                </Row>
-                {message && <Message>{message}</Message>}
+                <Loader size={30} />
+                <Text>Initializing accounts</Text>
             </Loading>
         )}
     </Wrapper>
@@ -60,9 +44,6 @@ const Content = ({
 Content.propTypes = {
     children: PropTypes.element,
     isLoading: PropTypes.bool,
-    title: PropTypes.string,
-    message: PropTypes.string,
-    type: PropTypes.string,
 };
 
 export default Content;
