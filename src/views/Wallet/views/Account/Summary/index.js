@@ -75,6 +75,7 @@ const AccountSummary = (props: Props) => {
         account,
         network,
         tokens,
+        discovery,
         pending,
         loader,
         shouldRender,
@@ -89,7 +90,7 @@ const AccountSummary = (props: Props) => {
     const balance: string = new BigNumber(account.balance).minus(pendingAmount).toString(10);
 
     return (
-        <Content>
+        <Content isLoading={!discovery.completed}>
             <React.Fragment>
                 <AccountHeading>
                     <AccountName>

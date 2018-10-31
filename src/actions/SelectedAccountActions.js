@@ -87,22 +87,14 @@ const getAccountLoader = (state: State, selectedAccount: SelectedAccountState): 
             };
         }
 
-        // case 3: device is disconnected
-        return {
-            type: 'info',
-            title: `Device ${device.instanceLabel} is disconnected`,
-            message: 'Connect device to load accounts',
-            shouldRender: false,
-        };
-    }
-
-    if (discovery.completed) {
-        // case 4: account not found and discovery is completed
-        return {
-            type: 'info',
-            title: 'Account does not exist',
-            shouldRender: false,
-        };
+        if (discovery.completed) {
+            // case 4: account not found and discovery is completed
+            return {
+                type: 'warning',
+                title: 'Account does not exist',
+                shouldRender: false,
+            };
+        }
     }
 
     // case default: account information isn't loaded yet
@@ -146,18 +138,6 @@ const getAccountNotification = (state: State, selectedAccount: SelectedAccountSt
         };
     }
 
-    // case 4: account does exists and device is unavailable (created with different passphrase settings) account cannot be accessed
-    // this is related to device instance in url, it's not used for now (device clones are disabled)
-    if (!device.available) {
-        return {
-            type: 'info',
-            title: `Device ${device.instanceLabel} is unavailable`,
-            message: 'Change passphrase settings to use this device',
-            shouldRender: true,
-        };
-    }
-
-    // case default
     return null;
 };
 

@@ -112,7 +112,7 @@ const AccountReceive = (props: Props) => {
     }
 
     return (
-        <Content>
+        <Content isLoading={!discovery.completed}>
             <React.Fragment>
                 <Title>Receive Ethereum or tokens</Title>
                 <AddressWrapper

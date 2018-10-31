@@ -249,59 +249,35 @@ const AccountSend = (props: Props) => {
     const isAdvancedSettingsHidden = !advanced;
 
     return (
-        <Content>
-            <Title>Send Ethereum or tokens</Title>
-            <InputRow>
-                <Input
-                    state={getAddressInputState(address, errors.address, warnings.address)}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck="false"
-                    topLabel="Address"
-                    bottomText={errors.address || warnings.address || infos.address}
-                    value={address}
-                    onChange={event => onAddressChange(event.target.value)}
-                />
-            </InputRow>
-            <InputRow>
-                <Input
-                    state={getAmountInputState(errors.amount, warnings.amount)}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck="false"
-                    topLabel={(
-                        <AmountInputLabelWrapper>
-                            <AmountInputLabel>Amount</AmountInputLabel>
-                            {(isCurrentCurrencyToken && selectedToken) && (
-                                <AmountInputLabel>You have: {selectedTokenBalance} {selectedToken.symbol}</AmountInputLabel>
-                            )}
-                        </AmountInputLabelWrapper>
-                    )}
-                    value={amount}
-                    onChange={event => onAmountChange(event.target.value)}
-                    bottomText={errors.amount || warnings.amount || infos.amount}
-                    sideAddons={[
-                        (
-                            <SetMaxAmountButton
-                                key="icon"
-                                onClick={() => onSetMax()}
-                                isActive={setMax}
-                            >
-                                {!setMax && (
-                                    <Icon
-                                        icon={ICONS.TOP}
-                                        size={25}
-                                        color={colors.TEXT_SECONDARY}
-                                    />
-                                )}
-                                {setMax && (
-                                    <Icon
-                                        icon={ICONS.CHECKED}
-                                        size={25}
-                                        color={colors.WHITE}
-                                    />
+        <Content isLoading={!discovery.completed}>
+            <React.Fragment>
+                <H2>Send Ethereum or tokens</H2>
+                <InputRow>
+                    <Input
+                        state={getAddressInputState(address, errors.address, warnings.address)}
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
+                        topLabel="Address"
+                        bottomText={errors.address || warnings.address || infos.address}
+                        value={address}
+                        onChange={event => onAddressChange(event.target.value)}
+                    />
+                </InputRow>
+
+                <InputRow>
+                    <Input
+                        state={getAmountInputState(errors.amount, warnings.amount)}
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
+                        topLabel={(
+                            <AmountInputLabelWrapper>
+                                <AmountInputLabel>Amount</AmountInputLabel>
+                                {(isCurrentCurrencyToken && selectedToken) && (
+                                    <AmountInputLabel>You have: {selectedTokenBalance} {selectedToken.symbol}</AmountInputLabel>
                                 )}
                                 Set max
                             </SetMaxAmountButton>
