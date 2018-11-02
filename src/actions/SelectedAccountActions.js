@@ -124,7 +124,16 @@ const getAccountNotification = (state: State, selectedAccount: SelectedAccountSt
     if (account && discovery && !discovery.completed && !discovery.waitingForDevice) {
         return {
             type: 'info',
-            title: 'Loading other accounts...',
+            title: `Device ${device.instanceLabel} is disconnected`,
+            shouldRender: true,
+        };
+    }
+
+    if (!device.available) {
+        return {
+            type: 'info',
+            title: `Device ${device.instanceLabel} is unavailable`,
+            message: 'Change passphrase settings to use this device',
             shouldRender: true,
         };
     }
