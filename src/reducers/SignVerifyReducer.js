@@ -10,6 +10,7 @@ export type State = {
 export const initialState: State = {
     signature: '',
     isSignProgress: false,
+    isVerifyProgress: false,
 };
 
 export default (state: State = initialState, action: Action): State => {
@@ -24,6 +25,13 @@ export default (state: State = initialState, action: Action): State => {
             return {
                 ...state,
                 signature: action.signature,
+            };
+
+        case SIGN_VERIFY.VERIFY_PROGRESS:
+            console.log('action', action);
+            return {
+                ...state,
+                isVerifyProgress: action.isVerifyProgress,
             };
 
         case SIGN_VERIFY.CLEAR:
