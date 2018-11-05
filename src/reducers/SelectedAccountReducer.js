@@ -22,11 +22,6 @@ export type State = {
         title: ?string,
         message: ?string,
     },
-    loader: {
-        type: ?string,
-        title: ?string,
-        message: ?string,
-    },
     shouldRender: boolean,
 };
 
@@ -38,11 +33,6 @@ export const initialState: State = {
     pending: [],
     discovery: null,
     notification: {
-        type: null,
-        title: null,
-        message: null,
-    },
-    loader: {
         type: null,
         title: null,
         message: null,

@@ -93,9 +93,9 @@ const AccountReceive = (props: Props) => {
         account,
         discovery,
         shouldRender,
-        loader,
+        notification,
     } = props.selectedAccount;
-    const { type, title, message } = loader;
+    const { type, title, message } = notification;
     if (!device || !account || !discovery || !shouldRender) return <Content type={type} title={title} message={message} isLoading />;
 
     const {
@@ -112,7 +112,7 @@ const AccountReceive = (props: Props) => {
     }
 
     return (
-        <Content isLoading={!discovery.completed}>
+        <Content>
             <React.Fragment>
                 <Title>Receive Ethereum or tokens</Title>
                 <AddressWrapper

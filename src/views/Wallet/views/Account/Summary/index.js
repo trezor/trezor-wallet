@@ -75,14 +75,12 @@ const AccountSummary = (props: Props) => {
         account,
         network,
         tokens,
-        discovery,
         pending,
-        loader,
+        notification,
         shouldRender,
     } = props.selectedAccount;
 
-    const { type, title, message } = loader;
-
+    const { type, title, message } = notification;
     if (!device || !account || !network || !shouldRender) return <Content type={type} title={title} message={message} isLoading />;
 
     const explorerLink: string = `${network.explorer.address}${account.address}`;
@@ -90,7 +88,7 @@ const AccountSummary = (props: Props) => {
     const balance: string = new BigNumber(account.balance).minus(pendingAmount).toString(10);
 
     return (
-        <Content isLoading={!discovery.completed}>
+        <Content>
             <React.Fragment>
                 <AccountHeading>
                     <AccountName>
