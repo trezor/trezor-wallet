@@ -1,20 +1,21 @@
 /* @flow */
 import React from 'react';
-import styled, { css } from 'styled-components';
+import { QRCode } from 'react-qr-svg';
+import styled from 'styled-components';
+import media from 'styled-media-query';
+
+import { H2 } from 'components/Heading';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import Tooltip from 'components/Tooltip';
 import Input from 'components/inputs/Input';
 
 import ICONS from 'config/icons';
+import TrezorConfirm from 'components/trezorActions/Confirm';
 import colors from 'config/colors';
 import { CONTEXT_DEVICE } from 'actions/constants/modal';
 
-import Tooltip from 'components/Tooltip';
-import { QRCode } from 'react-qr-svg';
-
-import { FONT_SIZE, FONT_WEIGHT, FONT_FAMILY } from 'config/variables';
-import Title from 'views/Wallet/components/Title';
+import Content from 'views/Wallet/components/Content';
 import VerifyAddressTooltip from './components/VerifyAddressTooltip';
 
 import type { Props } from './Container';
@@ -114,54 +115,15 @@ const AccountReceive = (props: Props) => {
     return (
         <Content>
             <React.Fragment>
-                <Title>Receive Ethereum or tokens</Title>
-                <AddressWrapper
-                    isShowingQrCode={addressVerified || addressUnverified}
-                >
-                    {isAddressVerifying && (
-                        <AddressInfoText>Confirm address on TREZOR</AddressInfoText>
-                    )}
-                    {((addressVerified || addressUnverified) && !isAddressVerifying) && (
-                        <Tooltip
-                            placement="left"
-                            content={(
-                                <VerifyAddressTooltip
-                                    isConnected={device.connected}
-                                    isAvailable={device.available}
-                                    addressUnverified={addressUnverified}
-                                />
-                            )}
-                        >
-                            <EyeButton
-                                isTransparent
-                                onClick={() => props.showAddress(account.addressPath)}
-                            >
-
-                                <Icon
-                                    icon={addressUnverified ? ICONS.EYE_CROSSED : ICONS.EYE}
-                                    color={addressUnverified ? colors.ERROR_PRIMARY : colors.TEXT_PRIMARY}
-                                />
-
-                            </EyeButton>
-                        </Tooltip>
-                    )}
-                    <ValueWrapper
-                        isHidden={isAddressHidden}
-                        isVerifying={isAddressVerifying}
-                    >
-                        {address}
-                    </ValueWrapper>
-                    {isAddressVerifying && (
-                        <React.Fragment>
-                            <ArrowUp />
-                            <AddressInfoText>
-                                <Icon
-                                    icon={ICONS.T1}
-                                    color={colors.WHITE}
-                                />
-                                    Check address on your Trezor
-                                </React.Fragment>
-                            ) : null}
+                <H2>Receive Ethereum or tokens</H2>
+                <AddressWrapper isShowingQrCode={addressVerified || addressUnverified}>
+                    <Label>Address</Label>
+                    <Row>
+                        <Input
+                            type="text"
+                            value={address}
+                            isPartiallyHidden={isAddressHidden}
+                            trezorAction={isAddressVerifying ? <TrezorConfirm /> : null}
                             icon={((addressVerified || addressUnverified) && !isAddressVerifying) && (
                                 <Tooltip
                                     placement="left"
