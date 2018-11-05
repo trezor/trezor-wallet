@@ -118,7 +118,6 @@ export const verify = (
     }
 };
 
-
 export const clear = (): ThunkAction => (dispatch: Dispatch): void => {
     dispatch({
         type: SIGN_VERIFY.CLEAR,
