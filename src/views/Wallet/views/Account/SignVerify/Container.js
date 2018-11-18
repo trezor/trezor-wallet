@@ -14,7 +14,6 @@ export type StateProps = {
     wallet: $ElementType<State, 'wallet'>,
     selectedAccount: $ElementType<State, 'selectedAccount'>,
     signature: string,
-    isSignProgress: boolean
 }
 
 export type DispatchProps = {
@@ -27,7 +26,6 @@ const mapStateToProps: MapStateToProps<State, OwnProps, StateProps> = (state: St
     wallet: state.wallet,
     selectedAccount: state.selectedAccount,
     signature: state.signVerifyReducer.signature,
-    isSignProgress: state.signVerifyReducer.isSignProgress,
 });
 
 const mapDispatchToProps: MapDispatchToProps<Dispatch, OwnProps, DispatchProps> = (dispatch: Dispatch): DispatchProps => ({
