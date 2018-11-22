@@ -185,7 +185,7 @@ const AccountSend = (props: Props) => {
         discovery,
         tokens,
         shouldRender,
-        notification,
+        loader,
     } = props.selectedAccount;
     const {
         address,

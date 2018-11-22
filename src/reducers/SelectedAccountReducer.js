@@ -37,6 +37,11 @@ export const initialState: State = {
         title: null,
         message: null,
     },
+    loader: {
+        type: null,
+        title: null,
+        message: null,
+    },
     shouldRender: false,
 };
 
