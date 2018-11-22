@@ -172,7 +172,7 @@ class Input extends PureComponent {
                         <Overlay isPartiallyHidden={this.props.isPartiallyHidden} />
                         {this.props.icon}
                         <StyledInput
-                            isSmallText={this.props.isSmallText}
+                            trezorAction={this.props.trezorAction}
                             hasIcon={this.getIcon(this.props.state).length > 0}
                             innerRef={this.props.innerRef}
                             hasAddon={!!this.props.sideAddons}
