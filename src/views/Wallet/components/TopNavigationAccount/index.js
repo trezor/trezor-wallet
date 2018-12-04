@@ -59,15 +59,17 @@ class TopNavigationAccount extends React.PureComponent<Props> {
         const { state, pathname } = this.props.location;
         if (!state) return null;
 
-    return (
-        <Wrapper className="account-tabs">
-            <StyledNavLink exact to={`${basePath}`}>Summary</StyledNavLink>
-            <StyledNavLink to={`${basePath}/receive`}>Receive</StyledNavLink>
-            <StyledNavLink to={`${basePath}/send`}>Send</StyledNavLink>
-            <StyledNavLink to={`${basePath}/signverify`}>Sign & Verify</StyledNavLink>
-            <Indicator pathname={pathname} />
-        </Wrapper>
-    );
-};
+        const basePath = `/device/${state.device}/network/${state.network}/account/${state.account}`;
+        return (
+            <Wrapper className="account-tabs" innerRef={this.wrapperRefCallback}>
+                <StyledNavLink exact to={`${basePath}`}>Summary</StyledNavLink>
+                <StyledNavLink to={`${basePath}/receive`}>Receive</StyledNavLink>
+                <StyledNavLink to={`${basePath}/send`}>Send</StyledNavLink>
+                <StyledNavLink to={`${basePath}/signverify`}>Sign &amp; Verify</StyledNavLink>
+                <Indicator pathname={pathname} wrapper={() => this.wrapper} />
+            </Wrapper>
+        );
+    }
+}
 
 export default TopNavigationAccount;
