@@ -181,7 +181,15 @@ class InstallBridge extends PureComponent<Props, State> {
                             ))}
                         </Ol>
                         <P isSmaller>
-                            <LearnMoreText>Learn more about latest versions in</LearnMoreText>
+                            <LearnMoreText>More downloads:</LearnMoreText>
+                            <Link
+                                href="https://wallet.trezor.io/data/bridge/latest/index.html"
+                                isGreen
+                            >OpenPGP signatures and packages for other platforms
+                            </Link>.
+                        </P>
+                        <P isSmaller>
+                            <LearnMoreText>Learn more about latest versions in the</LearnMoreText>
                             <Link
                                 href="https://github.com/trezor/trezord-go/blob/master/CHANGELOG.md"
                                 isGreen
