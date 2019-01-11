@@ -1,9 +1,13 @@
 FROM debian:stretch
 
 RUN apt-get update
+RUN apt-get install -y wget
 
 # install and run bridge
-RUN apt-get install https://wallet.trezor.io/data/bridge/2.0.25/trezor-bridge-2.0.25.pkg
+RUN mkdir /trezor-bridge
+WORKDIR /trezor-bridge
+RUN wget https://wallet.trezor.io/data/bridge/2.0.25/trezor-bridge_2.0.25_amd64.deb
+RUN apt-get install -y /trezor-bridge/trezor-bridge_2.0.25_amd64.deb
 
 # build amd run emulator
 RUN mkdir /trezor-core
