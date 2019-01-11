@@ -89,7 +89,7 @@ const ActionContent = styled.div`
     padding-bottom: 14px;
 `;
 
-const Notification = (props: Props): React$Element<string> => {
+const Notification = (props: Props) => {
     const close: Function = typeof props.close === 'function' ? props.close : () => {}; // TODO: add default close action
 
     return (

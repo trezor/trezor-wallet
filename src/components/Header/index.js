@@ -58,7 +58,7 @@ const A = styled.a`
     }
 `;
 
-const Header = (): React$Element<string> => (
+const Header = () => (
     <Wrapper>
         <LayoutWrapper>
             <Left>
