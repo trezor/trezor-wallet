@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -13,10 +14,16 @@ import * as LogActions from 'actions/LogActions';
 import icons from 'config/icons';
 import type { State, Dispatch } from 'flowtype';
 
-type Props = {
+type OwnProps = {||};
+type StateProps = {|
     log: $ElementType<State, 'log'>,
+|};
+
+type DispatchProps = {|
     toggle: typeof LogActions.toggle
-}
+|};
+
+type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
 
 const Wrapper = styled.div`
     position: relative;
@@ -56,7 +63,7 @@ const LogWrapper = styled.div`
     overflow: scroll;
 `;
 
-const Log = (props: Props): ?React$Element<string> => {
+const Log = (props: Props) => {
     if (!props.log.opened) return null;
     return (
         <Wrapper>
@@ -72,11 +79,16 @@ const Log = (props: Props): ?React$Element<string> => {
     );
 };
 
-export default connect(
-    (state: State) => ({
+Log.propTypes = {
+    log: PropTypes.array.isRequired,
+    toggle: PropTypes.func.isRequired,
+};
+
+export default connect<Props, OwnProps, StateProps, DispatchProps, State, Dispatch>(
+    (state: State): StateProps => ({
         log: state.log,
     }),
-    (dispatch: Dispatch) => ({
+    (dispatch: Dispatch): DispatchProps => ({
         toggle: bindActionCreators(LogActions.toggle, dispatch),
     }),
 )(Log);

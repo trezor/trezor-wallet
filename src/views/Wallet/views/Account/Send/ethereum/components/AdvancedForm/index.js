@@ -13,9 +13,7 @@ import { FONT_SIZE } from 'config/variables';
 
 import type { Props as BaseProps } from '../../Container';
 
-type Props = BaseProps & {
-    children: React.Node,
-}
+type Props = {| ... BaseProps, children: React.Node |};
 
 // TODO: Decide on a small screen width for the whole app
 // and put it inside config/variables.js

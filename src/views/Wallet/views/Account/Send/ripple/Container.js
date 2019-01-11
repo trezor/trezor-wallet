@@ -1,30 +1,28 @@
 /* @flow */
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import SendFormActions from 'actions/ripple/SendFormActions';
-import type { MapStateToProps, MapDispatchToProps } from 'react-redux';
 import type { State, Dispatch } from 'flowtype';
 import AccountSend from './index';
 
-type OwnProps = {}
+type OwnProps = {||};
 
-export type StateProps = {
+export type StateProps = {|
     selectedAccount: $ElementType<State, 'selectedAccount'>,
     sendForm: $ElementType<State, 'sendFormRipple'>,
     wallet: $ElementType<State, 'wallet'>,
     fiat: $ElementType<State, 'fiat'>,
     localStorage: $ElementType<State, 'localStorage'>,
-}
+|};
 
-export type DispatchProps = {
+export type DispatchProps = {|
     sendFormActions: typeof SendFormActions,
-}
+|};
 
-export type Props = StateProps & DispatchProps;
+export type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
 
-const mapStateToProps: MapStateToProps<State, OwnProps, StateProps> = (state: State): StateProps => ({
+const mapStateToProps = (state: State): StateProps => ({
     selectedAccount: state.selectedAccount,
     sendForm: state.sendFormRipple,
     wallet: state.wallet,
@@ -32,8 +30,8 @@ const mapStateToProps: MapStateToProps<State, OwnProps, StateProps> = (state: St
     localStorage: state.localStorage,
 });
 
-const mapDispatchToProps: MapDispatchToProps<Dispatch, OwnProps, DispatchProps> = (dispatch: Dispatch): DispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     sendFormActions: bindActionCreators(SendFormActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountSend);
+export default connect<Props, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(AccountSend);

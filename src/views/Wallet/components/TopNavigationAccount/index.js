@@ -10,10 +10,14 @@ import type { State } from 'flowtype';
 
 import Indicator from './components/Indicator';
 
-type Props = {
+type OwnProps = {||};
+
+type StateProps = {|
     router: $ElementType<State, 'router'>,
     selectedAccount: $ElementType<State, 'selectedAccount'>,
-};
+|};
+
+type Props = {| ...OwnProps, ...StateProps |};
 
 const Wrapper = styled.div`
     position: relative;
@@ -78,7 +82,9 @@ class TopNavigationAccount extends React.PureComponent<Props> {
     }
 }
 
-export default connect((state: State): Props => ({
-    router: state.router,
-    selectedAccount: state.selectedAccount,
-}), null)(TopNavigationAccount);
+export default connect<Props, OwnProps, StateProps, _, State, _>(
+    (state: State): StateProps => ({
+        router: state.router,
+        selectedAccount: state.selectedAccount,
+    })
+)(TopNavigationAccount);

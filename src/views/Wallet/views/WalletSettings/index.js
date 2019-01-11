@@ -1,6 +1,6 @@
+/* @flow */
 import styled from 'styled-components';
 import React from 'react';
-import { connect } from 'react-redux';
 
 import colors from 'config/colors';
 import icons from 'config/icons';
@@ -41,4 +41,4 @@ const WalletSettings = () => (
     </Content>
 );
 
-export default connect(null, null)(WalletSettings);
+export default WalletSettings;

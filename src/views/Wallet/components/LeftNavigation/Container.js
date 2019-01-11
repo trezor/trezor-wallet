@@ -8,18 +8,15 @@ import * as TrezorConnectActions from 'actions/TrezorConnectActions';
 import * as DiscoveryActions from 'actions/DiscoveryActions';
 import * as RouterActions from 'actions/RouterActions';
 import * as ModalActions from 'actions/ModalActions';
-import type { MapStateToProps, MapDispatchToProps } from 'react-redux';
 import type { State, Dispatch } from 'flowtype';
 
 import type { StateProps, DispatchProps } from './components/common';
 
 import LeftNavigation from './index';
 
-type OwnProps = {
+type OwnProps = {||};
 
-}
-
-const mapStateToProps: MapStateToProps<State, OwnProps, StateProps> = (state: State): StateProps => ({
+const mapStateToProps = (state: State): StateProps => ({
     connect: state.connect,
     accounts: state.accounts,
     router: state.router,
@@ -31,7 +28,7 @@ const mapStateToProps: MapStateToProps<State, OwnProps, StateProps> = (state: St
     pending: state.pending,
 });
 
-const mapDispatchToProps: MapDispatchToProps<Dispatch, OwnProps, DispatchProps> = (dispatch: Dispatch): DispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     toggleDeviceDropdown: bindActionCreators(toggleDeviceDropdown, dispatch),
     addAccount: bindActionCreators(DiscoveryActions.addAccount, dispatch),
     acquireDevice: bindActionCreators(TrezorConnectActions.acquire, dispatch),
@@ -42,6 +39,6 @@ const mapDispatchToProps: MapDispatchToProps<Dispatch, OwnProps, DispatchProps> 
     gotoExternalWallet: bindActionCreators(ModalActions.gotoExternalWallet, dispatch),
 });
 
-export default withRouter(
+export default withRouter<OwnProps>(
     connect(mapStateToProps, mapDispatchToProps)(LeftNavigation),
 );

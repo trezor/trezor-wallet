@@ -1,8 +1,8 @@
+/* @flow */
 import styled from 'styled-components';
 import { H1 } from 'components/Heading';
 import Paragraph from 'components/Paragraph';
 import React from 'react';
-import { connect } from 'react-redux';
 
 
 const Wrapper = styled.div`
@@ -32,4 +32,4 @@ const Seedless = () => (
     </Wrapper>
 );
 
-export default connect(null, null)(Seedless);
+export default Seedless;
