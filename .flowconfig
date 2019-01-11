@@ -19,6 +19,7 @@
 ./src/flowtype/npm/connected-react-router.js
 ./src/flowtype/npm/bignumber.js
 ./src/flowtype/npm/ethereum-types.js
+./src/flowtype/npm/styled-components_v3.x.x.js
 ./src/flowtype/npm/web3.js
 ./src/flowtype/css.js
 
