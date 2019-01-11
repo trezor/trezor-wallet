@@ -9,6 +9,7 @@ stages:
   - test
   - build
   - deploy
+  - integration tests
 
 lint:
   stage: test
@@ -138,3 +139,9 @@ delete review:
     - branches
   tags:
     - deploy
+
+integration tests:
+  stage: integration tests
+  script:
+    - yarn install
+    - yarn run test-integration -- --url="${DEPLOY_BASE_DIR}/${CI_BUILD_REF_NAME}"
