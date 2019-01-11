@@ -28,7 +28,7 @@ RUN make build_unix_noui
 RUN mkdir /trezor-bridge
 WORKDIR /trezor-bridge
 RUN wget https://wallet.trezor.io/data/bridge/2.0.25/trezor-bridge_2.0.25_amd64.deb
-RUN dpkg -x /trezor-bridge/trezor-bridge_2.0.25_amd64.deb /trezor-bridge
+RUN dpkg -x /trezor-bridge/trezor-bridge_2.0.25_amd64.deb /trezor-bridge/extracted
 
 #
 # install trezor-wallet
@@ -45,3 +45,4 @@ RUN yarn run build:stable
 # run
 #
 ENTRYPOINT ["/trezor-wallet/test/docker/run-all.sh"]
+EXPOSE 8080
