@@ -1,0 +1,10 @@
+version: '3'
+services:
+  trezor-wallet-tests:
+    depends_on:
+      - trezor-emulator
+      - trezor-bridge
+  trezor-emulator:
+    image: registry.corp.sldev.cz/trezor/trezor-core/trezor-emulator
+  trezor-bridge:
+    image: registry.corp.sldev.cz/trezor/trezord-go/trezor-bridge
