@@ -11,14 +11,22 @@ import { connect } from 'react-redux';
 import colors from 'config/colors';
 import { FONT_SIZE } from 'config/variables';
 import * as LogActions from 'actions/LogActions';
+import type { State, Dispatch } from 'flowtype';
 
 declare var COMMITHASH: string;
 
-type Props = {
-    opened: boolean,
+type OwnProps = {|
     isLanding: boolean,
-    toggle: () => any,
-}
+|};
+type StateProps = {|
+    opened: boolean,
+|};
+
+type DispatchProps = {|
+    toggle: typeof LogActions.toggle,
+|};
+
+type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
 
 const Wrapper = styled.div`
     width: 100%;
@@ -79,12 +87,12 @@ Footer.propTypes = {
     toggle: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: State): StateProps => ({
     opened: state.log.opened,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     toggle: bindActionCreators(LogActions.toggle, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+export default connect<Props, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(Footer);

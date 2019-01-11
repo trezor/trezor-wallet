@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 import styled from 'styled-components';
 import { H1 } from 'components/Heading';
@@ -8,7 +10,6 @@ import P from 'components/Paragraph';
 import Link from 'components/Link';
 import ICONS from 'config/icons';
 import Content from 'views/Wallet/components/Content';
-import { connect } from 'react-redux';
 
 const Section = styled.section`
     display: flex;
@@ -51,4 +52,4 @@ const DeviceSettings = () => (
     </Content>
 );
 
-export default connect(null, null)(DeviceSettings);
+export default DeviceSettings;

@@ -1,8 +1,9 @@
+/* @flow */
+
 import React from 'react';
 import styled from 'styled-components';
 import { H1 } from 'components/Heading';
 import P from 'components/Paragraph';
-import { connect } from 'react-redux';
 
 const Wrapper = styled.div`
     display: flex;
@@ -35,4 +36,4 @@ const Bootloader = () => (
     </Wrapper>
 );
 
-export default connect(null, null)(Bootloader);
+export default Bootloader;

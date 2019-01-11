@@ -9,10 +9,17 @@ import * as TrezorConnectActions from 'actions/TrezorConnectActions';
 
 import type { State, Dispatch } from 'flowtype';
 
-type Props = {
-    acquiring: boolean;
-    acquireDevice: typeof TrezorConnectActions.acquire
-}
+type OwnProps = {||};
+
+type StateProps = {|
+    acquiring: boolean,
+|};
+
+type DispatchProps = {|
+    acquireDevice: typeof TrezorConnectActions.acquire,
+|};
+
+type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
 
 const Wrapper = styled.div`
     display: flex;
@@ -43,11 +50,11 @@ const Acquire = (props: Props) => (
     </Wrapper>
 );
 
-export default connect(
-    (state: State) => ({
+export default connect<Props, OwnProps, StateProps, DispatchProps, State, Dispatch>(
+    (state: State): StateProps => ({
         acquiring: state.connect.acquiringDevice,
     }),
-    (dispatch: Dispatch) => ({
+    (dispatch: Dispatch): DispatchProps => ({
         acquireDevice: bindActionCreators(TrezorConnectActions.acquire, dispatch),
     }),
 )(Acquire);

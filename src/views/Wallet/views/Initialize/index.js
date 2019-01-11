@@ -1,9 +1,9 @@
+/* @flow */
 import styled from 'styled-components';
 import { H1 } from 'components/Heading';
 import Button from 'components/Button';
 import Paragraph from 'components/Paragraph';
 import React from 'react';
-import { connect } from 'react-redux';
 
 const Wrapper = styled.div`
     display: flex;
@@ -37,4 +37,4 @@ const Initialize = () => (
     </Wrapper>
 );
 
-export default connect(null, null)(Initialize);
+export default Initialize;

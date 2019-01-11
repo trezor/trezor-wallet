@@ -47,7 +47,6 @@ export const showUnverifiedAddress = (): Action => ({
     type: RECEIVE.SHOW_UNVERIFIED_ADDRESS,
 });
 
-//export const showAddress = (address_n: string): AsyncAction => {
 export const showAddress = (path: Array<number>): AsyncAction => async (dispatch: Dispatch, getState: GetState): Promise<void> => {
     const selected = getState().wallet.selectedDevice;
     const { network } = getState().selectedAccount;

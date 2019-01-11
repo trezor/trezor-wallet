@@ -15,6 +15,18 @@ import P from 'components/Paragraph';
 import { H2 } from 'components/Heading';
 import * as WalletActions from 'actions/WalletActions';
 
+import type { State, Dispatch } from 'flowtype';
+
+type OwnProps = {| |};
+
+type StateProps = {||};
+
+type DispatchProps = {|
+    close: typeof WalletActions.hideBetaDisclaimer,
+|};
+
+type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
+
 const Wrapper = styled.div`
     width: 100%;
     height: 100%;
@@ -54,7 +66,7 @@ const StyledIcon = styled(Icon)`
     top: -1px;
 `;
 
-const BetaDisclaimer = (props: { close: () => void }) => (
+const BetaDisclaimer = (props: Props) => (
     <Wrapper>
         <ModalWindow>
             <H2>You are opening Trezor Beta Wallet</H2>
@@ -73,9 +85,9 @@ const BetaDisclaimer = (props: { close: () => void }) => (
     </Wrapper>
 );
 
-export default connect(
+export default connect<Props, OwnProps, StateProps, DispatchProps, State, Dispatch>(
     null,
-    (dispatch: Dispatch) => ({
+    (dispatch: Dispatch): DispatchProps => ({
         close: bindActionCreators(WalletActions.hideBetaDisclaimer, dispatch),
     }),
 )(BetaDisclaimer);

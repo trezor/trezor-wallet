@@ -1,6 +1,7 @@
+/* @flow */
+
 import React from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
 import Content from 'views/Wallet/components/Content';
 
 import EthIcon from 'images/coins/eth.png';
@@ -61,4 +62,4 @@ const Dashboard = () => (
     </Content>
 );
 
-export default connect(null, null)(Dashboard);
+export default Dashboard;

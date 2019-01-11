@@ -46,9 +46,9 @@ const StyledDivider = styled(Divider)`
 `;
 
 type DeviceMenuItem = {
-    type: string;
-    label: string;
-}
+    type: string,
+    label: string,
+};
 
 class DeviceMenu extends PureComponent<Props> {
     constructor(props: Props) {
@@ -114,7 +114,7 @@ class DeviceMenu extends PureComponent<Props> {
 
     mouseDownHandler: (event: MouseEvent) => void;
 
-    blurHandler: (event: FocusEvent) => void;
+    blurHandler: () => void;
 
     showDivider() {
         return this.props.devices.length > 1;

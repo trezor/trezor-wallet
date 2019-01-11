@@ -2,16 +2,11 @@
 
 import * as React from 'react';
 import colors from 'config/colors';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Route, withRouter } from 'react-router-dom';
 
-import type { MapStateToProps, MapDispatchToProps } from 'react-redux';
 import type { State } from 'flowtype';
-
-import type { WalletAction } from 'actions/WalletActions';
-import { toggleSidebar } from 'actions/WalletActions';
-import { bindActionCreators } from 'redux';
 
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -19,31 +14,21 @@ import ModalContainer from 'components/modals/Container';
 import AppNotifications from 'components/notifications/App';
 import ContextNotifications from 'components/notifications/Context';
 
-import { SCREEN_SIZE } from 'config/variables';
-
 import Log from 'components/Log';
-import Backdrop from 'components/Backdrop';
 
 import LeftNavigation from './components/LeftNavigation/Container';
 import TopNavigationAccount from './components/TopNavigationAccount';
 import TopNavigationDeviceSettings from './components/TopNavigationDeviceSettings';
 
-type StateProps = {
+type WalletContainerProps = {|
     wallet: $ElementType<State, 'wallet'>,
-    children?: React.Node,
-}
-
-type DispatchProps = {
-    toggleSidebar: WalletAction,
-};
-
-type OwnProps = {};
-
-export type Props = StateProps & DispatchProps;
+    children?: React.Node
+|};
 
 const AppWrapper = styled.div`
     position: relative;
-    min-height: 100vh;
+    min-height: 100%;
+    min-width: 720px;
     display: flex;
     flex-direction: column;
     background: ${colors.BACKGROUND};
@@ -75,19 +60,6 @@ const MainContent = styled.article`
     display: flex;
     flex-direction: column;
     overflow: auto;
-    border-top-right-radius: 4px;
-
-    @media screen and (max-width: ${SCREEN_SIZE.SM}){
-        ${props => props.preventBgScroll && css`
-            position: fixed;
-            width: 100%;
-            min-height: calc(100vh - 52px);
-        `}
-    }
-
-    @media screen and (max-width: 1170px) {
-        border-top-right-radius: 0px;
-    }
 `;
 
 const Navigation = styled.nav`
@@ -104,26 +76,13 @@ const Body = styled.div`
     flex-direction: column;
 `;
 
-const StyledBackdrop = styled(Backdrop)`
-    display: none;
-
-    @media screen and (max-width: ${SCREEN_SIZE.SM}) {
-        display: initial;    
-    }
-`;
-
-const Wallet = (props: Props) => (
+const Wallet = (props: WalletContainerProps) => (
     <AppWrapper>
-        <Header
-            sidebarEnabled={!!props.wallet.selectedDevice}
-            sidebarOpened={props.wallet.showSidebar}
-            toggleSidebar={props.toggleSidebar}
-        />
+        <Header />
         <AppNotifications />
         <WalletWrapper>
-            <StyledBackdrop show={props.wallet.showSidebar} onClick={props.toggleSidebar} animated />
             {props.wallet.selectedDevice && <LeftNavigation />}
-            <MainContent preventBgScroll={props.wallet.showSidebar}>
+            <MainContent>
                 <Navigation>
                     <Route path="/device/:device/network/:network/account/:account" component={TopNavigationAccount} />
                     <Route path="/device/:device/device-settings" component={TopNavigationDeviceSettings} />
@@ -133,21 +92,17 @@ const Wallet = (props: Props) => (
                 <Body>
                     { props.children }
                 </Body>
-                <Footer />
+                <Footer isLanding={false} />
             </MainContent>
         </WalletWrapper>
         <ModalContainer />
     </AppWrapper>
 );
 
-const mapStateToProps: MapStateToProps<State, OwnProps, StateProps> = (state: State): StateProps => ({
+const mapStateToProps = (state: State): WalletContainerProps => ({
     wallet: state.wallet,
 });
 
-const mapDispatchToProps: MapDispatchToProps<Dispatch, OwnProps, DispatchProps> = (dispatch: Dispatch): DispatchProps => ({
-    toggleSidebar: bindActionCreators(toggleSidebar, dispatch),
-});
-
-export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(Wallet),
+export default withRouter<WalletContainerProps>(
+    connect(mapStateToProps)(Wallet),
 );
