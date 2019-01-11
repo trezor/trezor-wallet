@@ -145,4 +145,4 @@ integration tests:
   stage: integration tests
   script:
     - yarn install
-    - yarn run test-integration -c baseUrl="${DEPLOY_BASE_DIR}/${CI_BUILD_REF_NAME}"
+    - $(yarn bin)/cypress run test-integration -c baseUrl="${DEPLOY_BASE_DIR}/${CI_BUILD_REF_NAME}"
