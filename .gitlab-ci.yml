@@ -1,10 +1,13 @@
 image: node:9.3
 
+variables:
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-  - node_modules/
-  - /root/.cache/Cypress
+  - node_modules
+  - cache/Cypress
 
 stages:
   - test
@@ -145,4 +148,5 @@ integration tests:
   stage: integration tests
   script:
     - yarn install
-    - $(yarn bin)/cypress run test-integration -c baseUrl="${DEPLOY_BASE_DIR}/${CI_BUILD_REF_NAME}"
+    - npx cypress install
+    - npx cypress run test-integration -c baseUrl="${DEPLOY_BASE_DIR}/${CI_BUILD_REF_NAME}"
