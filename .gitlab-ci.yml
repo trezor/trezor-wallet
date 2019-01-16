@@ -70,7 +70,7 @@ build stable:
     expire_in: 1 week
     paths:
       - build/stable
-      - scripts/s3sync.sh
+      - scripts/s3sync.sh 
 
 deploy review:
   stage: deploy
@@ -152,3 +152,7 @@ integration tests:
   script:
     - docker build -t wallet-emulator-bridge-tests .
     - docker run wallet-emulator-bridge-tests
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - /trezor-wallet/test/screenshots
