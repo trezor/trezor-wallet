@@ -12,11 +12,11 @@ image: docker:latest
 #   - node_modules
 #   - cache/Cypress
 
-# stages:
-#   - test
-#   - build
-#   - deploy
-#   - integration tests
+stages:
+  # - test
+  # - build
+  # - deploy
+  - integration tests
 
 # lint:
 #   stage: test
