@@ -1,7 +1,7 @@
 image: docker:latest
 
-# services:
-#   - docker:dind
+services:
+  - docker:dind
 
 # variables:
 #   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
