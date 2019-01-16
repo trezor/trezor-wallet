@@ -132,10 +132,12 @@ const Button = ({
     isWhite = false,
     isWebUsb = false,
     isTransparent = false,
+    dataTest,
 }: Props) => {
     const newClassName = isWebUsb ? `${className} trezor-webusb-button` : className;
     return (
         <Wrapper
+            data-test={dataTest}
             className={newClassName}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
@@ -162,6 +164,7 @@ Button.propTypes = {
     isWhite: PropTypes.bool,
     isWebUsb: PropTypes.bool,
     isTransparent: PropTypes.bool,
+    dataTest: PropTypes.string,
 };
 
 export default Button;

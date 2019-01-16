@@ -40,9 +40,9 @@ COPY yarn.lock /trezor-wallet
 RUN yarn
 COPY . /trezor-wallet
 RUN yarn run build:stable
-RUN yarn test-integration
+
 #
 # run
 #
 ENTRYPOINT ["/trezor-wallet/test/docker/run-all.sh"]
-EXPOSE 8080
+EXPOSE 8080 21325

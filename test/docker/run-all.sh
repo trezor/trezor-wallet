@@ -12,3 +12,6 @@ cd /trezor-emulator/trezor-core && ./emu.sh &
 
 # run wallet
 cd /trezor-wallet && yarn run server:stable
+
+# run tests
+yarn run test-integration -c baseUrl="https://localhost:8081/#/"

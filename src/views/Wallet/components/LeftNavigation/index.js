@@ -191,6 +191,7 @@ class LeftNavigation extends React.PureComponent<Props, State> {
             >
                 <Header
                     isSelected
+                    testId="Main__page__device__header"
                     isHoverable={false}
                     onClickWrapper={() => {
                         if (isDeviceAccessible || this.props.devices.length > 1) {
