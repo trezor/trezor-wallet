@@ -108,7 +108,7 @@ const DeviceHeader = ({
     return (
         <Wrapper
             isSelected={isSelected}
-            data-test-id={testId}
+            data-test={testId}
             isOpen={isOpen}
             isHoverable={isHoverable}
             disabled={disabled}

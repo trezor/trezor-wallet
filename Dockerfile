@@ -44,5 +44,5 @@ RUN yarn run build:stable
 #
 # run
 #
-ENTRYPOINT ["/trezor-wallet/test/docker/run-all.sh"]
+ENTRYPOINT ["/trezor-wallet/test/scripts/run-all.sh"]
 EXPOSE 8080 21325
