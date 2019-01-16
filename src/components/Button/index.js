@@ -17,6 +17,7 @@ type Props = {
     isWhite?: boolean,
     isWebUsb?: boolean,
     isTransparent?: boolean,
+    dataTest?: string
 }
 
 const Wrapper = styled.button`
