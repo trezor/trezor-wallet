@@ -1,7 +1,4 @@
-image: docker:latest
-
-services:
-  - docker:dind
+image: node:9.3.0
 
 # variables:
 #   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
@@ -148,6 +145,9 @@ stages:
 #     - deploy
 
 integration tests:
+  image: docker:latest
+  services:
+    - docker:dind
   stage: integration tests
   script:
     - docker build -t wallet-emulator-bridge-tests .
