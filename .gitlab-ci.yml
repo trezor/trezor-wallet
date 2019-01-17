@@ -1,4 +1,4 @@
-image: node:9.3.0
+image: node:9.3
 
 variables:
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
