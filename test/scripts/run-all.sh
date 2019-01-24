@@ -5,10 +5,10 @@ cd "$(dirname "$0")"
 cd ..
 
 # run bridge
-cd /trezor-bridge/ && ./extracted/usr/bin/trezord -e 21324 -u=false &
+cd /trezor-bridge/ && ./extracted/usr/bin/trezord ed 21324:21325 -u=false &
 
 # run emulator
-cd /trezor-emulator/trezor-core && ./emu.sh &
+cd /trezor-emulator/trezor-core && PYOPT=0 ./emu.sh &
 
 # run wallet
 cd /trezor-wallet && yarn run server:stable &
