@@ -151,6 +151,7 @@ integration tests:
   stage: integration tests
   script:
     - docker build -t wallet-emulator-bridge-tests .
+    - mdkir -p /trezor-wallet/test/screenshots
     - docker run --volume /trezor-wallet/test/screenshots:/trezor-wallet/test/screenshots --rm wallet-emulator-bridge-tests
   artifacts:
     when: on_failure
