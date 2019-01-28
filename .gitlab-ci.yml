@@ -151,7 +151,7 @@ integration tests:
   stage: integration tests
   script:
     - docker build -t wallet-emulator-bridge-tests .
-    - docker run wallet-emulator-bridge-tests
+    - docker run --rm wallet-emulator-bridge-tests
   artifacts:
     expire_in: 1 week
     paths:
