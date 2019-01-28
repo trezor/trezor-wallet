@@ -14,7 +14,7 @@ cd /trezor-emulator/trezor-core && PYOPT=0 ./emu.sh &
 cd /trezor-wallet && yarn run server:stable &
 
 # init device
-npx babel-node test/scripts/init-device.js &
+npx babel-node /trezor-wallet/test/scripts/init-device.js &
 
 # run tests
 yarn run test-integration:gitlab -c baseUrl="https://localhost:8080/#/"
