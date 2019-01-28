@@ -6,5 +6,6 @@
     "defaultCommandTimeout": 10000,
     "screenshotsFolder": "test/screenshots",
     "video": false,
-    "trashAssetsBeforeRuns": true
+    "trashAssetsBeforeRuns": true,
+    "chromeWebSecurity": false
 }
