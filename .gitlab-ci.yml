@@ -158,7 +158,7 @@ integration tests:
     - ls /
     - find ${SHARED_PATH}
     - mkdir trezor-wallet
-    - rsync -av ${SHARED_PATH}/ trezor-wallet/
+    - cp -r ${SHARED_PATH}/ trezor-wallet/
   artifacts:
     when: always
     expire_in: 1 week
