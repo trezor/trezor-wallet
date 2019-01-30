@@ -18,3 +18,9 @@ npx babel-node /trezor-wallet/test/scripts/init-device.js &
 
 # run tests
 yarn run test-integration:gitlab -c baseUrl="https://localhost:8080/#/"
+
+echo "docker root"
+ls /
+
+echo "screen inside docker"
+ls /trezor-wallet/test/screenshots/
