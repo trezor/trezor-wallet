@@ -7,7 +7,7 @@ cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
   - node_modules
-  - /trezor-wallet/cache/Cypress
+  - ${CYPRESS_CACHE_FOLDER}
 
 stages:
   - test
@@ -157,9 +157,10 @@ integration tests:
     - docker run --volume ${SHARED_PATH}/trezor-wallet/screenshots:/trezor-wallet/test/screenshots --volume ${SHARED_PATH}/trezor-wallet/videos:/trezor-wallet/test/videos --rm wallet-emulator-bridge-tests || true
     - ls /
     - find ${SHARED_PATH}
+    - mkdir trezor-wallet
+    - rsync -av ${SHARED_PATH}/ trezor-wallet/
   artifacts:
     when: always
     expire_in: 1 week
     paths:
-    - /builds/trezor/shared/trezor-wallet/screenshots
-    - ${CI_PROJECT_DIR}/shared/trezor-wallet
+      - trezor-wallet
