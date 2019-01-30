@@ -154,8 +154,9 @@ integration tests:
     - mkdir -p /trezor-wallet/test/screenshots
     - echo "ls /trezor-wallet/test/"
     - ls /trezor-wallet/test/
-    - docker run --volume /trezor-wallet/test/screenshots:/trezor-wallet/test/screenshots --rm wallet-emulator-bridge-tests
+    - docker run --volume /trezor-wallet/test/screenshots:/trezor-wallet/test/screenshots --rm wallet-emulator-bridge-tests || true
     - ls /
+    - echo "-------------------"
     - ls /trezor-wallet/test/screenshots
   artifacts:
     when: always
