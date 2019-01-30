@@ -161,5 +161,5 @@ integration tests:
     when: always
     expire_in: 1 week
     paths:
-    - ${CI_PROJECT_DIR})shared/trezor-wallet/screenshots
-    - ${CI_PROJECT_DIR})shared/trezor-wallet/videos
+    - ${CI_PROJECT_DIR}shared/trezor-wallet/screenshots
+    - ${CI_PROJECT_DIR}shared/trezor-wallet/videos
