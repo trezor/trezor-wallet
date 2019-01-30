@@ -152,12 +152,14 @@ integration tests:
   script:
     - docker build -t wallet-emulator-bridge-tests .
     - mkdir -p /trezor-wallet/test/screenshots
-    - ls /
+    - echo "ls /trezor-wallet/test/"
+    - ls /trezor-wallet/test/
     - docker run --volume /trezor-wallet/test/screenshots:/trezor-wallet/test/screenshots --rm wallet-emulator-bridge-tests
     - ls /
     - ls /trezor-wallet/test/screenshots
   artifacts:
-    when: on_failure
+    when: always
     expire_in: 1 week
     paths:
       - /trezor-wallet/test/screenshots
+      - /trezor-wallet/test/videos
