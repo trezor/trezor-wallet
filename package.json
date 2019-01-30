@@ -23,7 +23,7 @@
         "test-unit:watch": "npx jest -o --watch",
         "test-integration:dev": "npx cypress open -c baseUrl=https://localhost:8080/#/",
         "test-integration:test": "npx cypress run",
-        "test-integration:gitlab": "npx cypress run -c baseUrl=https://trezor-wallet-dev.trezor.io/master",
+        "test-integration:gitlab": "npx cypress run -c baseUrl=https://localhost:8080/#/ --browser chrome",
         "server:beta": "node ./server/index.js --buildType=beta",
         "server:stable": "node ./server/index.js --buildType=stable"
     },
