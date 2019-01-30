@@ -151,16 +151,13 @@ integration tests:
   stage: integration tests
   script:
     - docker build -t wallet-emulator-bridge-tests .
-    - mkdir -p /trezor-wallet/test/screenshots
-    - echo "ls /trezor-wallet/test/"
-    - ls /trezor-wallet/test/
-    - docker run --volume /trezor-wallet/test/screenshots:/trezor-wallet/test/screenshots --rm wallet-emulator-bridge-tests || true
+    - mkdir -p /builds/trezor-wallet/screenshots
+    - mkdir -p /builds/trezor-wallet/videos
+    - docker run --volume /builds/trezor-wallet/screenshots:/trezor-wallet/test/screenshots --volume /builds/trezor-wallet/videos:/trezor-wallet/test/videos --rm wallet-emulator-bridge-tests || true
     - ls /
-    - echo "-------------------"
-    - ls /trezor-wallet/test/screenshots
+    - find /builds/trezor-wallet/
   artifacts:
     when: always
     expire_in: 1 week
     paths:
-      - /trezor-wallet/test/screenshots
-      - /trezor-wallet/test/videos
+      - /builds/trezor-wallet
