@@ -161,4 +161,5 @@ integration tests:
     when: always
     expire_in: 1 week
     paths:
-      - ${SHARED_PATH}
+      - ${SHARED_PATH}/trezor-wallet/screenshots
+      - ${SHARED_PATH}/trezor-wallet/videos
