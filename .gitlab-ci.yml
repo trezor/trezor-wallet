@@ -150,14 +150,16 @@ integration tests:
     - docker:dind
   stage: integration tests
   script:
+    - 'export SHARED_PATH="$(dirname ${CI_PROJECT_DIR})/shared"'
+    - mkdir -p ${SHARED_PATH}
     - docker build -t wallet-emulator-bridge-tests .
-    - mkdir -p /builds/trezor-wallet/screenshots
-    - mkdir -p /builds/trezor-wallet/videos
-    - docker run --volume /builds/trezor-wallet/screenshots:/trezor-wallet/test/screenshots --volume /builds/trezor-wallet/videos:/trezor-wallet/test/videos --rm wallet-emulator-bridge-tests || true
+    - mkdir -p ${SHARED_PATH}/screenshots
+    - mkdir -p ${SHARED_PATH}/videos
+    - docker run -v ${SHARED_PATH}/screenshots:/trezor-wallet/test/screenshots --volume ${SHARED_PATH}/videos:/trezor-wallet/test/videos --rm wallet-emulator-bridge-tests || true
     - ls /
     - find /builds/trezor-wallet/
   artifacts:
     when: always
     expire_in: 1 week
     paths:
-      - /builds/trezor-wallet
+      - ${SHARED_PATH}
