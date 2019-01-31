@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Notification from 'components/Notification';
 
-import type { Props } from '../../index';
+import type { Props } from '../../Container';
 
 // There could be only one account notification
 export default (props: Props) => {

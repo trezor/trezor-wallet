@@ -2,7 +2,7 @@
 import * as React from 'react';
 import NotificationsGroups from './components/NotificationsGroups';
 
-import type { Props } from '../../index';
+import type { Props } from '../../Container';
 
 export default (props: Props) => {
     const { notifications, close } = props;

@@ -15,7 +15,7 @@ const Header = styled.div`
     justify-content: space-between;
     background: ${colors.WHITE};
     align-items: center;
-    padding: 5px 10px;
+    padding: 5px 0px;
     border-bottom: 1px solid ${colors.BACKGROUND};
 `;
 
@@ -32,13 +32,7 @@ const Title = styled.div`
     color: ${props => props.color};
 `;
 
-const StyledNotification = styled(Notification)`
-    border-bottom: 1px solid ${colors.WHITE};
-
-    &:last-child {
-        border: 0;
-    }
-`;
+const StyledNotification = styled(Notification)``;
 
 class Group extends PureComponent {
     constructor() {

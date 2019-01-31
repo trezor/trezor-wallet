@@ -16,8 +16,8 @@ import { bindActionCreators } from 'redux';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import ModalContainer from 'components/modals/Container';
-import AppNotifications from 'components/notifications/App';
-import ContextNotifications from 'components/notifications/Context';
+import AppNotifications from 'components/notifications/App/Container';
+import ContextNotifications from 'components/notifications/Context/Container';
 
 import { SCREEN_SIZE } from 'config/variables';
 

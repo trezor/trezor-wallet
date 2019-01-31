@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Notification from 'components/Notification';
 
-import type { Props } from '../../index';
+import type { Props } from '../../Container';
 
 export default (props: Props) => {
     const { selectedDevice } = props.wallet;
@@ -12,7 +12,8 @@ export default (props: Props) => {
         <Notification
             key="update-firmware"
             type="warning"
-            title="Firmware update"
+            title="A new Trezor firmware update is available."
+            message="Upgrade to access the newest features"
             actions={
                 [{
                     label: 'Update',

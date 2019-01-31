@@ -4,7 +4,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Notification from 'components/Notification';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    padding: 10px 25px 5px 25px;
+`;
 
 const UnreadableDevice = () => (
     <Wrapper>

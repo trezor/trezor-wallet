@@ -19,6 +19,7 @@ const Wrapper = styled.div`
     background: ${colors.WHITE};
     flex-direction: column;
     flex: 1;
+    padding: 10px 25px 5px 25px;
 `;
 
 const Acquire = (props: Props) => (

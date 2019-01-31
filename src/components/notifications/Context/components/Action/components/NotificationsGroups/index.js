@@ -76,7 +76,7 @@ class NotificationsGroup extends PureComponent {
         const notificationGroups = this.groupNotifications(notifications);
         const sortedNotifications = this.sortByPriority(notificationGroups);
 
-        return (
+        return notifications.length > 0 ? (
             <Wrapper>
                 {Object.keys(sortedNotifications).map(group => (
                     <Group
@@ -87,7 +87,7 @@ class NotificationsGroup extends PureComponent {
                     />
                 ))}
             </Wrapper>
-        );
+        ) : null;
     }
 }
 

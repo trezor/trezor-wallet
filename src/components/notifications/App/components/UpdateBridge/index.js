@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Notification from 'components/Notification';
 
-import type { Props } from '../../index';
+import type { Props } from '../../Container';
 
 export default (props: Props) => {
     if (props.connect.transport && props.connect.transport.outdated) {

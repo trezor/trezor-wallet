@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Notification from 'components/Notification';
 
-import type { Props } from '../../index';
+import type { Props } from '../../Container';
 
 export default (props: Props) => {
     const { online } = props.wallet;

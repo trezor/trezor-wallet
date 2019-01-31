@@ -1,49 +1,36 @@
 /* @flow */
 import * as React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import styled from 'styled-components';
 
-import type { MapStateToProps, MapDispatchToProps } from 'react-redux';
-import type { State, Dispatch } from 'flowtype';
-
-import * as NotificationActions from 'actions/NotificationActions';
-import * as RouterActions from 'actions/RouterActions';
+import { SCREEN_SIZE } from 'config/variables';
 
 import OnlineStatus from './components/OnlineStatus';
 import UpdateBridge from './components/UpdateBridge';
 import UpdateFirmware from './components/UpdateFirmware';
 
-export type StateProps = {
-    connect: $ElementType<State, 'connect'>;
-    wallet: $ElementType<State, 'wallet'>;
-    children?: React.Node;
-}
+import type { Props } from './Container';
 
-export type DispatchProps = {
-    close: typeof NotificationActions.close;
-    routerActions: typeof RouterActions;
-}
+const Wrapper = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: center;
+    max-width: 1170px;
+    width: 100%;
+    margin: 0 auto;
+    flex-direction: column;
 
-export type Props = StateProps & DispatchProps;
+    @media screen and (max-width: ${SCREEN_SIZE.LG}) {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+`;
 
-type OwnProps = {};
-
-const Notifications = (props: Props) => (
-    <React.Fragment>
+const AppNotifications = (props: Props) => (
+    <Wrapper>
         <OnlineStatus {...props} />
         <UpdateBridge {...props} />
         <UpdateFirmware {...props} />
-    </React.Fragment>
+    </Wrapper>
 );
 
-const mapStateToProps: MapStateToProps<State, OwnProps, StateProps> = (state: State): StateProps => ({
-    connect: state.connect,
-    wallet: state.wallet,
-});
-
-const mapDispatchToProps: MapDispatchToProps<Dispatch, OwnProps, DispatchProps> = (dispatch: Dispatch): DispatchProps => ({
-    close: bindActionCreators(NotificationActions.close, dispatch),
-    routerActions: bindActionCreators(RouterActions, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
+export default AppNotifications;
