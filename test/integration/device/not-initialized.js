@@ -1,6 +1,11 @@
 describe('Not initialized page', () => {
     beforeEach(() => {
         cy.viewport(1366, 768);
+        cy.server({
+            onAnyRequest(route, proxy) {
+                proxy.xhr.setRequestHeader('Origin', 'https://wallet.trezor.io');
+            },
+        });
         cy.visit('/');
     });
 
