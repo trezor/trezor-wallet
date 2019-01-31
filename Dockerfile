@@ -9,6 +9,12 @@ RUN apt-get install -y nodejs wget dpkg git python python3 python3-pip xvfb libg
 RUN npm install -g yarn
 
 #
+# install chrome
+#
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN dpkg -i google-chrome-stable_current_amd64.deb 
+
+#
 # build emulator
 #
 RUN mkdir /trezor-emulator
