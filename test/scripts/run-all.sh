@@ -17,4 +17,4 @@ cd /trezor-wallet && yarn run server:stable &
 npx babel-node /trezor-wallet/test/scripts/init-device.js &
 
 # run tests
-DEBUG=* yarn run test-integration:gitlab -c baseUrl="https://localhost:8080/#/"
+yarn run test-integration:gitlab -c baseUrl="https://localhost:8080/#/"
