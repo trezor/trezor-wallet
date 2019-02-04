@@ -151,7 +151,7 @@ integration tests:
   stage: integration tests
   script:
     - 'export SHARED_PATH="$(dirname ${CI_PROJECT_DIR})/shared"'
-    - rm -r ${SHARED_PATH}
+    - rm -r ${SHARED_PATH} || true
     - docker build -t wallet-emulator-bridge-tests .
     - mkdir -p ${SHARED_PATH}/trezor-wallet/screenshots
     - mkdir -p ${SHARED_PATH}/trezor-wallet/videos
