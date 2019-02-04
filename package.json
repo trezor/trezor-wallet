@@ -30,7 +30,6 @@
     "dependencies": {
         "babel": "^6.23.0",
         "babel-core": "^6.26.3",
-        "babel-polyfill": "^6.26.0",
         "bignumber.js": "2.4.0",
         "color-hash": "^1.0.3",
         "commander": "^2.19.0",
@@ -79,8 +78,8 @@
         "rimraf": "^2.6.2",
         "styled-components": "^4.1.2",
         "styled-normalize": "^8.0.4",
-        "trezor-connect": "7.0.0-beta.2",
         "trezor-bridge-communicator": "1.0.2",
+        "trezor-connect": "7.0.0-beta.2",
         "wallet-address-validator": "^0.2.4",
         "web3": "1.0.0-beta.35",
         "webpack": "^4.16.3",
