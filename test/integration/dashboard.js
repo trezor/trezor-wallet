@@ -1,4 +1,4 @@
-describe('Not initialized page', () => {
+describe('Dashboard page', () => {
     beforeEach(() => {
         cy.viewport(1366, 768);
         cy.visit('/');
