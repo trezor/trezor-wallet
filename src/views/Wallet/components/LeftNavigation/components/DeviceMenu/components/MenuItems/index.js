@@ -2,24 +2,27 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Icon from 'components/Icon';
+import DeviceIcon from 'components/images/DeviceIcon';
 
 import icons from 'config/icons';
 import colors from 'config/colors';
 import { FONT_SIZE } from 'config/variables';
 
 const Wrapper = styled.div`
-    padding: 0px 24px 8px 19px;
-    border-bottom: 1px solid ${colors.DIVIDER};
     background: ${colors.WHITE};
 `;
 
 const Item = styled.div`
-    padding: 4px 2px;
+    padding: 6px 24px;
     display: flex;
     align-items: center;
     font-size: ${FONT_SIZE.BASE};
     cursor: pointer;
-    color: ${colors.TEXT_SECONDARY};    
+    color: ${colors.TEXT_SECONDARY};
+
+    &:hover {
+        background: ${colors.GRAY_LIGHT};
+    }
 `;
 
 const Label = styled.div`
@@ -75,11 +78,7 @@ class MenuItems extends PureComponent {
                 </Item>
                 {this.showClone() && (
                     <Item onClick={() => this.onDeviceMenuClick('clone', this.props.device)}>
-                        <Icon
-                            icon={icons.T1}
-                            size={25}
-                            color={colors.TEXT_SECONDARY}
-                        />
+                        <DeviceIcon device={this.props.device} size={25} color={colors.TEXT_SECONDARY} />
                         <Label>Change wallet type</Label>
                     </Item>
                 )}
@@ -87,7 +86,7 @@ class MenuItems extends PureComponent {
                     <Item
                         onClick={() => this.onDeviceMenuClick('reload')}
                     >
-                        <Icon icon={icons.T1} size={25} color={colors.TEXT_SECONDARY} />
+                        <DeviceIcon device={this.props.device} size={25} color={colors.TEXT_SECONDARY} />
                         <Label>Renew session</Label>
                     </Item>
                 )}
