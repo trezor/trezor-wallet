@@ -1,7 +1,6 @@
 image: node:9.3
 
 variables:
-  EMUALTOR_BRIDGE_CONTAINER_NAME: "emualtor-and-bridge"
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
 
 cache:
@@ -146,6 +145,8 @@ delete review:
     - deploy
 
 build emulator and bridge image:
+  variables:
+    EMULATOR_BRIDGE_TEST_CONTAINER: "emualtor-bridge-tests"
   image: docker:latest
   services:
     - docker:dind
@@ -154,10 +155,10 @@ build emulator and bridge image:
   stage: build
   when: manual
   script:
-    - docker pull $EMUALTOR_BRIDGE_CONTAINER_NAME:latest || true
-    - docker build --cache-from $EMUALTOR_BRIDGE_CONTAINER_NAME:latest --tag $EMUALTOR_BRIDGE_CONTAINER_NAME:$CI_COMMIT_SHA --tag $EMUALTOR_BRIDGE_CONTAINER_NAME:latest .
-    - docker push $EMUALTOR_BRIDGE_CONTAINER_NAME:$CI_COMMIT_SHA
-    - docker push $EMUALTOR_BRIDGE_CONTAINER_NAME:latest
+    - docker pull $EMULATOR_BRIDGE_TEST_CONTAINER:latest || true
+    - docker build --cache-from $EMULATOR_BRIDGE_TEST_CONTAINER:latest --tag $EMULATOR_BRIDGE_TEST_CONTAINER:$CI_COMMIT_SHA --tag $EMULATOR_BRIDGE_TEST_CONTAINER:latest .
+    - docker push $EMULATOR_BRIDGE_TEST_CONTAINER:$CI_COMMIT_SHA
+    - docker push $EMULATOR_BRIDGE_TEST_CONTAINER:latest
   
 integration tests:
   image: docker:latest
