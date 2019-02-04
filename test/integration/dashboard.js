@@ -1,17 +1,25 @@
 describe('Dashboard page', () => {
     beforeEach(() => {
-        cy.viewport(1366, 768);
+        cy.viewport(1366, 1800);
         cy.visit('/');
     });
 
-    it('header', () => {
-        cy.getTestElement('Main__page__device__header')
+    it('navigation', () => {
+        cy.getTestElement('Main__page__navigation')
             .should('be.visible')
             .matchImageSnapshot();
     });
 
     it('content', () => {
         cy.getTestElement('Dashboard__page__content')
+            .should('be.visible')
+            .matchImageSnapshot();
+    });
+
+    // Menu
+
+    it('device header', () => {
+        cy.getTestElement('Main__page__device__header')
             .should('be.visible')
             .matchImageSnapshot();
     });

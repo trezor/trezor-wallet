@@ -238,7 +238,7 @@ class LeftNavigation extends React.PureComponent<Props, State> {
                     {dropdownOpened && <DeviceMenu ref={this.deviceMenuRef} {...this.props} />}
                     {isDeviceAccessible && menu}
                 </Body>
-                <Footer key="sticky-footer">
+                <Footer data-test="Main__page__footer" key="sticky-footer">
                     <Help>
                         <A
                             href="https://trezor.io/support/"
