@@ -9,4 +9,10 @@ describe('Dashboard page', () => {
             .should('be.visible')
             .matchImageSnapshot();
     });
+
+    it('content', () => {
+        cy.getTestElement('Dashboard__page__content')
+            .should('be.visible')
+            .matchImageSnapshot();
+    });
 });
