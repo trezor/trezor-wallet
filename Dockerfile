@@ -32,15 +32,15 @@ WORKDIR /trezor-bridge
 RUN wget https://wallet.trezor.io/data/bridge/2.0.25/trezor-bridge_2.0.25_amd64.deb
 RUN dpkg -x /trezor-bridge/trezor-bridge_2.0.25_amd64.deb /trezor-bridge/extracted
 
-# #
-# # install trezor-wallet
-# #
-# RUN mkdir /trezor-wallet
-# WORKDIR /trezor-wallet
-# COPY package.json /trezor-wallet
-# COPY yarn.lock /trezor-wallet
-# RUN yarn
-# COPY . /trezor-wallet
+#
+# install trezor-wallet
+#
+RUN mkdir /trezor-wallet
+WORKDIR /trezor-wallet
+COPY package.json /trezor-wallet
+COPY yarn.lock /trezor-wallet
+RUN yarn
+COPY . /trezor-wallet
 # RUN yarn run build:stable
 
 #
