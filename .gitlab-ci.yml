@@ -148,6 +148,7 @@ delete review:
 build emulator and bridge image:
   before_script:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+  stage: build
   when: manual
   script:
     - docker pull $EMUALTOR_BRIDGE_CONTAINER_NAME:latest || true
