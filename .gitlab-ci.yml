@@ -71,7 +71,7 @@ build stable:
 
 build emulator and bridge image:
   variables:
-    CONTAINER_NAME: "$CI_REGISTRY/emualtor-bridge-tests"
+    CONTAINER_NAME: "$CI_REGISTRY/emulator-bridge-tests"
   image: docker:latest
   services:
     - docker:dind
