@@ -131,7 +131,7 @@
   version "7.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.0.0-rc.1.tgz#d009a9bba8175d7b971e30cd03535b278c44082d"
 
-"@babel/polyfill@^7.0.0":
+"@babel/polyfill@^7.0.0", "@babel/polyfill@^7.2.5":
   version "7.2.5"
   resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.2.5.tgz#6c54b964f71ad27edddc567d065e57e87ed7fa7d"
   integrity sha512-8Y/t3MWThtMLYr0YNC/Q76tqN1w30+b0uQMeFUYauG2UGTR19zyUtFrAzT23zNtBxPp+LbE5E/nwV/q/r3y6ug==
@@ -449,18 +449,18 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.21.tgz#7e8a0c34cf29f4e17a36e9bd0ea72d45ba03908e"
   integrity sha512-CBgLNk4o3XMnqMc0rhb6lc77IwShMEglz05deDcn2lQxyXEZivfwgYJu7SMha9V5XcrP6qZuevTHV/QrN2vjKQ==
 
-"@types/sinon-chai@2.7.29":
-  version "2.7.29"
-  resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-2.7.29.tgz#4db01497e2dd1908b2bd30d1782f456353f5f723"
-  integrity sha512-EkI/ZvJT4hglWo7Ipf9SX+J+R9htNOMjW8xiOhce7+0csqvgoF5IXqY5Ae1GqRgNtWCuaywR5HjVa1snkTqpOw==
+"@types/sinon-chai@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-3.2.2.tgz#5cfdbda70bae30f79a9423334af9e490e4cce793"
+  integrity sha512-5zSs2AslzyPZdOsbm2NRtuSNAI2aTWzNKOHa/GRecKo7a5efYD7qGcPxMZXQDayVXT2Vnd5waXxBvV31eCZqiA==
   dependencies:
     "@types/chai" "*"
     "@types/sinon" "*"
 
 "@types/sinon@*":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-7.0.3.tgz#f8647e883d873962130f906a6114a4e187755696"
-  integrity sha512-cjmJQLx2B5Hp9SzO7rdSivipo3kBqRqeYkTW17nLST1tn5YLWBjTdnzdmeTJXA1+KrrBLsEuvKQ0fUPGrfazQg==
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-7.0.5.tgz#f7dea19400c193a3b36a804a7f1f4b26dacf452b"
+  integrity sha512-4DShbH857bZVOY4tPi1RQJNrLcf89hEtU0klZ9aYTMbtt95Ok4XdPqqcbtGOHIbAHMLSzQP8Uw/6qtBBqyloww==
 
 "@types/sinon@7.0.0":
   version "7.0.0"
@@ -731,9 +731,14 @@ ansi-escapes@^1.0.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
 
-ansi-escapes@^3.0.0, ansi-escapes@^3.1.0:
+ansi-escapes@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-3.1.0.tgz#f73207bb81207d75fd6c83f125af26eea378ca30"
+
+ansi-escapes@^3.1.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-3.2.0.tgz#8780b98ff9dbf5638152d1f1fe5c1d7b4442976b"
+  integrity sha512-cBhpre4ma+U0T1oM5fXg7Dy1Jw7zzwv7lt/GoCpr+hDQJoYnKVPLL4dCvSEFMmQurOQvSrwT7SL/DAlhBI97RQ==
 
 ansi-html@0.0.7:
   version "0.0.7"
@@ -3096,10 +3101,10 @@ cypress-image-snapshot@^3.0.0:
     jest-image-snapshot "2.7.0"
     term-img "^4.0.0"
 
-cypress@^3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.1.4.tgz#2af04da05e09f9d3871d05713b364472744c4216"
-  integrity sha512-8VJYtCAFqHXMnRDo4vdomR2CqfmhtReoplmbkXVspeKhKxU8WsZl0Nh5yeil8txxhq+YQwDrInItUqIm35Vw+g==
+cypress@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.1.5.tgz#5227b2ce9306c47236d29e703bad9055d7218042"
+  integrity sha512-jzYGKJqU1CHoNocPndinf/vbG28SeU+hg+4qhousT/HDBMJxYgjecXOmSgBX/ga9/TakhqSrIrSP2r6gW/OLtg==
   dependencies:
     "@cypress/listr-verbose-renderer" "0.4.1"
     "@cypress/xvfb" "1.2.3"
@@ -3112,7 +3117,7 @@ cypress@^3.1.4:
     "@types/minimatch" "3.0.3"
     "@types/mocha" "2.2.44"
     "@types/sinon" "7.0.0"
-    "@types/sinon-chai" "2.7.29"
+    "@types/sinon-chai" "3.2.2"
     bluebird "3.5.0"
     cachedir "1.3.0"
     chalk "2.4.1"
