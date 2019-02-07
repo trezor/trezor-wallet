@@ -27,7 +27,6 @@ declare module 'bignumber.js' {
 
       // Methods
       abs(): T_BigNumber;
-      cmp(n: $npm$big$number$object): $npm$cmp$result;
       div(n: $npm$big$number$object): T_BigNumber;
       dividedBy(n: $npm$big$number$object): T_BigNumber;
       eq(n: $npm$big$number$object): boolean;
