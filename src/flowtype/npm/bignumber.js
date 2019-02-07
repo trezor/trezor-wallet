@@ -41,7 +41,6 @@ declare module 'bignumber.js' {
       mod(n: $npm$big$number$object): T_BigNumber;
       plus(n: $npm$big$number$object): T_BigNumber;
       pow(exp: number): BigNumber;
-      round(dp: ?number, rm: ?RM): T_BigNumber;
       sqrt(): T_BigNumber;
       times(n: $npm$big$number$object): T_BigNumber;
       toExponential(dp: ?number): string;
