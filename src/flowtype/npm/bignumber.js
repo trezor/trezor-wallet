@@ -32,12 +32,12 @@ declare module 'bignumber.js' {
       dividedBy(n: $npm$big$number$object): T_BigNumber;
       eq(n: $npm$big$number$object): boolean;
       gt(n: $npm$big$number$object): boolean;
-      greaterThan(n: $npm$big$number$object): boolean;
+      isGreaterThan(n: $npm$big$number$object): boolean;
       gte(n: $npm$big$number$object): boolean;
       lt(n: $npm$big$number$object): boolean;
-      lessThan(n: $npm$big$number$object): boolean;
+      isLessThan(n: $npm$big$number$object): boolean;
       lte(n: $npm$big$number$object): boolean;
-      lessThanOrEqualTo(n: $npm$big$number$object): boolean;
+      isLessThanOrEqualTo(n: $npm$big$number$object): boolean;
       minus(n: $npm$big$number$object): T_BigNumber;
       mod(n: $npm$big$number$object): T_BigNumber;
       plus(n: $npm$big$number$object): T_BigNumber;
