@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { H3, H2 } from 'components/Heading';
 import LandingWrapper from 'views/Landing/components/LandingWrapper';
+import Link from 'components/Link';
 
 const Wrapper = styled.div`
     display: flex;
@@ -22,7 +23,9 @@ const Version = () => (
             <H2>{VERSION}</H2>
             <Line />
             <H3>LAST COMMIT HASH</H3>
-            <H2>{COMMITHASH}</H2>
+            <Link href={`https://github.com/trezor/trezor-wallet/commits/${COMMITHASH}`}>
+                <H2>{COMMITHASH}</H2>
+            </Link>
         </Wrapper>
     </LandingWrapper>
 );
