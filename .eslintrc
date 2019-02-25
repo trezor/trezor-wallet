@@ -1,8 +1,12 @@
 {
     "extends": [
         "eslint-config-airbnb",
+        "prettier",
+        "prettier/babel",
+        "prettier/flowtype",
+        "prettier/react",
         "plugin:flowtype/recommended",
-        "plugin:jest/recommended"
+        "plugin:jest/recommended",
     ],
     "globals": {
         "LOCAL": true,
@@ -37,10 +41,12 @@
         "eol-last": 0,
         "spaced-comment": 0,
         "no-unused-expressions": 0,
-        "chai-friendly/no-unused-expressions": 2
+        "chai-friendly/no-unused-expressions": 2,
+        "prettier/prettier": "error"
     },
     "plugins": [
         "import",
+        "prettier",
         "react",
         "jest",
         "flowtype",
