@@ -6,7 +6,6 @@
     "bracketSpacing": true,
     "semi": true,
     "useTabs": false,
-    "parser": "babylon",
-    "jsxBracketSameLine": true,
-    "singleAttributePerLine": true
+    "parser": "babel",
+    "jsxBracketSameLine": false
 }
