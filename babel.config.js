@@ -18,6 +18,8 @@ module.exports = (api) => {
         '@babel/plugin-transform-flow-strip-types',
         '@babel/plugin-proposal-class-properties',
         '@babel/plugin-proposal-object-rest-spread',
+        '@babel/plugin-syntax-dynamic-import',
+        'dynamic-import-node',
         [
             '@babel/plugin-transform-runtime',
             {
@@ -42,6 +44,18 @@ module.exports = (api) => {
 
     if (api.env('test')) {
         presets.push('jest');
+    }
+
+    if (api.env('translations')) {
+        plugins.push(
+            [
+                'react-intl',
+                {
+                    messagesDir: './translations/extractedMessages/',
+                    extractSourceLocation: true,
+                },
+            ],
+        );
     }
 
     return {

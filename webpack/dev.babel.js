@@ -1,12 +1,11 @@
 import webpack from 'webpack';
 import GitRevisionPlugin from 'git-revision-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import WebpackBuildNotifierPlugin from 'webpack-build-notifier';
 import packageJson from '../package.json';
 
 import {
-    SRC, BUILD, PORT, PUBLIC,
+    SRC, BUILD, PORT, PUBLIC, TRANSLATIONS,
 } from './constants';
 
 // turn on for bundle analyzing
@@ -31,11 +30,11 @@ module.exports = {
             SRC,
             PUBLIC,
         ],
+        stats: 'minimal',
         hot: true,
         https: false,
-        quiet: true,
+        quiet: false,
         port: PORT,
-        stats: 'minimal',
         inline: true,
     },
     module: {
@@ -80,7 +79,7 @@ module.exports = {
             {
                 type: 'javascript/auto',
                 test: /\.json/,
-                exclude: /(node_modules)/,
+                exclude: [/(node_modules)/, TRANSLATIONS],
                 loader: 'file-loader',
                 options: {
                     outputPath: './data',
@@ -123,6 +122,5 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
-        new FriendlyErrorsWebpackPlugin(),
     ],
 };

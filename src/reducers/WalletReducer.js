@@ -13,9 +13,11 @@ import type { Action, RouterLocationState, TrezorDevice } from 'flowtype';
 type State = {
     ready: boolean;
     online: boolean;
+    language: string;
+    messages: { [string]: string };
     dropdownOpened: boolean;
     showBetaDisclaimer: boolean;
-    showSidebar: boolean;
+    showSidebar: ?boolean;
     initialParams: ?RouterLocationState;
     initialPathname: ?string;
     firstLocationChange: boolean;
@@ -26,10 +28,12 @@ type State = {
 const initialState: State = {
     ready: false,
     online: navigator.onLine,
+    language: 'en',
+    messages: {},
     dropdownOpened: false,
     firstLocationChange: true,
     showBetaDisclaimer: false,
-    showSidebar: false,
+    showSidebar: null,
     initialParams: null,
     initialPathname: null,
     disconnectRequest: null,
@@ -117,6 +121,13 @@ export default function wallet(state: State = initialState, action: Action): Sta
             return {
                 ...state,
                 showBetaDisclaimer: false,
+            };
+
+        case WALLET.SET_LANGUAGE:
+            return {
+                ...state,
+                language: action.locale,
+                messages: action.messages ? action.messages : state.messages,
             };
 
         default:

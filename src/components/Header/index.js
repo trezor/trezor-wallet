@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 /* @flow */
 import React from 'react';
 import styled from 'styled-components';
@@ -6,8 +7,12 @@ import colors from 'config/colors';
 import { SCREEN_SIZE } from 'config/variables';
 import Icon from 'components/Icon';
 import icons from 'config/icons';
+import { FormattedMessage } from 'react-intl';
 
 import type { toggleSidebar as toggleSidebarType } from 'actions/WalletActions';
+import l10nMessages from './index.messages';
+
+import LanguagePicker from './components/LanguagePicker/Container';
 
 const Wrapper = styled.header`
     width: 100%;
@@ -78,7 +83,11 @@ const Logo = styled.div`
 `;
 
 const MenuLinks = styled.div`
+    display: flex;
+    align-content: center;
+    justify-content: flex-end;
     flex: 0;
+    height: 100%;
 
     @media screen and (max-width: ${SCREEN_SIZE.SM}) {
         flex: 0 1 33%;
@@ -86,6 +95,12 @@ const MenuLinks = styled.div`
 `;
 
 const Projects = styled.div`
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-right: 1px solid ${colors.HEADER_DIVIDER};
+    padding-right: 24px;
+    margin-right: 24px;
 
     @media screen and (max-width: ${SCREEN_SIZE.SM}) {
         display: none;
@@ -96,6 +111,7 @@ const A = styled.a`
     color: ${colors.WHITE};
     margin-left: 24px;
     transition: all .1s ease-in;
+    white-space: nowrap;
 
     &:visited {
         color: ${colors.WHITE};
@@ -114,7 +130,7 @@ const A = styled.a`
 
 type Props = {
     sidebarEnabled?: boolean,
-    sidebarOpened?: boolean,
+    sidebarOpened?: ?boolean,
     toggleSidebar?: toggleSidebarType,
 
 };
@@ -132,7 +148,9 @@ const Header = ({ sidebarEnabled, sidebarOpened, toggleSidebar }: Props) => (
                                     color={colors.WHITE}
                                     icon={icons.CLOSE}
                                 />
-                                <TogglerText>Close</TogglerText>
+                                <TogglerText>
+                                    <FormattedMessage {...l10nMessages.TR_MENU_CLOSE} />
+                                </TogglerText>
                             </>
                         ) : (
                             <>
@@ -141,7 +159,9 @@ const Header = ({ sidebarEnabled, sidebarOpened, toggleSidebar }: Props) => (
                                     size={24}
                                     icon={icons.MENU}
                                 />
-                                <TogglerText>Menu</TogglerText>
+                                <TogglerText>
+                                    <FormattedMessage {...l10nMessages.TR_MENU} />
+                                </TogglerText>
                             </>
                         )}
                     </MenuToggler>
@@ -162,11 +182,12 @@ const Header = ({ sidebarEnabled, sidebarOpened, toggleSidebar }: Props) => (
             </Logo>
             <MenuLinks>
                 <Projects>
-                    <A href="https://trezor.io/" target="_blank" rel="noreferrer noopener">Trezor</A>
-                    <A href="https://wiki.trezor.io/" target="_blank" rel="noreferrer noopener">Wiki</A>
-                    <A href="https://blog.trezor.io/" target="_blank" rel="noreferrer noopener">Blog</A>
-                    <A href="https://trezor.io/support/" target="_blank" rel="noreferrer noopener">Support</A>
+                    <A href="https://trezor.io/" target="_blank" rel="noreferrer noopener"><FormattedMessage {...l10nMessages.TR_TREZOR} /></A>
+                    <A href="https://wiki.trezor.io/" target="_blank" rel="noreferrer noopener"><FormattedMessage {...l10nMessages.TR_WIKI} /></A>
+                    <A href="https://blog.trezor.io/" target="_blank" rel="noreferrer noopener"><FormattedMessage {...l10nMessages.TR_BLOG} /></A>
+                    <A href="https://trezor.io/support/" target="_blank" rel="noreferrer noopener"><FormattedMessage {...l10nMessages.TR_SUPPORT} /></A>
                 </Projects>
+                <LanguagePicker />
             </MenuLinks>
         </LayoutWrapper>
     </Wrapper>
