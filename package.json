@@ -21,7 +21,7 @@
         "lint": "run-s lint:*",
         "lint:js": "npx eslint ./src ./webpack",
         "lint:css": "npx stylelint './src/**/*.js'",
-        "lint:prettier": "prettylint --check ./src/**/*.js",
+        "lint:prettier": "prettier --write ./src/**/*.js",
         "prettier:check": "eslint --print-config ./src | eslint-config-prettier-check",
         "test": "run-s test:*",
         "test:unit": "npx jest",

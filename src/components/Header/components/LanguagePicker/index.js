@@ -81,8 +81,7 @@ const styles = {
     }),
 };
 
-
-const buildOption = (langCode) => {
+const buildOption = langCode => {
     const lang = LANGUAGE.find(l => l.code === langCode);
     return { value: lang.code, label: lang.name };
 };
@@ -100,9 +99,7 @@ const LanguagePicker = ({ language, fetchLocale }: Props) => (
             isClearable={false}
             onChange={option => fetchLocale(option.value)}
             value={buildOption(language)}
-            options={
-                LANGUAGE.map(lang => buildOption(lang.code))
-            }
+            options={LANGUAGE.map(lang => buildOption(lang.code))}
         />
     </SelectWrapper>
 );

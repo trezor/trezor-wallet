@@ -7,6 +7,5 @@
     "bracketSpacing": true,
     "semi": true,
     "useTabs": false,
-    "jsxBracketSameLine": false,
-    "singleAttributePerLine": true
+    "jsxBracketSameLine": false
 }
