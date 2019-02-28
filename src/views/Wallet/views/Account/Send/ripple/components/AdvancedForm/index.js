@@ -1,13 +1,16 @@
 /* @flow */
 
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import colors from 'config/colors';
 
+import l10nSendMessages from 'views/Wallet/views/Account/common.messages';
 import Input from 'components/inputs/Input';
 import Tooltip from 'components/Tooltip';
 import Icon from 'components/Icon';
 import ICONS from 'config/icons';
+import l10nMessages from './index.messages';
 
 import type { Props as BaseProps } from '../../Container';
 
@@ -79,16 +82,16 @@ const getFeeInputState = (feeErrors: string, feeWarnings: string): string => {
     return state;
 };
 
-const getDestinationTagInputState = (errors: string, warnings: string): string => {
-    let state = '';
-    if (warnings && !errors) {
-        state = 'warning';
-    }
-    if (errors) {
-        state = 'error';
-    }
-    return state;
-};
+// const getDestinationTagInputState = (errors: string, warnings: string): string => {
+//     let state = '';
+//     if (warnings && !errors) {
+//         state = 'warning';
+//     }
+//     if (errors) {
+//         state = 'error';
+//     }
+//     return state;
+// };
 
 const Left = styled.div`
     display: flex;
@@ -106,11 +109,11 @@ const AdvancedForm = (props: Props) => {
         warnings,
         infos,
         fee,
-        destinationTag,
+        // destinationTag,
     } = props.sendForm;
     const {
         onFeeChange,
-        onDestinationTagChange,
+        // onDestinationTagChange,
     } = props.sendFormActions;
 
     return (
@@ -125,13 +128,9 @@ const AdvancedForm = (props: Props) => {
                     topLabel={(
                         <InputLabelWrapper>
                             <Left>
-                            Fee
+                                <FormattedMessage {...l10nSendMessages.TR_FEE} />
                                 <Tooltip
-                                    content={(
-                                        <React.Fragment>
-                                        Transfer cost in XRP drops
-                                        </React.Fragment>
-                                    )}
+                                    content={<FormattedMessage {...l10nMessages.TR_XRP_TRANSFER_COST} />}
                                     maxWidth={100}
                                     readMoreLink="https://developers.ripple.com/transaction-cost.html"
                                     placement="top"
@@ -151,7 +150,7 @@ const AdvancedForm = (props: Props) => {
                 />
             </InputRow>
 
-            <InputRow>
+            {/* <InputRow>
                 <StyledInput
                     state={getDestinationTagInputState(errors.destinationTag, warnings.destinationTag)}
                     autoComplete="off"
@@ -161,15 +160,11 @@ const AdvancedForm = (props: Props) => {
                     topLabel={(
                         <InputLabelWrapper>
                             <Left>
-                            Destination tag
+                                <FormattedMessage {...l10nMessages.TR_XRP_DESTINATION_TAG} />
                                 <Tooltip
-                                    content={(
-                                        <React.Fragment>
-                                        An arbitrary unsigned 32-bit integer that identifies a reason for payment or a non-Ripple account.
-                                        </React.Fragment>
-                                    )}
+                                    content={<FormattedMessage {...l10nMessages.TR_XRP_DESTINATION_TAG_EXPLAINED} />}
                                     maxWidth={200}
-                                    readMoreLink="https://developers.ripple.com/rippleapi-reference.html#payment"
+                                    readMoreLink="https://wiki.trezor.io/Ripple_(XRP)"
                                     placement="top"
                                 >
                                     <StyledIcon
@@ -185,7 +180,7 @@ const AdvancedForm = (props: Props) => {
                     value={destinationTag}
                     onChange={event => onDestinationTagChange(event.target.value)}
                 />
-            </InputRow>
+            </InputRow> */}
 
             <AdvancedSettingsSendButtonWrapper>
                 { props.children }

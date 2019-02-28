@@ -1,10 +1,11 @@
 import webpack from 'webpack';
 import GitRevisionPlugin from 'git-revision-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import packageJson from '../package.json';
-import { SRC, BUILD, PUBLIC } from './constants';
+import {
+    SRC, BUILD, PUBLIC, TRANSLATIONS,
+} from './constants';
 
 const gitRevisionPlugin = new GitRevisionPlugin();
 
@@ -45,7 +46,7 @@ module.exports = {
             {
                 type: 'javascript/auto',
                 test: /\.json/,
-                exclude: /(node_modules)/,
+                exclude: [/(node_modules)/, TRANSLATIONS],
                 loader: 'file-loader',
                 options: {
                     outputPath: './data',
@@ -82,6 +83,5 @@ module.exports = {
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.NamedModulesPlugin(),
-        new FriendlyErrorsWebpackPlugin(),
     ],
 };
