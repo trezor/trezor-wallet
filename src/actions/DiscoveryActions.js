@@ -25,7 +25,8 @@ export type DiscoveryStartAction =
     | RippleDiscoveryActions.DiscoveryStartAction;
 
 export type DiscoveryWaitingAction = {
-    type: | typeof DISCOVERY.WAITING_FOR_DEVICE
+    type:
+        | typeof DISCOVERY.WAITING_FOR_DEVICE
         | typeof DISCOVERY.WAITING_FOR_BLOCKCHAIN
         | typeof DISCOVERY.FIRMWARE_NOT_SUPPORTED
         | typeof DISCOVERY.FIRMWARE_OUTDATED,
