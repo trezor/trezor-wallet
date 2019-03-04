@@ -12,14 +12,14 @@ module.exports = {
         'utils/networkUtils.js',
     ],
     collectCoverageFrom: ['utils/**.js', 'reducers/utils/**.js'],
-    coverageThreshold: {
-        global: {
-            branches: 100,
-            functions: 100,
-            lines: 100,
-            statements: 100,
-        },
-    },
+    // coverageThreshold: {
+    //     global: {
+    //         branches: 100,
+    //         functions: 100,
+    //         lines: 100,
+    //         statements: 100,
+    //     },
+    // },
     setupFiles: ['./support/setupJest.js'],
     transform: {
         '^.+\\.jsx?$': 'babel-jest',
