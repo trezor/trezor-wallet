@@ -30,9 +30,12 @@ const RowCoinWrapper = styled.div`
 
 const Left = styled.div`
     display: flex;
+    padding-top: 1px;
     justify-content: space-between;
     align-items: center;
 `;
+
+const Network = styled.div``;
 
 const IconWrapper = styled.div`
     margin-right: 10px;
@@ -49,7 +52,7 @@ const RowCoin = ({ network, iconLeft, iconRight }) => (
                 )}
                 <CoinNameWrapper>
                     <CoinLogo network={network.shortcut} />
-                    <p>{network.name}</p>
+                    <Network>{network.name}</Network>
                 </CoinNameWrapper>
             </Left>
             {iconRight && (
