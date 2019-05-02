@@ -44,8 +44,8 @@ const IconWrapper = styled.div`
     margin-right: 10px;
 `;
 
-const RowCoin = ({ network, iconLeft, iconRight }) => (
-    <RowCoinWrapper>
+const RowCoin = ({ network, iconLeft, iconRight, ...rest }) => (
+    <RowCoinWrapper {...rest}>
         <Row>
             <Left>
                 {iconLeft && (

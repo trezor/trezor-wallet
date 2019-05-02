@@ -5,7 +5,6 @@ import coins from 'constants/coins';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { Link, colors, icons as ICONS } from 'trezor-ui-components';
-import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Divider from '../Divider';
 import RowCoin from '../RowCoin';
@@ -16,13 +15,14 @@ import type { Props } from '../common';
 
 const Wrapper = styled.div``;
 
-const ExternalWallet = styled.div`
-    cursor: pointer;
-`;
-
 const StyledLink = styled(Link)`
+    display: block;
     &:hover {
         text-decoration: none;
+    }
+
+    &:focus {
+        background: ${colors.GRAY_LIGHT};
     }
 `;
 
@@ -78,12 +78,13 @@ class CoinMenu extends PureComponent<Props> {
 
                 if (coin.external)
                     return (
-                        <ExternalWallet
+                        <StyledLink
+                            tabIndex="0"
                             key={coin.id}
                             onClick={() => this.props.gotoExternalWallet(coin.id, coin.url)}
                         >
                             {row}
-                        </ExternalWallet>
+                        </StyledLink>
                     );
                 return (
                     <StyledLink isGray key={coin.id} href={coin.url} target="_top">
@@ -142,7 +143,7 @@ class CoinMenu extends PureComponent<Props> {
                     .filter(item => !hiddenCoins.includes(item.shortcut)) // hide coins by user settings
                     .sort((a, b) => a.order - b.order)
                     .map(item => (
-                        <NavLink
+                        <StyledLink
                             key={item.shortcut}
                             to={`${this.getBaseUrl()}/network/${item.shortcut}/account/0`}
                         >
@@ -152,7 +153,7 @@ class CoinMenu extends PureComponent<Props> {
                                     shortcut: item.shortcut,
                                 }}
                             />
-                        </NavLink>
+                        </StyledLink>
                     ))}
                 {!this.isBottomMenuEmpty() && (
                     <Divider
