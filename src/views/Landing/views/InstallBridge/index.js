@@ -134,7 +134,7 @@ class InstallBridge extends PureComponent<Props, State> {
             latestVersion: props.transport.bridge.version.join('.'),
             installers,
             target: currentTarget || installers[0],
-            uri: 'https://data.trezor.io/',
+            uri: 'https://wallet.trezor.io/data/',
         };
     }
 
