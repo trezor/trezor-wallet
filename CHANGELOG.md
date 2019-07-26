@@ -1,5 +1,9 @@
-## next release
+## 1.3.1-beta
 
+__fixed__
+- download bridge url
+
+## 1.3.0-beta
 __added__
 - Coin visibility settings
 - Almost complete russian, ukrainian and spanish localization
