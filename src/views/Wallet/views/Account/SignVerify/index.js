@@ -119,7 +119,7 @@ class SignVerify extends Component<Props> {
                                 onChange={this.handleInputChange}
                                 rows={4}
                                 maxRows={4}
-                                maxLength={255}
+                                maxLength={1024}
                             />
                         </Row>
                         <Row>
@@ -172,7 +172,7 @@ class SignVerify extends Component<Props> {
                                 onChange={this.handleInputChange}
                                 rows={4}
                                 maxRows={4}
-                                maxLength={255}
+                                maxLength={1024}
                             />
                         </Row>
                         <Row>
