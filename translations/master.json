@@ -837,7 +837,7 @@
     }
   },
   "TR_RIPPLE_ADDRESSES_REQUIRE_MINIMUM_BALANCE": {
-    "source": "Ripple addresses require a minimum balance of {minBalance} XRP to activate and maintain the account. {TR_LEARN_MORE}",
+    "source": "XRP addresses require a minimum balance of {minBalance} XRP to activate and maintain the account. {TR_LEARN_MORE}",
     "meta": {
       "occurrences": [
         "src/components/notifications/Context/components/Static/index.messages.js"
@@ -854,6 +854,14 @@
   },
   "TR_APPLICATION_SETTINGS": {
     "source": "Application settings",
+    "meta": {
+      "occurrences": [
+        "src/views/common.messages.js"
+      ]
+    }
+  },
+  "TR_SELECT_COINS_LINK": {
+    "source": "application settings",
     "meta": {
       "occurrences": [
         "src/views/common.messages.js"
@@ -1378,14 +1386,6 @@
       ]
     }
   },
-  "TR_SELECT_COINS_LINK": {
-    "source": "application settings",
-    "meta": {
-      "occurrences": [
-        "src/views/Wallet/components/LeftNavigation/components/CoinMenu/index.messages.js"
-      ]
-    }
-  },
   "TR_CHANGE_WALLET_TYPE": {
     "source": "Change wallet type",
     "meta": {
@@ -1456,6 +1456,15 @@
     "meta": {
       "occurrences": [
         "src/views/Wallet/components/LeftNavigation/index.messages.js"
+      ]
+    }
+  },
+  "TR_NAV_TRANSACTIONS": {
+    "source": "Transactions",
+    "meta": {
+      "comment": "Title of the navigation tab that contains tx history.",
+      "occurrences": [
+        "src/views/Wallet/components/TopNavigationAccount/index.messages.js"
       ]
     }
   },
@@ -1644,7 +1653,7 @@
     }
   },
   "TR_RECEIVE_RIPPLE": {
-    "source": "Receive Ripple",
+    "source": "Receive XRP",
     "meta": {
       "occurrences": [
         "src/views/Wallet/views/Account/Receive/ripple/index.messages.js"
@@ -1782,7 +1791,7 @@
     }
   },
   "TR_SEND_RIPPLE": {
-    "source": "Send Ripple",
+    "source": "Send XRP",
     "meta": {
       "occurrences": [
         "src/views/Wallet/views/Account/Send/ripple/index.messages.js"
@@ -2240,6 +2249,15 @@
   },
   "TR_PLEASE_SELECT_YOUR": {
     "source": "Please select your coin",
+    "meta": {
+      "comment": "Title of the dashboard component if coin was not selected",
+      "occurrences": [
+        "src/views/Wallet/views/Dashboard/index.messages.js"
+      ]
+    }
+  },
+  "TR_PLEASE_SELECT_YOUR_EMPTY": {
+    "source": "Please select your coin in {TR_SELECT_COINS_LINK}",
     "meta": {
       "comment": "Title of the dashboard component if coin was not selected",
       "occurrences": [

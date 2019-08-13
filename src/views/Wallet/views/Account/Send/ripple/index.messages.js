@@ -10,7 +10,7 @@ const definedMessages: Messages = defineMessages({
     },
     TR_SEND_RIPPLE: {
         id: 'TR_SEND_RIPPLE',
-        defaultMessage: 'Send Ripple',
+        defaultMessage: 'Send XRP',
     },
 });
 

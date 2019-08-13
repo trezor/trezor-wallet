@@ -91,7 +91,7 @@
         {
             "order": 3,
             "type": "ripple",
-            "name": "Ripple",
+            "name": "XRP",
             "symbol": "XRP",
             "shortcut": "xrp",
             "bip44": "m/44'/144'/a'/0/0",
@@ -113,7 +113,7 @@
         {
             "order": 3,
             "type": "ripple",
-            "name": "Ripple Testnet",
+            "name": "XRP Testnet",
             "testnet": true,
             "symbol": "tXRP",
             "shortcut": "txrp",
