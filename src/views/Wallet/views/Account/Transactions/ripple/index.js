@@ -5,7 +5,7 @@ import Content from 'views/Wallet/components/Content';
 const RippleTransactions = () => {
     return (
         <Content>
-            <Title>Ripple Transactions</Title>
+            <Title>XRP Transactions</Title>
         </Content>
     );
 };
