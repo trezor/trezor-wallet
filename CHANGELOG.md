@@ -1,3 +1,9 @@
+## 1.3.2-beta
+
+__changed__
+- message size for Sign&Verify, thanks to (@brianddk)
+- Ripple -> XRP
+
 ## 1.3.1-beta
 
 __fixed__
