@@ -26,9 +26,14 @@ const Root = (props: Props) => {
     const shouldShowDisconnectDevice = !!disconnectRequest;
     const isLoading =
         !error &&
-        !shouldShowUnsupportedBrowser &&
         !shouldShowConnectDevice &&
         !shouldShowUnsupportedBrowser;
+        
+    console.log('props', props)
+    console.log('isLoading', isLoading);
+    console.log('error', error);
+    console.log('shouldShowConnectDevice', shouldShowConnectDevice);
+    console.log('shouldShowUnsupportedBrowser', shouldShowConnectDevice);
 
     const deviceLabel = disconnectRequest ? disconnectRequest.label : '';
     // corner case: display InstallBridge view on "/" route
