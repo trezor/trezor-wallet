@@ -127,7 +127,7 @@
         "flow-bin": "0.90",
         "jest": "^24.9.0",
         "prettier": "^1.16.4",
-        "prettier-eslint": "^8.8.2",
+        "prettier-eslint": "^9.0.0",
         "prettylint": "^1.0.0",
         "stylelint": "^10.0.0",
         "stylelint-config-standard": "^18.2.0",
