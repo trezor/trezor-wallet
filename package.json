@@ -129,7 +129,7 @@
         "prettier": "^1.16.4",
         "prettier-eslint": "^8.8.2",
         "prettylint": "^1.0.0",
-        "stylelint": "^9.10.1",
+        "stylelint": "^10.0.0",
         "stylelint-config-standard": "^18.2.0",
         "stylelint-config-styled-components": "^0.1.1",
         "stylelint-custom-processor-loader": "^0.6.0",
