@@ -1,3 +1,5 @@
+## next release
+
 ## 1.3.2-beta
 
 **updated**
@@ -6,7 +8,6 @@
 
 **changed**
 
--   Message size for Sign&Verify, thanks to [brianddk](https://github.com/brianddk)
 -   Ripple -> XRP
 
 ## 1.3.1-beta
