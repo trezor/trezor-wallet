@@ -14,17 +14,21 @@ export default (props: Props) => {
     if (notification.type === 'backend') {
         // special case: backend is down
         // TODO: this is a different component with "auto resolve" button
+        const inProgress = blockchain && blockchain.connecting;
+        const status = inProgress
+            ? l10nMessages.TR_RECONNECTING
+            : l10nMessages.TR_CONNECT_TO_BACKEND;
         return (
             <Notification
                 variant="error"
                 title={notification.title}
                 message={notification.message}
-                isActionInProgress={blockchain && blockchain.connecting}
+                isActionInProgress={inProgress}
                 actions={[
                     {
-                        label: props.intl.formatMessage(l10nMessages.TR_CONNECT_TO_BACKEND),
+                        label: props.intl.formatMessage(status),
                         callback: async () => {
-                            await props.blockchainReconnect(network.shortcut);
+                            if (!inProgress) props.blockchainReconnect(network.shortcut);
                         },
                     },
                 ]}
