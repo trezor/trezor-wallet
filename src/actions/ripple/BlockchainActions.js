@@ -161,31 +161,46 @@ export const onNotification = (
         });
     }
 
-    const updatedAccount = await TrezorConnect.rippleGetAccountInfo({
-        account: {
-            descriptor: account.descriptor,
-            from: account.block,
-            history: false,
-        },
-        coin: account.network,
+    // In case of tx sent between two Trezor accounts there is a possibility that only 1 notification will be received
+    // therefore we need to find target account and update data for it as well
+    const accountsToUpdate = [account];
+    const targetAddress =
+        notification.type === 'send'
+            ? notification.outputs[0].addresses[0]
+            : notification.inputs[0].addresses[0];
+
+    const targetAccount = getState().accounts.find(a => a.descriptor === targetAddress);
+    if (targetAccount) {
+        accountsToUpdate.push(targetAccount);
+    }
+
+    accountsToUpdate.forEach(async a => {
+        const response = await TrezorConnect.rippleGetAccountInfo({
+            account: {
+                descriptor: a.descriptor,
+                from: a.block,
+                history: false,
+            },
+            coin: a.network,
+        });
+
+        if (response.success) {
+            const updatedAccount = response.payload;
+            const empty = updatedAccount.sequence <= 0 && updatedAccount.balance === '0';
+            dispatch(
+                AccountsActions.update({
+                    ...a,
+                    balance: toDecimalAmount(updatedAccount.balance, network.decimals),
+                    availableBalance: toDecimalAmount(
+                        updatedAccount.availableBalance,
+                        network.decimals
+                    ),
+                    block: updatedAccount.block,
+                    sequence: updatedAccount.sequence,
+                    reserve: '0',
+                    empty,
+                })
+            );
+        }
     });
-
-    if (!updatedAccount.success) return;
-
-    const empty = updatedAccount.payload.sequence <= 0 && updatedAccount.payload.balance === '0';
-    dispatch(
-        AccountsActions.update({
-            networkType: 'ripple',
-            ...account,
-            balance: toDecimalAmount(updatedAccount.payload.balance, network.decimals),
-            availableBalance: toDecimalAmount(
-                updatedAccount.payload.availableBalance,
-                network.decimals
-            ),
-            block: updatedAccount.payload.block,
-            sequence: updatedAccount.payload.sequence,
-            reserve: '0',
-            empty,
-        })
-    );
 };
