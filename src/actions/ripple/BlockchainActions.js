@@ -189,6 +189,7 @@ export const onNotification = (
             const empty = updatedAccount.sequence <= 0 && updatedAccount.balance === '0';
             dispatch(
                 AccountsActions.update({
+                    networkType: 'ripple',
                     ...a,
                     balance: toDecimalAmount(updatedAccount.balance, network.decimals),
                     availableBalance: toDecimalAmount(
@@ -197,7 +198,7 @@ export const onNotification = (
                     ),
                     block: updatedAccount.block,
                     sequence: updatedAccount.sequence,
-                    reserve: '0',
+                    reserve: updatedAccount.reserve,
                     empty,
                 })
             );
