@@ -198,7 +198,7 @@ export const onNotification = (
                     ),
                     block: updatedAccount.block,
                     sequence: updatedAccount.sequence,
-                    reserve: updatedAccount.reserve,
+                    reserve: toDecimalAmount(updatedAccount.reserve, network.decimals),
                     empty,
                 })
             );
