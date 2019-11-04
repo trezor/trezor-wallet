@@ -128,8 +128,8 @@
                 ]
             },
             "explorer": {
-                "tx": "https://sisyfos.trezor.io/ripple-testnet-explorer/tx/",
-                "address": "https://sisyfos.trezor.io/ripple-testnet-explorer/address/"
+                "tx": "https://test.bithomp.com/explorer/",
+                "address": "https://test.bithomp.com/explorer/"
             },
             "hasSignVerify": false
         }

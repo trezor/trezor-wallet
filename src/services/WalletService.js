@@ -1,5 +1,5 @@
 /* @flow */
-import { DEVICE } from 'trezor-connect';
+import { DEVICE, BLOCKCHAIN } from 'trezor-connect';
 import { LOCATION_CHANGE } from 'connected-react-router';
 import * as WALLET from 'actions/constants/wallet';
 import * as CONNECT from 'actions/constants/TrezorConnect';
@@ -130,6 +130,12 @@ const WalletService: Middleware = (api: MiddlewareAPI) => (next: MiddlewareDispa
         api.dispatch(DiscoveryActions.restore());
     } else if (action.type === DEVICE.DISCONNECT) {
         api.dispatch(DiscoveryActions.stop());
+    }
+
+    // try to restore discovery on BLOCKCHAIN.CONNECT event
+    // edge case when backend throws error during discovery
+    if (action.type === BLOCKCHAIN.CONNECT) {
+        api.dispatch(DiscoveryActions.restore());
     }
 
     return action;
