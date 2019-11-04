@@ -1,4 +1,8 @@
-## next release
+## 1.3.3-beta
+
+**fixed**
+
+-   backend reconnection
 
 ## 1.3.2-beta
 
