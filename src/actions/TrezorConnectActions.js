@@ -162,7 +162,7 @@ export const init = (): AsyncAction => async (
         window.__TREZOR_CONNECT_SRC =
             typeof LOCAL === 'string'
                 ? LOCAL
-                : 'https://connect.corp.sldev.cz/fix/v7-ripple-lib-error/'; // eslint-disable-line no-underscore-dangle
+                : 'https://connect.corp.sldev.cz/fix/v7-chromebook-webusb/'; // eslint-disable-line no-underscore-dangle
         // window.__TREZOR_CONNECT_SRC = typeof LOCAL === 'string' ? LOCAL : 'https://localhost:8088/'; // eslint-disable-line no-underscore-dangle
         window.TrezorConnect = TrezorConnect;
     }
