@@ -1,3 +1,9 @@
+## next release
+
+**changed**
+
+-   Explorer for ETC changed to receipt.emeraldpay.io
+
 ## 1.3.3-beta
 
 **fixed**
