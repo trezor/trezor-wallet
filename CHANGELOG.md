@@ -1,4 +1,4 @@
-## next release
+## 1.3.4-beta
 
 **changed**
 
