@@ -48,8 +48,8 @@
                 "wss://etc2.trezor.io/geth"
             ],
             "explorer": {
-                "tx": "https://gastracker.io/tx/",
-                "address": "https://gastracker.io/addr/"
+                "tx": "https://etc1.trezor.io/tx/",
+                "address": "https://etc1.trezor.io/address/"
             },
             "hasSignVerify": true
         },
