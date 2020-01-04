@@ -2,7 +2,7 @@
 
 **changed**
 
--   Explorer for ETC changed to receipt.emeraldpay.io
+-   Explorer for ETC changed to etc1.trezor.io
 
 ## 1.3.3-beta
 

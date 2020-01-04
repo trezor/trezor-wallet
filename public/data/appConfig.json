@@ -48,8 +48,8 @@
                 "wss://etc2.trezor.io/geth"
             ],
             "explorer": {
-                "tx": "https://receipt.emeraldpay.io/tx/",
-                "address": "https://receipt.emeraldpay.io/balance/"
+                "tx": "https://etc1.trezor.io/tx/",
+                "address": "https://etc1.trezor.io/address/"
             },
             "hasSignVerify": true
         },
