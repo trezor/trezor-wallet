@@ -48,8 +48,8 @@
                 "wss://etc2.trezor.io/geth"
             ],
             "explorer": {
-                "tx": "https://gastracker.io/tx/",
-                "address": "https://gastracker.io/addr/"
+                "tx": "https://etc1.trezor.io/tx/",
+                "address": "https://etc1.trezor.io/address/"
             },
             "hasSignVerify": true
         },
@@ -128,8 +128,8 @@
                 ]
             },
             "explorer": {
-                "tx": "https://sisyfos.trezor.io/ripple-testnet-explorer/tx/",
-                "address": "https://sisyfos.trezor.io/ripple-testnet-explorer/address/"
+                "tx": "https://test.bithomp.com/explorer/",
+                "address": "https://test.bithomp.com/explorer/"
             },
             "hasSignVerify": false
         }

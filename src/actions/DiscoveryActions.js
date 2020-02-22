@@ -2,7 +2,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import TrezorConnect, { UI } from 'trezor-connect';
-import * as BLOCKCHAIN_ACTION from 'actions/constants/blockchain';
 import * as DISCOVERY from 'actions/constants/discovery';
 import * as ACCOUNT from 'actions/constants/account';
 import * as NOTIFICATION from 'actions/constants/notification';
@@ -10,7 +9,6 @@ import * as NOTIFICATION from 'actions/constants/notification';
 import type {
     ThunkAction,
     AsyncAction,
-    PromiseAction,
     PayloadAction,
     GetState,
     Dispatch,
@@ -331,30 +329,7 @@ const finish = (device: TrezorDevice, discoveryProcess: Discovery): AsyncAction 
     });
 };
 
-export const reconnect = (network: string, timeout: number = 30): PromiseAction<void> => async (
-    dispatch: Dispatch
-): Promise<void> => {
-    // Runs two promises.
-    // First promise is a subscribe action which will never resolve in case of completely lost connection to the backend
-    // That's why there is a second promise that rejects after the specified timeout.
-    return Promise.race([
-        dispatch(BlockchainActions.subscribe(network)),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeout)),
-    ])
-        .catch(() => {
-            // catch error from first promises that rejects (most likely timeout)
-            dispatch({
-                type: BLOCKCHAIN_ACTION.FAIL_SUBSCRIBE,
-                shortcut: network,
-            });
-        })
-        .then(() => {
-            // dispatch restore when subscribe promise resolves
-            dispatch(restore());
-        });
-};
-
-// Called after DEVICE.CONNECT ('trezor-connect') or CONNECT.AUTH_DEVICE actions in WalletService
+// Called after DEVICE.CONNECT ('trezor-connect') or CONNECT.AUTH_DEVICE or BLOCKCHAIN.CONNECT actions in WalletService
 // OR after BlockchainSubscribe in this.reconnect
 export const restore = (): ThunkAction => (dispatch: Dispatch, getState: GetState): void => {
     // check if current url has "network" parameter
