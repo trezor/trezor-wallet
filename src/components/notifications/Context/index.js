@@ -7,7 +7,7 @@ import type { IntlShape } from 'react-intl';
 
 import type { State, Dispatch } from 'flowtype';
 
-import { reconnect } from 'actions/DiscoveryActions';
+import { subscribe } from 'actions/BlockchainActions';
 import * as NotificationActions from 'actions/NotificationActions';
 
 import StaticNotifications from './components/Static';
@@ -29,7 +29,7 @@ export type StateProps = {|
 
 export type DispatchProps = {|
     close: typeof NotificationActions.close,
-    blockchainReconnect: typeof reconnect,
+    blockchainReconnect: typeof subscribe,
 |};
 
 export type Props = {| ...OwnProps, ...StateProps, ...DispatchProps |};
@@ -52,7 +52,7 @@ const mapStateToProps = (state: State): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     close: bindActionCreators(NotificationActions.close, dispatch),
-    blockchainReconnect: bindActionCreators(reconnect, dispatch),
+    blockchainReconnect: bindActionCreators(subscribe, dispatch),
 });
 
 export default injectIntl<OwnProps>(

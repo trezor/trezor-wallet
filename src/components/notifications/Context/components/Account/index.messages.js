@@ -7,6 +7,10 @@ const definedMessages: Messages = defineMessages({
         id: 'TR_CONNECT_TO_BACKEND',
         defaultMessage: 'Connect',
     },
+    TR_RECONNECTING: {
+        id: 'TR_RECONNECTING',
+        defaultMessage: 'Reconnecting...',
+    },
 });
 
 export default definedMessages;
