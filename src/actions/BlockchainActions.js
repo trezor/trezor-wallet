@@ -1,9 +1,9 @@
 /* @flow */
 
 import * as BLOCKCHAIN from 'actions/constants/blockchain';
-import * as DiscoveryActions from 'actions/DiscoveryActions';
 import * as EthereumBlockchainActions from 'actions/ethereum/BlockchainActions';
 import * as RippleBlockchainActions from 'actions/ripple/BlockchainActions';
+import { resolveAfter } from 'utils/promiseUtils';
 
 import type { Dispatch, GetState, PromiseAction, BlockchainFeeLevel } from 'flowtype';
 import type { BlockchainBlock, BlockchainNotification, BlockchainError } from 'trezor-connect';
@@ -19,10 +19,6 @@ export type BlockchainAction =
       }
     | {
           type: typeof BLOCKCHAIN.START_SUBSCRIBE,
-          shortcut: string,
-      }
-    | {
-          type: typeof BLOCKCHAIN.FAIL_SUBSCRIBE,
           shortcut: string,
       };
 
@@ -153,23 +149,13 @@ const autoReconnect = (shortcut: string): PromiseAction<void> => async (
     dispatch: Dispatch,
     getState: GetState
 ): Promise<void> => {
-    const MAX_ATTEMPTS = 4;
     let blockchain = getState().blockchain.find(b => b.shortcut === shortcut);
-    // try to automatically reconnect and wait after each attemp (5s * #attempt) untill max number of attemps is reached
-    for (let i = 0; i < MAX_ATTEMPTS; i++) {
-        const waitTime = 5000 * (i + 1); /// 5s * #attempt
-        if (!blockchain || blockchain.connected) {
-            break;
-        }
+    if (!blockchain || blockchain.reconnectionAttempts >= 5) return;
 
-        blockchain = getState().blockchain.find(b => b.shortcut === shortcut);
+    await resolveAfter(5000 * (blockchain.reconnectionAttempts + 1));
 
-        // reconnect with 7s timeout
-        // eslint-disable-next-line no-await-in-loop
-        await dispatch(DiscoveryActions.reconnect(shortcut, 7000));
+    blockchain = getState().blockchain.find(b => b.shortcut === shortcut);
+    if (!blockchain || blockchain.connected || blockchain.connecting) return;
 
-        // wait before next try
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-    }
+    await dispatch(subscribe(shortcut));
 };
