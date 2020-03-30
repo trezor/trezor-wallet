@@ -213,7 +213,8 @@ const loadJSON = (): AsyncAction => async (dispatch: Dispatch): Promise<void> =>
     }
 };
 
-const VERSION: string = '2';
+// version 3 since trezor-connect@8 implementation
+const VERSION: string = '3';
 
 const loadStorageData = (): ThunkAction => (dispatch: Dispatch): void => {
     // validate version
