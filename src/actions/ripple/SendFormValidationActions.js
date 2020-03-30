@@ -173,16 +173,14 @@ const addressBalanceValidation = ($state: State): PromiseAction<void> => async (
     if (!network) return;
 
     let minAmount: string = '0';
-    const response = await TrezorConnect.rippleGetAccountInfo({
-        account: {
-            descriptor: $state.address,
-        },
+    const response = await TrezorConnect.getAccountInfo({
+        descriptor: $state.address,
         coin: network.shortcut,
     });
     if (response.success) {
-        const empty = response.payload.sequence <= 0 && response.payload.balance === '0';
-        if (empty) {
-            minAmount = toDecimalAmount(response.payload.reserve, network.decimals);
+        if (response.payload.empty) {
+            const reserve = response.payload.misc ? response.payload.misc.reserve : '0';
+            minAmount = toDecimalAmount(reserve || '0', network.decimals);
         }
     }
 

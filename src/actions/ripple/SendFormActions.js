@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'trezor-ui-components';
 import TrezorConnect from 'trezor-connect';
 import * as NOTIFICATION from 'actions/constants/notification';
 import * as SEND from 'actions/constants/send';
@@ -374,7 +375,7 @@ export const onFeeChange = (fee: string): ThunkAction => (
     const state: State = getState().sendFormRipple;
 
     // switch to custom fee level
-    let newSelectedFeeLevel = state.selectedFeeLevel;
+    let newSelectedFeeLevel;
     if (state.selectedFeeLevel.value !== 'Custom')
         newSelectedFeeLevel = state.feeLevels.find(f => f.value === 'Custom');
 
@@ -385,7 +386,7 @@ export const onFeeChange = (fee: string): ThunkAction => (
             ...state,
             untouched: false,
             touched: { ...state.touched, fee: true },
-            selectedFeeLevel: newSelectedFeeLevel,
+            selectedFeeLevel: newSelectedFeeLevel || state.selectedFeeLevel,
             fee,
         },
     });
@@ -501,7 +502,11 @@ export const onSend = (): AsyncAction => async (
         payload: {
             variant: 'success',
             title: <FormattedMessage {...l10nMessages.TR_TRANSACTION_SUCCESS} />,
-            message: txid,
+            message: (
+                <Link href={`${network.explorer.tx}${txid}`} isGreen>
+                    <FormattedMessage {...l10nMessages.TR_SEE_TRANSACTION_DETAILS} />
+                </Link>
+            ),
             cancelable: true,
             actions: [],
         },

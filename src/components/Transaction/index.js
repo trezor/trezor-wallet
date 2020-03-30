@@ -63,7 +63,7 @@ const Value = styled.div`
     text-align: right;
     color: ${colors.GREEN_SECONDARY};
 
-    &.send {
+    &.sent {
         color: ${colors.ERROR_PRIMARY};
     }
 `;
@@ -77,28 +77,27 @@ const Fee = styled.div`
 `;
 
 const TransactionItem = ({ tx, network }: Props) => {
-    const url = `${network.explorer.tx}${tx.hash}`;
-    const date = typeof tx.timestamp === 'string' ? tx.timestamp : undefined; // TODO: format date
-    const addresses = (tx.type === 'send' ? tx.outputs : tx.inputs).reduce(
-        (arr, item) => arr.concat(item.addresses),
-        []
-    );
+    const url = `${network.explorer.tx}${tx.txid}`;
+    const date = typeof tx.blockTime === 'number' ? tx.blockTime : undefined; // TODO: format date
+    const addresses = tx.targets.reduce((arr, item) => arr.concat(item.addresses), []);
 
-    const operation = tx.type === 'send' ? '-' : '+';
-    const amount = tx.tokens ? (
-        tx.tokens.map(t => (
-            <Amount key={t.value}>
+    const operation = tx.type === 'sent' ? '-' : '+';
+    const amount =
+        tx.tokens.length > 0 ? (
+            tx.tokens.map(t => (
+                <Amount key={t.symbol}>
+                    {operation}
+                    {t.amount} {t.symbol}
+                </Amount>
+            ))
+        ) : (
+            <Amount>
                 {operation}
-                {t.value} {t.shortcut}
+                {tx.amount} {network.symbol}
             </Amount>
-        ))
-    ) : (
-        <Amount>
-            {operation}
-            {tx.total} {network.symbol}
-        </Amount>
-    );
-    const fee = tx.tokens && tx.type === 'send' ? `${tx.fee} ${network.symbol}` : undefined;
+        );
+    const fee =
+        tx.tokens.length > 0 && tx.type === 'sent' ? `${tx.fee} ${network.symbol}` : undefined;
 
     return (
         <Wrapper>
@@ -113,7 +112,7 @@ const TransactionItem = ({ tx, network }: Props) => {
                 ))}
                 {!tx.blockHeight && (
                     <TransactionHash href={url} isGray>
-                        Transaction hash: {tx.hash}
+                        Transaction hash: {tx.txid}
                     </TransactionHash>
                 )}
             </Addresses>

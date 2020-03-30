@@ -486,7 +486,7 @@ export const onGasPriceChange = (gasPrice: string): ThunkAction => (
 ): void => {
     const state: State = getState().sendFormEthereum;
     // switch to custom fee level
-    let newSelectedFeeLevel = state.selectedFeeLevel;
+    let newSelectedFeeLevel;
     if (state.selectedFeeLevel.value !== 'Custom')
         newSelectedFeeLevel = state.feeLevels.find(f => f.value === 'Custom');
 
@@ -498,7 +498,7 @@ export const onGasPriceChange = (gasPrice: string): ThunkAction => (
             untouched: false,
             touched: { ...state.touched, gasPrice: true },
             gasPrice,
-            selectedFeeLevel: newSelectedFeeLevel,
+            selectedFeeLevel: newSelectedFeeLevel || state.selectedFeeLevel,
         },
     });
 };
@@ -673,9 +673,12 @@ export const onSend = (): AsyncAction => async (
 
     const currentState: State = getState().sendFormEthereum;
 
-    const isToken: boolean = currentState.currency !== currentState.networkSymbol;
-    const pendingNonce: number = reducerUtils.getPendingSequence(pending);
-    const nonce = pendingNonce > 0 && pendingNonce >= account.nonce ? pendingNonce : account.nonce;
+    const isToken = currentState.currency !== currentState.networkSymbol;
+    const pendingNonce = new BigNumber(reducerUtils.getPendingSequence(pending));
+    const nonce =
+        pendingNonce.gt(0) && pendingNonce.gt(account.nonce)
+            ? pendingNonce.toString()
+            : account.nonce;
 
     const txData = await dispatch(
         prepareEthereumTx({
@@ -727,12 +730,15 @@ export const onSend = (): AsyncAction => async (
         return;
     }
 
-    txData.r = signedTransaction.payload.r;
-    txData.s = signedTransaction.payload.s;
-    txData.v = signedTransaction.payload.v;
-
     try {
-        const serializedTx: string = await dispatch(serializeEthereumTx(txData));
+        const serializedTx: string = await dispatch(
+            serializeEthereumTx({
+                ...txData,
+                r: signedTransaction.payload.r,
+                s: signedTransaction.payload.s,
+                v: signedTransaction.payload.v,
+            })
+        );
         const push = await TrezorConnect.pushTransaction({
             tx: serializedTx,
             coin: network.shortcut,
@@ -745,58 +751,6 @@ export const onSend = (): AsyncAction => async (
         const { txid } = push.payload;
 
         dispatch({ type: SEND.TX_COMPLETE });
-
-        // ugly blockbook workaround:
-        // since blockbook can't emit pending notifications
-        // need to trigger this event from here, where we know everything about this transaction
-        // blockchainNotification is 'trezor-connect' BlockchainLinkTransaction type
-        const fee = ValidationActions.calculateFee(currentState.gasLimit, currentState.gasPrice);
-        const blockchainNotification = {
-            type: 'send',
-            descriptor: account.descriptor,
-            inputs: [
-                {
-                    addresses: [account.descriptor],
-                    amount: currentState.amount,
-                    fee,
-                    total: currentState.total,
-                },
-            ],
-            outputs: [
-                {
-                    addresses: [currentState.address],
-                    amount: currentState.amount,
-                },
-            ],
-            hash: txid,
-            amount: currentState.amount,
-            fee,
-            total: currentState.total,
-
-            sequence: nonce,
-            tokens: isToken
-                ? [
-                      {
-                          name: currentState.currency,
-                          shortcut: currentState.currency,
-                          value: currentState.amount,
-                      },
-                  ]
-                : undefined,
-
-            blockHeight: 0,
-            blockHash: undefined,
-            timestamp: undefined,
-        };
-
-        dispatch(
-            BlockchainActions.onNotification({
-                // $FlowIssue: missing coinInfo declaration
-                coin: {},
-                notification: blockchainNotification,
-            })
-        );
-        // workaround end
 
         // clear session storage
         dispatch(SessionStorageActions.clear());

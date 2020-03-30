@@ -27,11 +27,7 @@ export const getSelectedDevice = (state: State): ?TrezorDevice => {
         if (d.mode === 'bootloader' && d.path === locationState.device) {
             return true;
         }
-        if (
-            d.features &&
-            d.features.device_id === locationState.device &&
-            d.instance === instance
-        ) {
+        if (d.features && d.id === locationState.device && d.instance === instance) {
             return true;
         }
         return false;
@@ -46,7 +42,7 @@ export const findDevice = (
 ): ?TrezorDevice =>
     devices.find(d => {
         // TODO: && (instance && d.instance === instance)
-        if (d.features && d.features.device_id === deviceId && d.state === deviceState) {
+        if (d.features && d.id === deviceId && d.state === deviceState) {
             return true;
         }
         return false;
@@ -60,9 +56,7 @@ export const getDuplicateInstanceNumber = (
     // find device(s) with the same features.device_id
     // and sort them by instance number
     const affectedDevices: Array<TrezorDevice> = devices
-        .filter(
-            d => d.features && device.features && d.features.device_id === device.features.device_id
-        )
+        .filter(d => d.features && device.features && d.id === device.id)
         .sort((a, b) => {
             if (!a.instance) {
                 return -1;
@@ -92,8 +86,7 @@ export const getSelectedAccount = (state: State): ?Account => {
     return state.accounts.find(
         a =>
             a.imported === isImported &&
-            (a.deviceState === device.state ||
-                (a.imported && a.deviceID === (device.features || {}).device_id)) &&
+            (a.deviceState === device.state || (a.imported && a.deviceID === device.id)) &&
             a.index === index &&
             a.network === locationState.network
     );
@@ -129,8 +122,8 @@ export const getAccountPendingTx = (
 
 export const getPendingSequence = (pending: Array<Transaction>): number =>
     pending.reduce((value: number, tx: Transaction): number => {
-        if (tx.rejected) return value;
-        return Math.max(value, tx.sequence + 1);
+        if (!tx.ethereumSpecific || tx.rejected) return value;
+        return Math.max(value, tx.ethereumSpecific.nonce + 1);
     }, 0);
 
 export const getPendingAmount = (
@@ -139,7 +132,7 @@ export const getPendingAmount = (
     token: boolean = false
 ): BigNumber =>
     pending.reduce((value: BigNumber, tx: Transaction): BigNumber => {
-        if (tx.type !== 'send') return value;
+        if (tx.type !== 'sent') return value;
         if (!token) {
             // regular transactions
             // add fees from token txs and amount from regular txs
@@ -147,9 +140,9 @@ export const getPendingAmount = (
         }
         if (tx.tokens) {
             // token transactions
-            const allTokens = tx.tokens.filter(t => t.shortcut === currency);
+            const allTokens = tx.tokens.filter(t => t.symbol === currency);
             const tokensValue: BigNumber = allTokens.reduce(
-                (tv, t) => new BigNumber(value).plus(t.value),
+                (tv, t) => new BigNumber(value).plus(t.amount),
                 new BigNumber('0')
             );
             return new BigNumber(value).plus(tokensValue);

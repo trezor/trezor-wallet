@@ -39,7 +39,7 @@ export type SignVerifyAction =
           message: ?string,
       };
 
-const sign = (path: Array<number>, message: string, hex: boolean = false): AsyncAction => async (
+const sign = (path: string, message: string, hex: boolean = false): AsyncAction => async (
     dispatch: Dispatch,
     getState: GetState
 ): Promise<void> => {

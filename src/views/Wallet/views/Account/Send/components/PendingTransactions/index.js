@@ -31,7 +31,7 @@ const PendingTransactions = (props: Props) => {
                 <NoTransactions>There are no pending transactions</NoTransactions>
             )}
             {pending.map(tx => (
-                <Transaction key={tx.hash} network={props.network} tx={tx} />
+                <Transaction key={tx.txid} network={props.network} tx={tx} />
             ))}
         </Wrapper>
     );

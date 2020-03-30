@@ -521,14 +521,13 @@ const AccountSend = (props: Props) => {
                 </AdvancedForm>
             )}
 
-            {props.selectedAccount.pending.length > 0 ||
-                (account.imported && (
-                    <PendingTransactions
-                        pending={props.selectedAccount.pending}
-                        tokens={props.selectedAccount.tokens}
-                        network={network}
-                    />
-                ))}
+            {props.selectedAccount.pending.length > 0 && (
+                <PendingTransactions
+                    pending={props.selectedAccount.pending}
+                    tokens={props.selectedAccount.tokens}
+                    network={network}
+                />
+            )}
         </Content>
     );
 };
