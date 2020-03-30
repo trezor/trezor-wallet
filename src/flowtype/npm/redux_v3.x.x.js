@@ -1,5 +1,3 @@
-/* @flow */
-
 declare module 'redux' {
   /*
     S = State
@@ -10,7 +8,7 @@ declare module 'redux' {
 
   declare export type DispatchAPI<A> = (action: A) => A;
   // old Dispatch needs to stay as it is, because also "react-redux" is using this type
-  declare export type Dispatch<A: { type: $Subtype<string> }> = DispatchAPI<A>;
+  declare export type Dispatch<A: { type: * }> = DispatchAPI<A>;
 
   declare export type ThunkAction<S, A> = (dispatch: ReduxDispatch<S, A>, getState: () => S) => void;
   declare export type AsyncAction<S, A> = (dispatch: ReduxDispatch<S, A>, getState: () => S) => Promise<void>;
@@ -21,7 +19,7 @@ declare module 'redux' {
   declare export type AsyncDispatch<S, A> = (action: AsyncAction<S, A>) => Promise<void>;
   declare export type PromiseDispatch<S, A> = <R>(action: PromiseAction<S, A, R>) => Promise<R>;
   declare export type PayloadDispatch<S, A> = <R>(action: PayloadAction<S, A, R>) => R;
-  declare export type PlainDispatch<A: {type: $Subtype<string>}> = DispatchAPI<A>;
+  declare export type PlainDispatch<A: { type: * }> = DispatchAPI<A>;
   /* NEW: Dispatch is now a combination of these different dispatch types */
   declare export type ReduxDispatch<S, A> = PlainDispatch<A> & ThunkDispatch<S, A> & AsyncDispatch<S, A> & PromiseDispatch<S, A> & PayloadDispatch<S, A>;
 

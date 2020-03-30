@@ -1,4 +1,5 @@
 [include]
+.*/node_modules/hd-wallet/lib
 
 [ignore]
 .*/node_modules/fbjs/.*
@@ -7,6 +8,9 @@
 .*/node_modules/redux/.*
 .*/node_modules/react-router/.*
 .*/node_modules/oboe/test/.*
+.*/node_modules/trezor-link/lib/lowlevel/webusb.js.flow
+.*/node_modules/hd-wallet/lib/utils/stream.js.flow
+.*/node_modules/protobufjs-old-fixed-webpack/src/bower.json
 .*/_old/.*
 .*/scripts/solidity/.*
 .*/build/.*
@@ -19,7 +23,6 @@
 ./src/flowtype/npm/react-router-dom_v4.x.x.js
 ; ./src/flowtype/npm/react-intl_v2.x.x.js // TODO: uncomment to get proper flow support for intl (needs some flow fixing) 
 ./src/flowtype/npm/connected-react-router.js
-./src/flowtype/npm/bignumber.js
 ./src/flowtype/npm/ethereum-types.js
 ./src/flowtype/npm/web3.js
 ./src/flowtype/css.js
