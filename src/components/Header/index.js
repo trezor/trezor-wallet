@@ -5,7 +5,7 @@ import { Header } from 'trezor-ui-components';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import type { toggleSidebar as toggleSidebarType } from 'actions/WalletActions';
+import { toggleSidebar as toggleSidebarAction } from 'actions/WalletActions';
 import l10nMessages from './index.messages';
 
 import LanguagePicker from './components/LanguagePicker/Container';
@@ -13,7 +13,7 @@ import LanguagePicker from './components/LanguagePicker/Container';
 type MyProps = {
     sidebarEnabled?: boolean,
     sidebarOpened?: ?boolean,
-    toggleSidebar?: toggleSidebarType,
+    toggleSidebar?: typeof toggleSidebarAction,
 };
 
 const MyHeader = ({ sidebarEnabled, sidebarOpened, toggleSidebar }: MyProps) => (
