@@ -6,13 +6,13 @@ import * as ACCOUNT from 'actions/constants/account';
 
 import type { Action, TrezorDevice } from 'flowtype';
 
-type AccountCommon = {
+type AccountCommon = {|
     +imported: boolean,
     +index: number,
     +network: string, // network id (shortcut)
     +deviceID: string, // empty for imported accounts
     +deviceState: string, // empty for imported accounts
-    +accountPath: Array<number>, // empty for imported accounts
+    +accountPath: string, // empty for imported accounts
     +descriptor: string, // address or xpub
 
     balance: string,
@@ -21,22 +21,31 @@ type AccountCommon = {
     empty: boolean, // account without transactions
 
     transactions: number, // deprecated
-};
+|};
 
 export type Account =
-    | (AccountCommon & {
-          networkType: 'ethereum',
-          nonce: number,
-      })
-    | (AccountCommon & {
-          networkType: 'ripple',
-          sequence: number,
-          reserve: string,
-      })
-    | (AccountCommon & {
-          networkType: 'bitcoin',
-          addressIndex: number,
-      });
+    | {|
+          ...AccountCommon,
+          ...{|
+              networkType: 'ethereum',
+              nonce: string,
+          |},
+      |}
+    | {|
+          ...AccountCommon,
+          ...{|
+              networkType: 'ripple',
+              sequence: number,
+              reserve: string,
+          |},
+      |}
+    | {|
+          ...AccountCommon,
+          ...{|
+              networkType: 'bitcoin',
+              addressIndex: number,
+          |},
+      |};
 
 export type State = Array<Account>;
 
@@ -51,14 +60,12 @@ export const findDeviceAccounts = (
         return state.filter(
             addr =>
                 (addr.deviceState === device.state ||
-                    (addr.imported && addr.deviceID === (device.features || {}).device_id)) &&
+                    (addr.imported && addr.deviceID === device.id)) &&
                 addr.network === network
         );
     }
     return state.filter(
-        addr =>
-            addr.deviceState === device.state ||
-            (addr.imported && addr.deviceID === (device.features || {}).device_id)
+        addr => addr.deviceState === device.state || (addr.imported && addr.deviceID === device.id)
     );
 };
 

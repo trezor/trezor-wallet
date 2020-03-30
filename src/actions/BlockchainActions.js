@@ -76,32 +76,31 @@ export const subscribe = (networkName: string): PromiseAction<void> => async (
     }
 };
 
-export const onBlockMined = (
-    payload: $ElementType<BlockchainBlock, 'payload'>
-): PromiseAction<void> => async (dispatch: Dispatch, getState: GetState): Promise<void> => {
+export const onBlockMined = (payload: BlockchainBlock): PromiseAction<void> => async (
+    dispatch: Dispatch,
+    getState: GetState
+): Promise<void> => {
     const shortcut = payload.coin.shortcut.toLowerCase();
-    const { block } = payload;
-    if (getState().router.location.state.network !== shortcut) return;
-
     const { config } = getState().localStorage;
     const network = config.networks.find(c => c.shortcut === shortcut);
     if (!network) return;
 
     switch (network.type) {
         case 'ethereum':
-            await dispatch(EthereumBlockchainActions.onBlockMined(shortcut));
+            await dispatch(EthereumBlockchainActions.onBlockMined(network));
             break;
         case 'ripple':
-            await dispatch(RippleBlockchainActions.onBlockMined(shortcut, block));
+            await dispatch(RippleBlockchainActions.onBlockMined(network));
             break;
         default:
             break;
     }
 };
 
-export const onNotification = (
-    payload: $ElementType<BlockchainNotification, 'payload'>
-): PromiseAction<void> => async (dispatch: Dispatch, getState: GetState): Promise<void> => {
+export const onNotification = (payload: BlockchainNotification): PromiseAction<void> => async (
+    dispatch: Dispatch,
+    getState: GetState
+): Promise<void> => {
     const shortcut = payload.coin.shortcut.toLowerCase();
     const { config } = getState().localStorage;
     const network = config.networks.find(c => c.shortcut === shortcut);
@@ -109,11 +108,10 @@ export const onNotification = (
 
     switch (network.type) {
         case 'ethereum':
-            // this is not working until blockchain-link will start support blockbook backends
-            await dispatch(EthereumBlockchainActions.onNotification(payload));
+            await dispatch(EthereumBlockchainActions.onNotification(payload, network));
             break;
         case 'ripple':
-            await dispatch(RippleBlockchainActions.onNotification(payload));
+            await dispatch(RippleBlockchainActions.onNotification(payload, network));
             break;
         default:
             break;
@@ -122,9 +120,10 @@ export const onNotification = (
 
 // Handle BLOCKCHAIN.ERROR event from TrezorConnect
 // disconnect and remove Web3 websocket instance if exists
-export const onError = (
-    payload: $ElementType<BlockchainError, 'payload'>
-): PromiseAction<void> => async (dispatch: Dispatch, getState: GetState): Promise<void> => {
+export const onError = (payload: BlockchainError): PromiseAction<void> => async (
+    dispatch: Dispatch,
+    getState: GetState
+): Promise<void> => {
     const shortcut = payload.coin.shortcut.toLowerCase();
     const { config } = getState().localStorage;
     const network = config.networks.find(c => c.shortcut === shortcut);

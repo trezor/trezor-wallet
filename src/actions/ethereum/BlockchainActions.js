@@ -3,47 +3,14 @@
 import TrezorConnect from 'trezor-connect';
 import BigNumber from 'bignumber.js';
 import * as PENDING from 'actions/constants/pendingTx';
+import * as AccountsActions from 'actions/AccountsActions';
+import * as Web3Actions from 'actions/Web3Actions';
+import { mergeAccount, enhanceTransaction } from 'utils/accountUtils';
 
-import type { TrezorDevice, Dispatch, GetState, PromiseAction } from 'flowtype';
-import type { EthereumAccount, BlockchainNotification } from 'trezor-connect';
+import type { Dispatch, GetState, PromiseAction, Network } from 'flowtype';
+import type { BlockchainNotification } from 'trezor-connect';
 import type { Token } from 'reducers/TokensReducer';
 import type { NetworkToken } from 'reducers/LocalStorageReducer';
-import * as Web3Actions from 'actions/Web3Actions';
-import * as AccountsActions from 'actions/AccountsActions';
-
-export const discoverAccount = (
-    device: TrezorDevice,
-    descriptor: string,
-    network: string
-): PromiseAction<EthereumAccount> => async (dispatch: Dispatch): Promise<EthereumAccount> => {
-    // get data from connect
-    const txs = await TrezorConnect.ethereumGetAccountInfo({
-        account: {
-            descriptor,
-            block: 0,
-            transactions: 0,
-            balance: '0',
-            availableBalance: '0',
-            nonce: 0,
-        },
-        coin: network,
-    });
-
-    if (!txs.success) {
-        throw new Error(txs.payload.error);
-    }
-
-    // blockbook web3 fallback
-    const web3account = await dispatch(Web3Actions.discoverAccount(descriptor, network));
-    return {
-        descriptor,
-        transactions: txs.payload.transactions,
-        block: txs.payload.block,
-        balance: web3account.balance,
-        availableBalance: web3account.balance,
-        nonce: web3account.nonce,
-    };
-};
 
 export const getTokenInfo = (input: string, network: string): PromiseAction<NetworkToken> => async (
     dispatch: Dispatch
@@ -103,9 +70,9 @@ export const subscribe = (network: string): PromiseAction<void> => async (
     dispatch: Dispatch,
     getState: GetState
 ): Promise<void> => {
-    const accounts: Array<string> = getState()
+    const accounts = getState()
         .accounts.filter(a => a.network === network)
-        .map(a => a.descriptor); // eslint-disable-line no-unused-vars
+        .map(a => ({ descriptor: a.descriptor }));
     const response = await TrezorConnect.blockchainSubscribe({
         accounts,
         coin: network,
@@ -115,7 +82,7 @@ export const subscribe = (network: string): PromiseAction<void> => async (
     await dispatch(Web3Actions.initWeb3(network));
 };
 
-export const onBlockMined = (network: string): PromiseAction<void> => async (
+export const onBlockMined = (network: Network): PromiseAction<void> => async (
     dispatch: Dispatch,
     getState: GetState
 ): Promise<void> => {
@@ -123,56 +90,52 @@ export const onBlockMined = (network: string): PromiseAction<void> => async (
     // check latest saved transaction blockhash against blockhheight
 
     // try to resolve pending transactions
-    await dispatch(Web3Actions.resolvePendingTransactions(network));
+    await dispatch(Web3Actions.resolvePendingTransactions(network.shortcut));
 
-    await dispatch(Web3Actions.updateGasPrice(network));
+    await dispatch(Web3Actions.updateGasPrice(network.shortcut));
 
-    const accounts: Array<any> = getState().accounts.filter(a => a.network === network);
-    if (accounts.length > 0) {
-        // find out which account changed
-        const response = await TrezorConnect.ethereumGetAccountInfo({
-            accounts,
-            coin: network,
-        });
+    const accounts = getState().accounts.filter(a => a.network === network.shortcut);
+    if (accounts.length === 0) return;
+    const blockchain = getState().blockchain.find(b => b.shortcut === network.shortcut);
+    if (!blockchain) return; // flowtype fallback
 
-        if (response.success) {
-            response.payload.forEach((a, i) => {
-                if (a.transactions > 0) {
-                    // load additional data from Web3 (balance, nonce, tokens)
-                    dispatch(Web3Actions.updateAccount(accounts[i], a, network));
-                } else {
-                    // there are no new txs, just update block
-                    // TODO: There still could be internal transactions as a result of contract
-                    // If that's the case, account balance won't be updated
-                    // Currently waiting for deprecating web3 and utilising new blockbook
-                    dispatch(AccountsActions.update({ ...accounts[i], block: a.block }));
+    // find out which account changed
+    const bundle = accounts.map(a => ({ descriptor: a.descriptor, coin: network.shortcut }));
+    const response = await TrezorConnect.getAccountInfo({ bundle });
 
-                    // HACK: since blockbook can't work with smart contracts for now
-                    // try to update tokens balances added to this account using Web3
-                    dispatch(Web3Actions.updateAccountTokens(accounts[i]));
-                }
-            });
-        }
-    }
+    if (!response.success) return;
+
+    response.payload.forEach((info, i) => {
+        dispatch(
+            AccountsActions.update(mergeAccount(info, accounts[i], network, blockchain.block))
+        );
+        dispatch(Web3Actions.updateAccountTokens(accounts[i]));
+    });
 };
 
 export const onNotification = (
-    payload: $ElementType<BlockchainNotification, 'payload'>
+    payload: BlockchainNotification,
+    network: Network
 ): PromiseAction<void> => async (dispatch: Dispatch, getState: GetState): Promise<void> => {
-    const { notification } = payload;
-    const account = getState().accounts.find(a => a.descriptor === notification.descriptor);
-    if (!account) return;
+    const { descriptor, tx } = payload.notification;
+    const account = getState().accounts.find(a => a.descriptor === descriptor);
+    const blockchain = getState().blockchain.find(b => b.shortcut === network.shortcut);
+    if (!account || !blockchain) return;
+    dispatch({
+        type: PENDING.ADD,
+        payload: enhanceTransaction(account, tx, network),
+    });
 
-    if (!notification.blockHeight) {
-        dispatch({
-            type: PENDING.ADD,
-            payload: {
-                ...notification,
-                deviceState: account.deviceState,
-                network: account.network,
-            },
-        });
-    }
+    const response = await TrezorConnect.getAccountInfo({
+        descriptor: account.descriptor,
+        coin: account.network,
+    });
+
+    if (!response.success) return;
+
+    dispatch(
+        AccountsActions.update(mergeAccount(response.payload, account, network, blockchain.block))
+    );
 };
 
 export const onError = (network: string): PromiseAction<void> => async (

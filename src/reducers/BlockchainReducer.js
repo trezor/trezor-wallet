@@ -4,7 +4,7 @@ import { BLOCKCHAIN as BLOCKCHAIN_EVENT } from 'trezor-connect';
 import * as BLOCKCHAIN_ACTION from 'actions/constants/blockchain';
 
 import type { Action } from 'flowtype';
-import type { BlockchainConnect, BlockchainError, BlockchainBlock } from 'trezor-connect';
+import type { BlockchainInfo, BlockchainError, BlockchainBlock } from 'trezor-connect';
 
 export type BlockchainFeeLevel = {
     name: string,
@@ -50,16 +50,15 @@ const onStartSubscribe = (state: State, shortcut: string): State => {
     ]);
 };
 
-const onConnect = (state: State, action: BlockchainConnect): State => {
-    const shortcut = action.payload.coin.shortcut.toLowerCase();
+const onConnect = (state: State, info: BlockchainInfo): State => {
+    const shortcut = info.coin.shortcut.toLowerCase();
     const network = state.find(b => b.shortcut === shortcut);
-    const { info } = action.payload;
     if (network) {
         const others = state.filter(b => b !== network);
         return others.concat([
             {
                 ...network,
-                block: info.block,
+                block: info.blockHeight,
                 connected: true,
                 connecting: false,
                 reconnectionAttempts: 0,
@@ -73,15 +72,15 @@ const onConnect = (state: State, action: BlockchainConnect): State => {
             connected: true,
             connecting: false,
             reconnectionAttempts: 0,
-            block: info.block,
+            block: info.blockHeight,
             feeTimestamp: 0,
             feeLevels: [],
         },
     ]);
 };
 
-const onError = (state: State, action: BlockchainError): State => {
-    const shortcut = action.payload.coin.shortcut.toLowerCase();
+const onError = (state: State, payload: BlockchainError): State => {
+    const shortcut = payload.coin.shortcut.toLowerCase();
     const network = state.find(b => b.shortcut === shortcut);
     if (network) {
         const others = state.filter(b => b !== network);
@@ -108,15 +107,15 @@ const onError = (state: State, action: BlockchainError): State => {
     ]);
 };
 
-const onBlock = (state: State, action: BlockchainBlock): State => {
-    const shortcut = action.payload.coin.shortcut.toLowerCase();
+const onBlock = (state: State, payload: BlockchainBlock): State => {
+    const shortcut = payload.coin.shortcut.toLowerCase();
     const network = state.find(b => b.shortcut === shortcut);
     if (network) {
         const others = state.filter(b => b !== network);
         return others.concat([
             {
                 ...network,
-                block: action.payload.block,
+                block: payload.blockHeight,
             },
         ]);
     }
@@ -143,11 +142,11 @@ export default (state: State = initialState, action: Action): State => {
         case BLOCKCHAIN_ACTION.START_SUBSCRIBE:
             return onStartSubscribe(state, action.shortcut);
         case BLOCKCHAIN_EVENT.CONNECT:
-            return onConnect(state, action);
+            return onConnect(state, action.payload);
         case BLOCKCHAIN_EVENT.ERROR:
-            return onError(state, action);
+            return onError(state, action.payload);
         case BLOCKCHAIN_EVENT.BLOCK:
-            return onBlock(state, action);
+            return onBlock(state, action.payload);
         case BLOCKCHAIN_ACTION.UPDATE_FEE:
             return updateFee(state, action.shortcut, action.feeLevels);
 

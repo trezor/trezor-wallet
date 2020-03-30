@@ -4,7 +4,7 @@ import TrezorConnect from 'trezor-connect';
 import * as BLOCKCHAIN from 'actions/constants/blockchain';
 import * as PENDING from 'actions/constants/pendingTx';
 import * as AccountsActions from 'actions/AccountsActions';
-import { toDecimalAmount } from 'utils/formatUtils';
+import { mergeAccount, enhanceTransaction } from 'utils/accountUtils';
 import { observeChanges } from 'reducers/utils';
 
 import type { BlockchainNotification } from 'trezor-connect';
@@ -20,10 +20,10 @@ import type {
 export const subscribe = (network: string): PromiseAction<void> => async (
     dispatch: Dispatch,
     getState: GetState
-): Promise<void> => {
-    const accounts: Array<string> = getState()
+) => {
+    const accounts = getState()
         .accounts.filter(a => a.network === network)
-        .map(a => a.descriptor);
+        .map(a => ({ descriptor: a.descriptor }));
     await TrezorConnect.blockchainSubscribe({
         accounts,
         coin: network,
@@ -47,161 +47,81 @@ export const getFeeLevels = (network: Network): PayloadAction<Array<BlockchainFe
     return blockchain.feeLevels;
 };
 
-export const onBlockMined = (networkShortcut: string, block: number): PromiseAction<void> => async (
+export const onBlockMined = (network: Network): PromiseAction<void> => async (
     dispatch: Dispatch,
     getState: GetState
 ): Promise<void> => {
-    const blockchain = getState().blockchain.find(b => b.shortcut === networkShortcut);
+    const blockchain = getState().blockchain.find(b => b.shortcut === network.shortcut);
     if (!blockchain) return; // flowtype fallback
 
     // if last update was more than 5 minutes ago
     const now = new Date().getTime();
     if (blockchain.feeTimestamp < now - 300000) {
         const feeRequest = await TrezorConnect.blockchainEstimateFee({
-            coin: networkShortcut,
+            request: {
+                feeLevels: 'smart',
+            },
+            coin: network.shortcut,
         });
         if (feeRequest.success && observeChanges(blockchain.feeLevels, feeRequest.payload)) {
             // check if downloaded fee levels are different
             dispatch({
                 type: BLOCKCHAIN.UPDATE_FEE,
-                shortcut: networkShortcut,
-                feeLevels: feeRequest.payload,
+                shortcut: network.shortcut,
+                feeLevels: feeRequest.payload.levels.map(l => ({
+                    name: 'Normal',
+                    value: l.feePerUnit,
+                })),
             });
         }
     }
 
     // TODO: check for blockchain rollbacks here!
 
-    const accounts: Array<any> = getState().accounts.filter(a => a.network === networkShortcut);
+    const accounts = getState().accounts.filter(a => a.network === network.shortcut);
     if (accounts.length === 0) return;
-    const { networks } = getState().localStorage.config;
-    const network = networks.find(c => c.shortcut === networkShortcut);
-    if (!network) return;
 
-    // HACK: Since Connect always returns account.transactions as 0
-    // we don't have info about new transactions for the account since last update.
-    // Untill there is a better solution compare accounts block.
-    // If we missed some blocks (wallet was offline) we'll update the account
-    // If we are update to date with the last block that means wallet was online
-    // and we would get Blockchain notification about new transaction if needed
-    accounts.forEach(async account => {
-        const missingBlocks = account.block !== block - 1;
-        if (!missingBlocks) {
-            // account was last updated on account.block, current block is +1, we didn't miss single block
-            // if there was new tx, blockchain notification would let us know
-            // so just update the block for the account
-            dispatch(
-                AccountsActions.update({
-                    ...account,
-                    block,
-                })
-            );
-        } else {
-            // we missed some blocks (wallet was offline). get updated account info from connect
-            const response = await TrezorConnect.rippleGetAccountInfo({
-                account: {
-                    descriptor: account.descriptor,
-                },
-                level: 'transactions',
-                coin: networkShortcut,
-            });
+    const bundle = accounts.map(a => ({ descriptor: a.descriptor, coin: network.shortcut }));
+    const response = await TrezorConnect.getAccountInfo({ bundle });
 
-            if (!response.success) return;
+    if (!response.success) return;
 
-            const updatedAccount = response.payload;
-
-            // new txs
-            dispatch(
-                AccountsActions.update({
-                    ...account,
-                    balance: toDecimalAmount(updatedAccount.balance, network.decimals),
-                    availableBalance: toDecimalAmount(
-                        updatedAccount.availableBalance,
-                        network.decimals
-                    ),
-                    block: updatedAccount.block,
-                    sequence: updatedAccount.sequence,
-                })
-            );
-        }
+    response.payload.forEach((info, i) => {
+        dispatch(
+            AccountsActions.update(mergeAccount(info, accounts[i], network, blockchain.block))
+        );
     });
 };
 
 export const onNotification = (
-    payload: $ElementType<BlockchainNotification, 'payload'>
+    payload: BlockchainNotification,
+    network: Network
 ): PromiseAction<void> => async (dispatch: Dispatch, getState: GetState): Promise<void> => {
-    const { notification } = payload;
-    const account = getState().accounts.find(a => a.descriptor === notification.descriptor);
-    if (!account) return;
-    const { network } = getState().selectedAccount;
-    if (!network) return; // flowtype fallback
+    const { descriptor, tx } = payload.notification;
+    const account = getState().accounts.find(a => a.descriptor === descriptor);
+    const blockchain = getState().blockchain.find(b => b.shortcut === network.shortcut);
+    if (!account || !blockchain) return;
 
-    if (!notification.blockHeight) {
+    if (!tx.blockHeight) {
         dispatch({
             type: PENDING.ADD,
-            payload: {
-                ...notification,
-                deviceState: account.deviceState,
-                network: account.network,
-
-                amount: toDecimalAmount(notification.amount, network.decimals),
-                total:
-                    notification.type === 'send'
-                        ? toDecimalAmount(notification.total, network.decimals)
-                        : toDecimalAmount(notification.amount, network.decimals),
-                fee: toDecimalAmount(notification.fee, network.decimals),
-            },
+            payload: enhanceTransaction(account, tx, network),
         });
-
-        // todo: replace "send success" notification with link to explorer
     } else {
         dispatch({
             type: PENDING.TX_RESOLVED,
-            hash: notification.hash,
+            hash: tx.txid,
         });
     }
 
-    // In case of tx sent between two Trezor accounts there is a possibility that only 1 notification will be received
-    // therefore we need to find target account and update data for it as well
-    const accountsToUpdate = [account];
-    const targetAddress =
-        notification.type === 'send'
-            ? notification.outputs[0].addresses[0]
-            : notification.inputs[0].addresses[0];
-
-    const targetAccount = getState().accounts.find(a => a.descriptor === targetAddress);
-    if (targetAccount) {
-        accountsToUpdate.push(targetAccount);
-    }
-
-    accountsToUpdate.forEach(async a => {
-        const response = await TrezorConnect.rippleGetAccountInfo({
-            account: {
-                descriptor: a.descriptor,
-                from: a.block,
-                history: false,
-            },
-            coin: a.network,
-        });
-
-        if (response.success) {
-            const updatedAccount = response.payload;
-            const empty = updatedAccount.sequence <= 0 && updatedAccount.balance === '0';
-            dispatch(
-                AccountsActions.update({
-                    networkType: 'ripple',
-                    ...a,
-                    balance: toDecimalAmount(updatedAccount.balance, network.decimals),
-                    availableBalance: toDecimalAmount(
-                        updatedAccount.availableBalance,
-                        network.decimals
-                    ),
-                    block: updatedAccount.block,
-                    sequence: updatedAccount.sequence,
-                    reserve: toDecimalAmount(updatedAccount.reserve, network.decimals),
-                    empty,
-                })
-            );
-        }
+    const response = await TrezorConnect.getAccountInfo({
+        descriptor: account.descriptor,
+        coin: account.network,
     });
+
+    if (!response.success) return;
+
+    dispatch(
+        AccountsActions.update(mergeAccount(response.payload, account, network, blockchain.block))
+    );
 };

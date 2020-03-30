@@ -2,7 +2,7 @@
 
 import TrezorConnect from 'trezor-connect';
 import * as DISCOVERY from 'actions/constants/discovery';
-import { toDecimalAmount } from 'utils/formatUtils';
+import { enhanceAccount } from 'utils/accountUtils';
 
 import type { PromiseAction, GetState, Dispatch, TrezorDevice, Network, Account } from 'flowtype';
 import type { Discovery } from 'reducers/DiscoveryReducer';
@@ -35,16 +35,13 @@ export const discoverAccount = (
     const { accountIndex } = discoveryProcess;
     const path = network.bip44.slice(0).replace('a', accountIndex.toString());
 
-    const response = await TrezorConnect.rippleGetAccountInfo({
+    const response = await TrezorConnect.getAccountInfo({
         device: {
             path: device.path,
             instance: device.instance,
             state: device.state,
         },
-        account: {
-            path,
-            block: 0,
-        },
+        path,
         keepSession: true, // acquire and hold session
         useEmptyPassphrase: device.useEmptyPassphrase,
         coin: network.shortcut,
@@ -55,26 +52,9 @@ export const discoverAccount = (
         throw new Error(response.payload.error);
     }
 
-    const account = response.payload;
-    const empty = account.sequence <= 0 && account.balance === '0';
-
-    return {
-        imported: false,
+    return enhanceAccount(response.payload, {
         index: discoveryProcess.accountIndex,
-        network: network.shortcut,
-        deviceID: device.features ? device.features.device_id : '0',
-        deviceState: device.state || '0',
-        accountPath: account.path || [],
-        descriptor: account.descriptor,
-
-        balance: toDecimalAmount(account.balance, network.decimals),
-        availableBalance: toDecimalAmount(account.availableBalance, network.decimals),
-        block: account.block,
-        transactions: account.transactions,
-        empty,
-
-        networkType: 'ripple',
-        sequence: account.sequence,
-        reserve: toDecimalAmount(account.reserve, network.decimals),
-    };
+        network,
+        device,
+    });
 };
