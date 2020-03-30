@@ -36,33 +36,19 @@ import type { ImportAccountAction } from 'actions/ImportAccountActions';
 import type { FiatRateAction } from 'services/CoingeckoService'; // this service has no action file, all is written inside one file
 
 import type {
-    Device,
-    Features,
-    DeviceStatus,
-    FirmwareRelease,
-    DeviceFirmwareStatus,
-    DeviceMode,
-    DeviceMessageType,
-    TransportMessageType,
-    UiMessageType,
+    KnownDevice,
+    UnknownDevice,
+    TransportEvent,
     BlockchainEvent,
-    BlockchainLinkTransaction,
+    UiEvent,
+    DeviceEvent,
+    AccountTransaction,
 } from 'trezor-connect';
 
 import type { RouterAction, LocationState } from 'connected-react-router';
 
-export type AcquiredDevice = $Exact<{
-    +type: 'acquired',
-    path: string,
-    +label: string,
-    +features: Features,
-    +firmware: DeviceFirmwareStatus,
-    +firmwareRelease: ?FirmwareRelease,
-    status: DeviceStatus,
-    +mode: DeviceMode,
-    state: ?string,
+export type ExtendedDevice = {|
     useEmptyPassphrase: boolean,
-
     remember: boolean, // device should be remembered
     connected: boolean, // device is connected
     available: boolean, // device cannot be used because of features.passphrase_protection is different then expected
@@ -70,29 +56,16 @@ export type AcquiredDevice = $Exact<{
     instanceLabel: string,
     instanceName: ?string,
     ts: number,
-}>;
+|};
 
-export type UnknownDevice = $Exact<{
-    +type: 'unacquired' | 'unreadable',
-    path: string,
-    +label: string,
-    +features: null,
-    state: ?string,
-    useEmptyPassphrase: boolean,
-
-    remember: boolean, // device should be remembered
-    connected: boolean, // device is connected
-    available: boolean, // device cannot be used because of features.passphrase_protection is different then expected
-    instance?: number,
-    instanceLabel: string,
-    instanceName: ?string,
-    ts: number,
-}>;
+export type AcquiredDevice = {| ...KnownDevice, ...ExtendedDevice |};
+export type UnacquiredDevice = {| ...UnknownDevice, ...ExtendedDevice |};
 
 export type { Device } from 'trezor-connect';
-export type TrezorDevice = AcquiredDevice | UnknownDevice;
+export type TrezorDevice = AcquiredDevice | UnacquiredDevice;
 
-export type Transaction = BlockchainLinkTransaction & {
+export type Transaction = AccountTransaction & {
+    descriptor: string,
     deviceState: string,
     network: string,
     rejected?: boolean,
@@ -100,38 +73,11 @@ export type Transaction = BlockchainLinkTransaction & {
 
 export type RouterLocationState = LocationState;
 
-// Cast event from TrezorConnect event listener to react Action
-type DeviceEventAction = {
-    type: DeviceMessageType,
-    device: Device,
-};
-
-type TransportEventAction = {
-    type: TransportMessageType,
-    payload: any,
-};
-
-type UiEventAction = {
-    type: UiMessageType,
-    payload: any,
-    // payload: {
-    //     device: Device;
-    //     code?: string;
-    // },
-};
-
-// TODO: join this message with uiMessage
-type IFrameHandshake = {
-    type: 'iframe_handshake',
-    payload: any,
-};
-
 export type Action =
     | RouterAction
-    | IFrameHandshake
-    | TransportEventAction
-    | DeviceEventAction
-    | UiEventAction
+    | TransportEvent
+    | DeviceEvent
+    | UiEvent
     | BlockchainEvent
     | SelectedAccountAction
     | AccountAction

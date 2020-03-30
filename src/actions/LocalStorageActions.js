@@ -454,9 +454,8 @@ export const removeImportedAccounts = (device: TrezorDevice): ThunkAction => (
     const importedAccounts: ?Array<Account> = getImportedAccounts();
     if (!importedAccounts) return;
 
-    const deviceId = device.features ? device.features.device_id : null;
     const filteredImportedAccounts = importedAccounts.filter(
-        account => account.deviceID !== deviceId
+        account => account.deviceID !== device.id
     );
     storageUtils.remove(TYPE, KEY_IMPORTED_ACCOUNTS);
     filteredImportedAccounts.forEach(account => {

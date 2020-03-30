@@ -30,7 +30,7 @@ const TrezorConnectService: Middleware = (api: MiddlewareAPI) => (next: Middlewa
     } else if (action.type === BLOCKCHAIN_READY) {
         api.dispatch(TrezorConnectActions.postInit());
     } else if (action.type === DEVICE.DISCONNECT) {
-        api.dispatch(TrezorConnectActions.deviceDisconnect(action.device));
+        api.dispatch(TrezorConnectActions.deviceDisconnect(action.payload));
     } else if (action.type === CONNECT.REMEMBER_REQUEST) {
         api.dispatch(ModalActions.onRememberRequest(prevModalState));
     } else if (action.type === CONNECT.FORGET) {
@@ -48,7 +48,7 @@ const TrezorConnectService: Middleware = (api: MiddlewareAPI) => (next: Middlewa
             api.dispatch(RouterActions.selectFirstAvailableDevice());
         }
     } else if (action.type === DEVICE.CONNECT || action.type === DEVICE.CONNECT_UNACQUIRED) {
-        api.dispatch(ModalActions.onDeviceConnect(action.device));
+        api.dispatch(ModalActions.onDeviceConnect(action.payload));
     } else if (action.type === CONNECT.DUPLICATE) {
         api.dispatch(RouterActions.selectDevice(action.device));
     } else if (action.type === BLOCKCHAIN.BLOCK) {

@@ -144,7 +144,7 @@ export const onDeviceConnect = (device: Device): ThunkAction => (
             device.features &&
             modal.device &&
             modal.device.features &&
-            modal.device.features.device_id === device.features.device_id
+            modal.device.id === device.id
         ) {
             dispatch({
                 type: MODAL.CLOSE,

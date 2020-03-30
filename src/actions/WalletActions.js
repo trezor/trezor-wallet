@@ -144,7 +144,7 @@ export const clearUnavailableDevicesData = (prevState: State, device: Device): T
         d =>
             d.features &&
             device.features &&
-            d.features.device_id === device.features.device_id &&
+            d.id === device.id &&
             d.features.passphrase_protection !== device.features.passphrase_protection
     );
 

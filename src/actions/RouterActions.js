@@ -65,14 +65,14 @@ export const paramsValidation = (params: RouterLocationState): PayloadAction<boo
             device = devices.find(
                 d =>
                     d.features &&
-                    d.features.device_id === params.device &&
+                    d.id === params.device &&
                     d.instance === parseInt(params.deviceInstance, 10)
             );
         } else {
             device = devices.find(
                 d =>
                     ((!d.features || d.mode === 'bootloader') && d.path === params.device) ||
-                    (d.features && d.features.device_id === params.device)
+                    (d.features && d.id === params.device)
             );
         }
 
@@ -218,21 +218,22 @@ const getDeviceUrl = (device: TrezorDevice | Device): PayloadAction<?string> => 
     getState: GetState
 ): ?string => {
     let url: ?string;
+    const prefix = `/device/${device.id || device.path}`;
     if (!device.features) {
-        url = `/device/${device.path}/${device.type === 'unreadable' ? 'unreadable' : 'acquire'}`;
+        url = `${prefix}/${device.type === 'unreadable' ? 'unreadable' : 'acquire'}`;
     } else if (device.mode === 'bootloader') {
         // device in bootloader doesn't have device_id
-        url = `/device/${device.path}/bootloader`;
+        url = `${prefix}/bootloader`;
     } else if (device.mode === 'initialize') {
-        url = `/device/${device.features.device_id}/initialize`;
+        url = `${prefix}/initialize`;
     } else if (device.mode === 'seedless') {
-        url = `/device/${device.features.device_id}/seedless`;
+        url = `${prefix}/seedless`;
     } else if (device.firmware === 'required') {
-        url = `/device/${device.features.device_id}/firmware-update`;
+        url = `${prefix}/firmware-update`;
     } else if (typeof device.instance === 'number') {
-        url = `/device/${device.features.device_id}:${device.instance}`;
+        url = `${prefix}:${device.instance}`;
     } else {
-        url = `/device/${device.features.device_id}`;
+        url = `${prefix}`;
         // make sure that device is not TrezorDevice type
         if (!device.hasOwnProperty('ts')) {
             // it is device from trezor-connect triggered by DEVICE.CONNECT event
@@ -379,10 +380,8 @@ export const gotoLandingPage = (): ThunkAction => (dispatch: Dispatch): void => 
 export const gotoDeviceSettings = (device: TrezorDevice): ThunkAction => (
     dispatch: Dispatch
 ): void => {
-    if (device.features) {
-        const devUrl: string = `${device.features.device_id}${
-            device.instance ? `:${device.instance}` : ''
-        }`;
+    if (device.id) {
+        const devUrl: string = `${device.id}${device.instance ? `:${device.instance}` : ''}`;
         dispatch(goto(`/device/${devUrl}/settings`));
     }
 };
@@ -403,8 +402,8 @@ export const gotoFirmwareUpdate = (): ThunkAction => (
     getState: GetState
 ): void => {
     const { selectedDevice } = getState().wallet;
-    if (!selectedDevice || !selectedDevice.features) return;
-    const devUrl: string = `${selectedDevice.features.device_id}${
+    if (!selectedDevice || !selectedDevice.id) return;
+    const devUrl: string = `${selectedDevice.id}${
         selectedDevice.instance ? `:${selectedDevice.instance}` : ''
     }`;
     dispatch(goto(`/device/${devUrl}/firmware-update`));
@@ -415,8 +414,8 @@ export const gotoFirmwareUpdate = (): ThunkAction => (
  */
 export const gotoBackup = (): ThunkAction => (dispatch: Dispatch, getState: GetState): void => {
     const { selectedDevice } = getState().wallet;
-    if (!selectedDevice || !selectedDevice.features) return;
-    const devUrl: string = `${selectedDevice.features.device_id}${
+    if (!selectedDevice || !selectedDevice.id) return;
+    const devUrl: string = `${selectedDevice.id}${
         selectedDevice.instance ? `:${selectedDevice.instance}` : ''
     }`;
     dispatch(goto(`/device/${devUrl}/backup`));

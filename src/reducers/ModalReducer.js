@@ -67,7 +67,7 @@ export default function modal(state: State = initialState, action: Action): Stat
         case DEVICE.DISCONNECT:
             if (
                 state.context === MODAL.CONTEXT_DEVICE &&
-                action.device.path === state.device.path
+                action.payload.path === state.device.path
             ) {
                 return initialState;
             }
@@ -78,14 +78,14 @@ export default function modal(state: State = initialState, action: Action): Stat
         case UI.REQUEST_PASSPHRASE:
             return {
                 context: MODAL.CONTEXT_DEVICE,
-                device: action.payload.device,
+                device: (action.payload.device: any), // should be TrezorDevice, but ath this point it doesn't matter, Device is enough
                 windowType: action.type,
             };
 
         case UI.REQUEST_BUTTON:
             return {
                 context: MODAL.CONTEXT_DEVICE,
-                device: action.payload.device,
+                device: (action.payload.device: any), // should be TrezorDevice, but ath this point it doesn't matter, Device is enough
                 windowType: action.payload.code,
             };
 

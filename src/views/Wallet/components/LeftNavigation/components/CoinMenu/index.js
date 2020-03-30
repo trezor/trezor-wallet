@@ -46,8 +46,8 @@ class CoinMenu extends PureComponent<Props> {
     getBaseUrl() {
         const { selectedDevice } = this.props.wallet;
         let baseUrl = '';
-        if (selectedDevice && selectedDevice.features) {
-            baseUrl = `/device/${selectedDevice.features.device_id}`;
+        if (selectedDevice && selectedDevice.id) {
+            baseUrl = `/device/${selectedDevice.id}`;
             if (selectedDevice.instance) {
                 baseUrl += `:${selectedDevice.instance}`;
             }
