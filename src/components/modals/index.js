@@ -16,6 +16,7 @@ import Pin from 'components/modals/pin/Pin';
 import InvalidPin from 'components/modals/pin/Invalid';
 import Passphrase from 'components/modals/passphrase/Passphrase';
 import PassphraseType from 'components/modals/passphrase/Type';
+import PassphraseOnDevice from 'components/modals/passphrase/OnDevice';
 import ConfirmSignTx from 'components/modals/confirm/SignTx';
 import ConfirmAction from 'components/modals/confirm/Action';
 import ConfirmUnverifiedAddress from 'components/modals/confirm/UnverifiedAddress';
@@ -96,6 +97,10 @@ const getDeviceContextModal = (props: Props) => {
                     return null;
             }
         }
+
+        case UI.REQUEST_PASSPHRASE_ON_DEVICE:
+        case 'ButtonRequest_PassphraseEntry':
+            return <PassphraseOnDevice device={modal.device} />;
 
         case 'ButtonRequest_ProtectCall':
             return <ConfirmAction device={modal.device} />;

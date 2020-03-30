@@ -73,6 +73,10 @@ const LinkButton = styled(Button)`
     }
 `;
 
+const OnDeviceButton = styled(Button)`
+    margin: 10px 0 10px 0;
+`;
+
 class Passphrase extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -169,7 +173,10 @@ class Passphrase extends PureComponent<Props, State> {
         }));
     }
 
-    submitPassphrase(shouldLeavePassphraseBlank: boolean = false) {
+    submitPassphrase(
+        shouldLeavePassphraseBlank: boolean = false,
+        passphraseOnDevice: boolean = false
+    ) {
         const { onPassphraseSubmit } = this.props;
         const passphrase = this.state.passphraseInputValue;
 
@@ -181,7 +188,7 @@ class Passphrase extends PureComponent<Props, State> {
             isPassphraseHidden: true,
         });
 
-        onPassphraseSubmit(shouldLeavePassphraseBlank ? '' : passphrase);
+        onPassphraseSubmit(shouldLeavePassphraseBlank ? '' : passphrase, passphraseOnDevice);
     }
 
     handleKeyPress(event: KeyboardEvent) {
@@ -208,6 +215,13 @@ class Passphrase extends PureComponent<Props, State> {
                 </PassphraseError>
             );
         }
+
+        const { device } = this.props;
+        const onDeviceOffer = !!(
+            device.features &&
+            device.features.capabilities &&
+            device.features.capabilities.includes('Capability_PassphraseEntry')
+        );
 
         return (
             <Wrapper>
@@ -270,6 +284,11 @@ class Passphrase extends PureComponent<Props, State> {
                     <Button isDisabled={!!error} onClick={() => this.submitPassphrase()}>
                         <FormattedMessage {...l10nMessages.TR_ENTER} />
                     </Button>
+                    {onDeviceOffer && (
+                        <OnDeviceButton isWhite onClick={() => this.submitPassphrase(false, true)}>
+                            Enter passphrase on device
+                        </OnDeviceButton>
+                    )}
                 </Row>
                 <Footer>
                     <P size="small">
