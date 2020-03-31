@@ -2,7 +2,7 @@
 
 import TrezorConnect from 'trezor-connect';
 import * as DISCOVERY from 'actions/constants/discovery';
-// import { createAccountTokens } from 'actions/TokenActions';
+import { createAccountTokens } from 'actions/TokenActions';
 import { enhanceAccount } from 'utils/accountUtils';
 import type { PromiseAction, Dispatch, GetState, TrezorDevice, Network, Account } from 'flowtype';
 import type { Discovery } from 'reducers/DiscoveryReducer';
@@ -60,9 +60,9 @@ export const discoverAccount = (
         device,
     });
 
-    // if (response.payload.tokens) {
-    //     dispatch(createAccountTokens(account, response.payload.tokens));
-    // }
+    if (response.payload.tokens) {
+        dispatch(createAccountTokens(account, response.payload.tokens));
+    }
 
     return account;
 };
