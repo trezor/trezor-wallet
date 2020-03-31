@@ -103,9 +103,9 @@ export const add = (token: NetworkToken, account: Account): AsyncAction => async
     dispatch(setBalance(token.address, account.descriptor, tokenBalance));
 };
 
-export const createAccountTokens = (account: Account, tokens: TokenInfo[]) => async (
+export const createAccountTokens = (account: Account, tokens: TokenInfo[]): AsyncAction => async (
     dispatch: Dispatch
-) => {
+): Promise<void> => {
     tokens.forEach(t => {
         dispatch({
             type: TOKEN.ADD,
