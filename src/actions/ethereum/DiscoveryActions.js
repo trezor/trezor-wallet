@@ -2,6 +2,7 @@
 
 import TrezorConnect from 'trezor-connect';
 import * as DISCOVERY from 'actions/constants/discovery';
+import { createAccountTokens } from 'actions/TokenActions';
 import { enhanceAccount } from 'utils/accountUtils';
 import type { PromiseAction, Dispatch, GetState, TrezorDevice, Network, Account } from 'flowtype';
 import type { Discovery } from 'reducers/DiscoveryReducer';
@@ -41,7 +42,7 @@ export const discoverAccount = (
             state: device.state,
         },
         path,
-        // details: 'tokenBalances', TODO: load ERC20
+        details: 'tokenBalances',
         pageSize: 1,
         keepSession: true, // acquire and hold session
         useEmptyPassphrase: device.useEmptyPassphrase,
@@ -53,9 +54,15 @@ export const discoverAccount = (
         throw new Error(response.payload.error);
     }
 
-    return enhanceAccount(response.payload, {
+    const account = enhanceAccount(response.payload, {
         index: discoveryProcess.accountIndex,
         network,
         device,
     });
+
+    if (response.payload.tokens) {
+        dispatch(createAccountTokens(account, response.payload.tokens));
+    }
+
+    return account;
 };
