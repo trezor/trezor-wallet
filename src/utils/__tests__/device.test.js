@@ -42,9 +42,9 @@ describe('device utils', () => {
     });
 
     it('isWebUSB', () => {
-        expect(utils.isWebUSB({ type: 'webusb', version: '1.6.0' })).toBe(true);
+        expect(utils.isWebUSB({ type: 'WebUsbPlugin', version: '1.6.0' })).toBe(true);
         expect(utils.isWebUSB({ type: 'aaaa', version: 'aaaaaa' })).toBe(false);
-        expect(utils.isWebUSB({ type: 'webusb' })).toBe(true);
+        expect(utils.isWebUSB({ type: 'WebUsbPlugin' })).toBe(true);
     });
 
     it('isDisabled', () => {
