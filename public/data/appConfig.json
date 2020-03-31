@@ -27,7 +27,7 @@
             ],
             "explorer": {
                 "tx": "https://eth1.trezor.io/tx/",
-                "address": "https://eth1.trezor.io/tx/"
+                "address": "https://eth1.trezor.io/address/"
             },
             "hasSignVerify": true
         },
