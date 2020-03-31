@@ -184,10 +184,18 @@ export const requestWalletType = (): AsyncAction => async (
     if (!isDeviceReady) return;
 
     if (selected.features && selected.features.passphrase_protection) {
-        dispatch({
-            type: CONNECT.REQUEST_WALLET_TYPE,
-            device: selected,
-        });
+        if (selected.features.passphrase_always_on_device) {
+            dispatch({
+                type: CONNECT.RECEIVE_WALLET_TYPE,
+                device: selected,
+                hidden: true,
+            });
+        } else {
+            dispatch({
+                type: CONNECT.REQUEST_WALLET_TYPE,
+                device: selected,
+            });
+        }
     } else {
         dispatch({
             type: CONNECT.RECEIVE_WALLET_TYPE,
@@ -357,8 +365,16 @@ export const duplicateDeviceOld = (device: TrezorDevice): AsyncAction => async (
 export const duplicateDevice = (device: TrezorDevice): AsyncAction => async (
     dispatch: Dispatch
 ): Promise<void> => {
-    dispatch({
-        type: CONNECT.REQUEST_WALLET_TYPE,
-        device,
-    });
+    if (device.features && device.features.passphrase_always_on_device) {
+        dispatch({
+            type: CONNECT.RECEIVE_WALLET_TYPE,
+            device,
+            hidden: true,
+        });
+    } else {
+        dispatch({
+            type: CONNECT.REQUEST_WALLET_TYPE,
+            device,
+        });
+    }
 };
