@@ -68,6 +68,10 @@ class MenuItems extends PureComponent {
     render() {
         if (!this.showDeviceMenu()) return null;
         const { device } = this.props;
+        const changeWalletButton =
+            device.features && device.features.passphrase_always_on_device
+                ? l10nMessages.TR_CHANGE_PASSPHRASE
+                : l10nMessages.TR_CHANGE_WALLET_TYPE;
         return (
             <Wrapper>
                 {/* <Item onClick={() => {
@@ -92,7 +96,7 @@ class MenuItems extends PureComponent {
                             />
                         </IconWrapper>
                         <Label>
-                            <FormattedMessage {...l10nMessages.TR_CHANGE_WALLET_TYPE} />
+                            <FormattedMessage {...changeWalletButton} />
                         </Label>
                     </Item>
                 )}
