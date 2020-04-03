@@ -120,16 +120,15 @@ export const init = (): AsyncAction => async (
         dispatch(event);
     });
 
+    let connectSrc;
     if (buildUtils.isDev()) {
-        // eslint-disable-next-line
-        window.__TREZOR_CONNECT_SRC =
-            typeof LOCAL === 'string' ? LOCAL : 'https://connect.corp.sldev.cz/develop/'; // eslint-disable-line no-underscore-dangle
-        // window.__TREZOR_CONNECT_SRC = typeof LOCAL === 'string' ? LOCAL : 'https://localhost:8088/'; // eslint-disable-line no-underscore-dangle
+        connectSrc = typeof LOCAL === 'string' ? LOCAL : 'https://connect.corp.sldev.cz/develop/';
         window.TrezorConnect = TrezorConnect;
     }
 
     try {
         await TrezorConnect.init({
+            connectSrc,
             transportReconnect: true,
             debug: false,
             popup: false,
