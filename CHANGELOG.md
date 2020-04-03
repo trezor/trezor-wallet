@@ -1,3 +1,10 @@
+## 1.4.0-beta
+
+**updated**
+
+-   connect v8
+-   discovery process for ethereum
+
 ## 1.3.4-beta
 
 **changed**
