@@ -7,6 +7,10 @@ const definedMessages: Messages = defineMessages({
         id: 'TR_CHANGE_WALLET_TYPE',
         defaultMessage: 'Change wallet type',
     },
+    TR_CHANGE_PASSPHRASE: {
+        id: 'TR_CHANGE_PASSPHRASE',
+        defaultMessage: 'Change passphrase',
+    },
     TR_RENEW_SESSION: {
         id: 'TR_RENEW_SESSION',
         defaultMessage: 'Renew session',

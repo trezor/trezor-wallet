@@ -173,7 +173,7 @@ const AccountSummary = (props: Props) => {
                     {tokens.length < 1 && <AddTokenMessage />}
                     {tokens.map(token => (
                         <AddedToken
-                            key={token.symbol}
+                            key={token.address}
                             token={token}
                             pending={pending}
                             removeToken={props.removeToken}

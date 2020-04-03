@@ -15,7 +15,7 @@
             "name": "Ethereum",
             "symbol": "ETH",
             "shortcut": "eth",
-            "bip44": "m/44'/60'/0'/0",
+            "bip44": "m/44'/60'/0'/0/a",
             "chainId": 1,
             "defaultGasPrice": 64,
             "defaultGasLimit": 21000,
@@ -26,8 +26,8 @@
                 "wss://eth2.trezor.io/geth"
             ],
             "explorer": {
-                "tx": "https://etherscan.io/tx/",
-                "address": "https://etherscan.io/address/"
+                "tx": "https://eth1.trezor.io/tx/",
+                "address": "https://eth1.trezor.io/address/"
             },
             "hasSignVerify": true
         },
@@ -38,7 +38,7 @@
             "symbol": "ETC",
             "shortcut": "etc",
             "chainId": 61,
-            "bip44": "m/44'/61'/0'/0",
+            "bip44": "m/44'/61'/0'/0/a",
             "defaultGasPrice": 64,
             "defaultGasLimit": 21000,
             "defaultGasLimitTokens": 200000,
@@ -61,7 +61,7 @@
             "symbol": "tROP",
             "shortcut": "trop",
             "chainId": 3,
-            "bip44": "m/44'/60'/0'/0",
+            "bip44": "m/44'/60'/0'/0/a",
             "defaultGasPrice": 64,
             "defaultGasLimit": 21000,
             "defaultGasLimitTokens": 200000,
@@ -83,8 +83,8 @@
                 "wss://ropsten1.trezor.io/geth"
             ],
             "explorer": {
-                "tx": "https://ropsten.etherscan.io/tx/",
-                "address": "https://ropsten.etherscan.io/address/"
+                "tx": "https://ropsten1.trezor.io/tx/",
+                "address": "https://ropsten1.trezor.io/address/"
             },
             "hasSignVerify": true
         },

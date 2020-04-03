@@ -21,7 +21,7 @@ type EthereumTxRequest = {
     data: string,
     gasLimit: string,
     gasPrice: string,
-    nonce: number,
+    nonce: string,
 };
 
 export const prepareEthereumTx = (
@@ -54,9 +54,6 @@ export const prepareEthereumTx = (
         nonce: toHex(tx.nonce),
         gasLimit: toHex(tx.gasLimit),
         gasPrice: toHex(EthereumjsUnits.convert(tx.gasPrice, 'gwei', 'wei')),
-        r: '',
-        s: '',
-        v: '',
     };
 };
 

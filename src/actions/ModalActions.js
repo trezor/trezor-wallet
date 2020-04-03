@@ -33,14 +33,14 @@ export const onPinSubmit = (value: string): Action => {
     };
 };
 
-export const onPassphraseSubmit = (passphrase: string): AsyncAction => async (
-    dispatch: Dispatch,
-    getState: GetState
-): Promise<void> => {
+export const onPassphraseSubmit = (
+    passphrase: string,
+    passphraseOnDevice: boolean = false
+): AsyncAction => async (dispatch: Dispatch, getState: GetState): Promise<void> => {
     const { modal } = getState();
     if (modal.context !== MODAL.CONTEXT_DEVICE) return;
 
-    if (passphrase === '') {
+    if (passphrase === '' && !passphraseOnDevice) {
         // set standard wallet type if passphrase is blank
         dispatch({
             type: CONNECT.UPDATE_WALLET_TYPE,
@@ -54,6 +54,7 @@ export const onPassphraseSubmit = (passphrase: string): AsyncAction => async (
         payload: {
             value: passphrase,
             save: true,
+            passphraseOnDevice,
         },
     });
 
@@ -144,7 +145,7 @@ export const onDeviceConnect = (device: Device): ThunkAction => (
             device.features &&
             modal.device &&
             modal.device.features &&
-            modal.device.features.device_id === device.features.device_id
+            modal.device.id === device.id
         ) {
             dispatch({
                 type: MODAL.CLOSE,

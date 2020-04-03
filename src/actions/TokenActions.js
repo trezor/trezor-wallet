@@ -1,7 +1,9 @@
 /* @flow */
 
 import * as TOKEN from 'actions/constants/token';
+import { toDecimalAmount } from 'utils/formatUtils';
 
+import type { TokenInfo } from 'trezor-connect';
 import type { GetState, AsyncAction, Action, Dispatch } from 'flowtype';
 import type { State, Token } from 'reducers/TokensReducer';
 import type { Account } from 'reducers/AccountsReducer';
@@ -60,21 +62,19 @@ export const setBalance = (
     ethAddress: string,
     balance: string
 ): AsyncAction => async (dispatch: Dispatch, getState: GetState): Promise<void> => {
-    const newState: Array<Token> = [...getState().tokens];
-    const token: ?Token = newState.find(
-        t => t.address === tokenAddress && t.ethAddress === ethAddress
-    );
-    if (token) {
-        const others = newState.filter(t => t !== token);
+    const { tokens } = getState();
+    const index = tokens.findIndex(t => t.address === tokenAddress && t.ethAddress === ethAddress);
+    if (index >= 0) {
+        const token = tokens[index];
+        const payload = tokens.slice();
+        payload[index] = {
+            ...token,
+            loaded: true,
+            balance,
+        };
         dispatch({
             type: TOKEN.SET_BALANCE,
-            payload: others.concat([
-                {
-                    ...token,
-                    loaded: true,
-                    balance,
-                },
-            ]),
+            payload,
         });
     }
 };
@@ -101,6 +101,27 @@ export const add = (token: NetworkToken, account: Account): AsyncAction => async
 
     const tokenBalance = await dispatch(BlockchainActions.getTokenBalance(tkn));
     dispatch(setBalance(token.address, account.descriptor, tokenBalance));
+};
+
+export const createAccountTokens = (account: Account, tokens: TokenInfo[]): AsyncAction => async (
+    dispatch: Dispatch
+): Promise<void> => {
+    tokens.forEach(t => {
+        dispatch({
+            type: TOKEN.ADD,
+            payload: {
+                address: t.address,
+                balance: toDecimalAmount(t.balance || '0', t.decimals),
+                decimals: t.decimals,
+                deviceState: account.deviceState,
+                ethAddress: account.descriptor,
+                loaded: true,
+                name: t.name || '',
+                network: account.network,
+                symbol: t.symbol || '',
+            },
+        });
+    });
 };
 
 export const remove = (token: Token): Action => ({

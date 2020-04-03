@@ -213,7 +213,8 @@ const loadJSON = (): AsyncAction => async (dispatch: Dispatch): Promise<void> =>
     }
 };
 
-const VERSION: string = '2';
+// version 3 since trezor-connect@8 implementation
+const VERSION: string = '3';
 
 const loadStorageData = (): ThunkAction => (dispatch: Dispatch): void => {
     // validate version
@@ -454,9 +455,8 @@ export const removeImportedAccounts = (device: TrezorDevice): ThunkAction => (
     const importedAccounts: ?Array<Account> = getImportedAccounts();
     if (!importedAccounts) return;
 
-    const deviceId = device.features ? device.features.device_id : null;
     const filteredImportedAccounts = importedAccounts.filter(
-        account => account.deviceID !== deviceId
+        account => account.deviceID !== device.id
     );
     storageUtils.remove(TYPE, KEY_IMPORTED_ACCOUNTS);
     filteredImportedAccounts.forEach(account => {

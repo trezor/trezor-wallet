@@ -17,12 +17,12 @@ const add = (state: State, payload: Transaction): State => {
 const removeByDeviceState = (state: State, deviceState: ?string): State =>
     state.filter(tx => tx.deviceState !== deviceState);
 
-const removeByHash = (state: State, hash: string): State => state.filter(tx => tx.hash !== hash);
+const removeByHash = (state: State, hash: string): State => state.filter(tx => tx.txid !== hash);
 
 const reject = (state: State, hash: string): State =>
     state.map(tx => {
-        if (tx.hash === hash && !tx.rejected) {
-            return { ...tx, rejected: true };
+        if (tx.txid === hash && !tx.rejected) {
+            return Object.assign({}, { rejected: true }, tx);
         }
         return tx;
     });

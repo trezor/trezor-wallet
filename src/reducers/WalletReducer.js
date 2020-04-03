@@ -98,7 +98,7 @@ export default function wallet(state: State = initialState, action: Action): Sta
             };
 
         case DEVICE.DISCONNECT:
-            if (state.disconnectRequest && action.device.path === state.disconnectRequest.path) {
+            if (state.disconnectRequest && action.payload.path === state.disconnectRequest.path) {
                 return {
                     ...state,
                     disconnectRequest: null,

@@ -79,7 +79,6 @@ const LearnMoreText = styled.span`
 const SelectWrapper = styled(Select)`
     margin-right: 10px;
     width: 180px;
-    margin-bottom: 5px;
 `;
 
 const Download = styled.div`
@@ -117,21 +116,24 @@ const GoBack = styled.span`
 class InstallBridge extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
+        const { transport } = props;
+        const packages = transport.bridge ? transport.bridge.packages : [];
+        const latestVersion = transport.bridge ? transport.bridge.version.join('.') : '';
 
-        const installers = props.transport.bridge.packages.map(p => ({
+        const installers = packages.map(p => ({
             label: p.name,
             value: p.url,
             signature: p.signature,
-            preferred: p.preferred,
+            preferred: !!p.preferred,
         }));
 
         const currentTarget: ?InstallTarget = installers.find(i => i.preferred === true);
         this.state = {
             currentVersion:
-                props.transport.type && props.transport.type === 'bridge'
-                    ? `Your version ${props.transport.version}`
+                transport.type && transport.type === 'bridge'
+                    ? `Your version ${transport.version}`
                     : 'Not installed',
-            latestVersion: props.transport.bridge.version.join('.'),
+            latestVersion,
             installers,
             target: currentTarget || installers[0],
             uri: 'https://wallet.trezor.io/data/',

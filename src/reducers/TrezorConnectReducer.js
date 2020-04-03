@@ -1,7 +1,7 @@
 /* @flow */
-import { TRANSPORT, UI } from 'trezor-connect';
+import { TRANSPORT, IFRAME } from 'trezor-connect';
 import * as CONNECT from 'actions/constants/TrezorConnect';
-
+import type { TransportInfo, BridgeInfo } from 'trezor-connect';
 import type { Action } from 'flowtype';
 
 export type SelectedDevice = {
@@ -9,26 +9,14 @@ export type SelectedDevice = {
     instance: ?number,
 };
 
-export type LatestBridge = {
-    version: Array<number>,
-    directory: string,
-    packages: Array<{ name: string, url: string, signature?: string, preferred: boolean }>,
-    changelog: Array<string>,
-};
-
 export type State = {
     initialized: boolean,
     error: ?string,
     transport:
-        | {
-              type: string,
-              version: string,
-              outdated: boolean,
-              bridge: LatestBridge,
-          }
+        | TransportInfo
         | {
               type: null,
-              bridge: LatestBridge,
+              bridge: ?BridgeInfo,
           },
     // browserState: {
     //     name: string;
@@ -46,12 +34,7 @@ const initialState: State = {
     error: null,
     transport: {
         type: null,
-        bridge: {
-            version: [],
-            directory: '',
-            packages: [],
-            changelog: [],
-        },
+        bridge: null,
     },
     browserState: {},
     acquiringDevice: false,
@@ -66,11 +49,10 @@ export default function connect(state: State = initialState, action: Action): St
                 error: action.error,
             };
         // trezor-connect iframe loaded
-        case UI.IFRAME_HANDSHAKE:
+        case IFRAME.LOADED:
             return {
                 ...state,
                 initialized: true,
-                browserState: action.payload.browser,
             };
         // trezor-connect (trezor-link) initialized
         case TRANSPORT.START:

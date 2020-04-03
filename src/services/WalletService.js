@@ -56,7 +56,7 @@ const WalletService: Middleware = (api: MiddlewareAPI) => (next: MiddlewareDispa
             api.dispatch(TrezorConnectActions.requestWalletType());
             break;
         case DEVICE.CONNECT:
-            api.dispatch(WalletActions.clearUnavailableDevicesData(prevState, action.device));
+            api.dispatch(WalletActions.clearUnavailableDevicesData(prevState, action.payload));
             break;
         default: {
             break;

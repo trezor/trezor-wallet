@@ -79,7 +79,8 @@ export const getStatusName = (deviceStatus: string, intl: IntlShape): string => 
     }
 };
 
-export const isWebUSB = (transport: Transport) => !!(transport.type && transport.type === 'webusb');
+export const isWebUSB = (transport: Transport) =>
+    !!(transport.type && transport.type === 'WebUsbPlugin');
 
 export const isDisabled = (
     selectedDevice: TrezorDevice,

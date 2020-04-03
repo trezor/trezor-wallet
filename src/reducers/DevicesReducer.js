@@ -62,8 +62,9 @@ const mergeDevices = (current: TrezorDevice, upcoming: Device | TrezorDevice): T
     }
     return {
         ...upcoming,
-        features: null,
         ...extended,
+        features: null,
+        state: null,
     };
 };
 
@@ -79,9 +80,7 @@ const addDevice = (state: State, device: Device): State => {
         }
         otherDevices = state.filter(d => affectedDevices.indexOf(d) === -1);
     } else {
-        affectedDevices = state.filter(
-            d => d.features && device.features && d.features.device_id === device.features.device_id
-        );
+        affectedDevices = state.filter(d => d.features && device.features && d.id === device.id);
         const unacquiredDevices = state.filter(d => d.path.length > 0 && d.path === device.path);
         otherDevices = state.filter(
             d => affectedDevices.indexOf(d) < 0 && unacquiredDevices.indexOf(d) < 0
@@ -191,7 +190,7 @@ const changeDevice = (state: State, device: Device | TrezorDevice, extended: Obj
         d =>
             (d.features &&
                 device.features &&
-                d.features.device_id === device.features.device_id &&
+                d.id === device.id &&
                 d.features.passphrase_protection === device.features.passphrase_protection) ||
             (d.features && d.path.length > 0 && d.path === device.path)
     );
@@ -247,7 +246,7 @@ const forgetDevice = (state: State, device: TrezorDevice): State =>
     state.filter(
         d =>
             d.remember ||
-            (d.features && device.features && d.features.device_id !== device.features.device_id) ||
+            (d.features && device.features && d.id !== device.id) ||
             (!d.features && d.path !== device.path)
     );
 
@@ -261,9 +260,7 @@ const forgetSingleDevice = (state: State, device: TrezorDevice): State => {
 
 const disconnectDevice = (state: State, device: Device): State => {
     const affectedDevices: State = state.filter(
-        d =>
-            d.path === device.path ||
-            (d.features && device.features && d.features.device_id === device.features.device_id)
+        d => d.path === device.path || (d.features && device.features && d.id === device.id)
     );
     const otherDevices: State = state.filter(d => affectedDevices.indexOf(d) === -1);
 
@@ -308,9 +305,7 @@ const onSelectedDevice = (state: State, device: ?TrezorDevice): State => {
 
 const onChangeWalletType = (state: State, device: TrezorDevice, hidden: boolean): State => {
     const affectedDevices: State = state.filter(
-        d =>
-            d.path === device.path ||
-            (d.features && device.features && d.features.device_id === device.features.device_id)
+        d => d.path === device.path || (d.features && device.features && d.id === device.id)
     );
     const otherDevices: State = state.filter(d => affectedDevices.indexOf(d) === -1);
     if (affectedDevices.length > 0) {
@@ -354,16 +349,16 @@ export default function devices(state: State = initialState, action: Action): St
 
         case DEVICE.CONNECT:
         case DEVICE.CONNECT_UNACQUIRED:
-            return addDevice(state, action.device);
+            return addDevice(state, action.payload);
 
         case DEVICE.CHANGED:
             // return changeDevice(state, { ...action.device, connected: true, available: true });
-            return changeDevice(state, action.device, { connected: true, available: true });
+            return changeDevice(state, action.payload, { connected: true, available: true });
         // TODO: check if available will propagate to unavailable
 
         case DEVICE.DISCONNECT:
             // case DEVICE.DISCONNECT_UNACQUIRED:
-            return disconnectDevice(state, action.device);
+            return disconnectDevice(state, action.payload);
 
         case WALLET.SET_SELECTED_DEVICE:
             return onSelectedDevice(state, action.device);

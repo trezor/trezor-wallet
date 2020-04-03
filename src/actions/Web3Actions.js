@@ -11,13 +11,11 @@ import * as ethUtils from 'utils/ethUtils';
 
 import type { Dispatch, GetState, ThunkAction, PromiseAction } from 'flowtype';
 
-import type { EthereumAccount } from 'trezor-connect';
 import type { Account } from 'reducers/AccountsReducer';
 import type { Web3Instance } from 'reducers/Web3Reducer';
 import type { Token } from 'reducers/TokensReducer';
 import type { NetworkToken } from 'reducers/LocalStorageReducer';
 import * as TokenActions from './TokenActions';
-import * as AccountsActions from './AccountsActions';
 
 export type Web3UpdateBlockAction = {
     type: typeof WEB3.BLOCK_UPDATED,
@@ -127,22 +125,22 @@ export const initWeb3 = (
         web3.currentProvider.on('error', onEnd);
     });
 
-export const discoverAccount = (
-    descriptor: string,
-    network: string
-): PromiseAction<EthereumAccount> => async (dispatch: Dispatch): Promise<EthereumAccount> => {
-    const instance: Web3Instance = await dispatch(initWeb3(network));
-    const balance = await instance.web3.eth.getBalance(descriptor);
-    const nonce = await instance.web3.eth.getTransactionCount(descriptor);
-    return {
-        descriptor,
-        transactions: 0,
-        block: 0,
-        balance: EthereumjsUnits.convert(balance, 'wei', 'ether'),
-        availableBalance: EthereumjsUnits.convert(balance, 'wei', 'ether'),
-        nonce,
-    };
-};
+// not used since connect@8
+// export const discoverAccount = (descriptor: string, network: string): PromiseAction<any> => async (
+//     dispatch: Dispatch
+// ): Promise<any> => {
+//     const instance: Web3Instance = await dispatch(initWeb3(network));
+//     const balance = await instance.web3.eth.getBalance(descriptor);
+//     const nonce = await instance.web3.eth.getTransactionCount(descriptor);
+//     return {
+//         descriptor,
+//         transactions: 0,
+//         block: 0,
+//         balance: EthereumjsUnits.convert(balance, 'wei', 'ether'),
+//         availableBalance: EthereumjsUnits.convert(balance, 'wei', 'ether'),
+//         nonce,
+//     };
+// };
 
 export const resolvePendingTransactions = (network: string): PromiseAction<void> => async (
     dispatch: Dispatch,
@@ -151,24 +149,24 @@ export const resolvePendingTransactions = (network: string): PromiseAction<void>
     const instance: Web3Instance = await dispatch(initWeb3(network));
     const pending = getState().pending.filter(p => p.network === network);
     pending.forEach(async tx => {
-        const status = await instance.web3.eth.getTransaction(tx.hash);
+        const status = await instance.web3.eth.getTransaction(tx.txid);
         if (!status) {
             dispatch({
                 type: PENDING.TX_REJECTED,
-                hash: tx.hash,
+                hash: tx.txid,
             });
         } else {
-            const receipt = await instance.web3.eth.getTransactionReceipt(tx.hash);
+            const receipt = await instance.web3.eth.getTransactionReceipt(tx.txid);
             if (receipt) {
                 if (status.gas !== receipt.gasUsed) {
                     dispatch({
                         type: PENDING.TX_TOKEN_ERROR,
-                        hash: tx.hash,
+                        hash: tx.txid,
                     });
                 }
                 dispatch({
                     type: PENDING.TX_RESOLVED,
-                    hash: tx.hash,
+                    hash: tx.txid,
                 });
             }
         }
@@ -205,30 +203,31 @@ export const getTxInput = (): PromiseAction<void> => async (dispatch: Dispatch):
 };
 */
 
-export const updateAccount = (
-    account: Account,
-    newAccount: EthereumAccount,
-    network: string
-): PromiseAction<void> => async (dispatch: Dispatch): Promise<void> => {
-    const instance: Web3Instance = await dispatch(initWeb3(network));
-    const balance = await instance.web3.eth.getBalance(account.descriptor);
-    const nonce = await instance.web3.eth.getTransactionCount(account.descriptor);
-    const empty = nonce <= 0 && balance === '0';
-    dispatch(
-        AccountsActions.update({
-            networkType: 'ethereum',
-            ...account,
-            ...newAccount,
-            empty,
-            nonce,
-            balance: EthereumjsUnits.convert(balance, 'wei', 'ether'),
-            availableBalance: EthereumjsUnits.convert(balance, 'wei', 'ether'),
-        })
-    );
+// not used since connect@8
+// export const updateAccount = (
+//     account: Account,
+//     newAccount: any,
+//     network: string
+// ): PromiseAction<void> => async (dispatch: Dispatch): Promise<void> => {
+//     const instance: Web3Instance = await dispatch(initWeb3(network));
+//     const balance = await instance.web3.eth.getBalance(account.descriptor);
+//     const nonce = await instance.web3.eth.getTransactionCount(account.descriptor);
+//     const empty = nonce <= 0 && balance === '0';
+//     dispatch(
+//         AccountsActions.update({
+//             networkType: 'ethereum',
+//             ...account,
+//             ...newAccount,
+//             empty,
+//             nonce,
+//             balance: EthereumjsUnits.convert(balance, 'wei', 'ether'),
+//             availableBalance: EthereumjsUnits.convert(balance, 'wei', 'ether'),
+//         })
+//     );
 
-    // update tokens for this account
-    dispatch(updateAccountTokens(account));
-};
+//     // update tokens for this account
+//     dispatch(updateAccountTokens(account));
+// };
 
 export const updateAccountTokens = (account: Account): PromiseAction<void> => async (
     dispatch: Dispatch,

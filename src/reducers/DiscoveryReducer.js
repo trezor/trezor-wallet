@@ -1,7 +1,5 @@
 /* @flow */
 
-import HDKey from 'hdkey';
-
 import * as DISCOVERY from 'actions/constants/discovery';
 import * as ACCOUNT from 'actions/constants/account';
 import * as CONNECT from 'actions/constants/TrezorConnect';
@@ -27,10 +25,6 @@ export type Discovery = {
     waitingForBlockchain: boolean,
     fwNotSupported: boolean,
     fwOutdated: boolean,
-
-    publicKey: string, // used in ethereum only
-    chainCode: string, // used in ethereum only
-    hdKey: HDKey, // used in ethereum only
 };
 
 export type State = Array<Discovery>;
@@ -46,10 +40,6 @@ const defaultDiscovery: Discovery = {
     waitingForBlockchain: false,
     fwNotSupported: false,
     fwOutdated: false,
-
-    publicKey: '',
-    chainCode: '',
-    hdKey: null,
 };
 
 const findIndex = (state: State, network: string, deviceState: string): number =>
@@ -62,18 +52,6 @@ const start = (state: State, action: DiscoveryStartAction): State => {
         network: action.network.shortcut,
         deviceState,
     };
-
-    if (action.networkType === 'ethereum') {
-        const hdKey = new HDKey();
-        hdKey.publicKey = Buffer.from(action.publicKey, 'hex');
-        hdKey.chainCode = Buffer.from(action.chainCode, 'hex');
-
-        instance.hdKey = hdKey;
-        instance.publicKey = action.publicKey;
-        instance.chainCode = action.chainCode;
-
-        instance.basePath = action.basePath;
-    }
 
     const newState: State = [...state];
     const index: number = findIndex(state, action.network.shortcut, deviceState);
@@ -202,15 +180,8 @@ export default function discovery(state: State = initialState, action: Action): 
             return notSupported(state, action);
         case DISCOVERY.FROM_STORAGE:
             return action.payload.map(d => {
-                if (d.publicKey.length < 1) return d;
-                // recreate ethereum discovery HDKey
-                // deprecated: will be removed after switching to blockbook
-                const hdKey: HDKey = new HDKey();
-                hdKey.publicKey = Buffer.from(d.publicKey, 'hex');
-                hdKey.chainCode = Buffer.from(d.chainCode, 'hex');
                 return {
                     ...d,
-                    hdKey,
                     interrupted: false,
                     waitingForDevice: false,
                     waitingForBlockchain: false,

@@ -34,10 +34,10 @@ const LogService: Middleware = (api: MiddlewareAPI) => (next: MiddlewareDispatch
             );
             break;
         case DEVICE.CONNECT:
-            api.dispatch(LogActions.add('Device connected', action.device));
+            api.dispatch(LogActions.add('Device connected', action.payload));
             break;
         case DEVICE.DISCONNECT:
-            api.dispatch(LogActions.add('Device disconnected', action.device));
+            api.dispatch(LogActions.add('Device disconnected', action.payload));
             break;
         case DISCOVERY.START:
             api.dispatch(LogActions.add('Discovery started', action));

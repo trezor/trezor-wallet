@@ -54,7 +54,7 @@ export const showUnverifiedAddress = (): Action => ({
 });
 
 //export const showAddress = (address_n: string): AsyncAction => {
-export const showAddress = (path: Array<number>): AsyncAction => async (
+export const showAddress = (path: string): AsyncAction => async (
     dispatch: Dispatch,
     getState: GetState
 ): Promise<void> => {

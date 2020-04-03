@@ -63,8 +63,8 @@ const StyledH4 = styled(H4)`
 
 const getBaseUrl = device => {
     let baseUrl = '';
-    if (device && device.features) {
-        baseUrl = `/device/${device.features.device_id}`;
+    if (device && device.id) {
+        baseUrl = `/device/${device.id}`;
         if (device.instance) {
             baseUrl += `:${device.instance}`;
         }
