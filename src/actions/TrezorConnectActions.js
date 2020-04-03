@@ -122,7 +122,7 @@ export const init = (): AsyncAction => async (
 
     let connectSrc;
     if (buildUtils.isDev()) {
-        connectSrc = typeof LOCAL === 'string' ? LOCAL : 'https://connect.corp.sldev.cz/develop/';
+        connectSrc = typeof LOCAL === 'string' ? LOCAL : undefined;
         window.TrezorConnect = TrezorConnect;
     }
 
