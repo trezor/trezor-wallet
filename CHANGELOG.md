@@ -1,3 +1,9 @@
+## 1.4.1-beta
+
+**updated**
+
+-   coin urls changed to wallet.trezor.io
+
 ## 1.4.0-beta
 
 **updated**
