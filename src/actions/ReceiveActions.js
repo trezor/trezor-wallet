@@ -108,8 +108,11 @@ export const showAddress = (path: string): AsyncAction => async (
         });
 
         // special case: device no-backup permissions not granted
-        // $FlowIssue: remove this after trezor-connect@7.0.0 release
-        if (response.payload.code === 403) return;
+        if (
+            response.payload.code === 403 ||
+            response.payload.code === 'Method_PermissionsNotGranted'
+        )
+            return;
 
         dispatch({
             type: NOTIFICATION.ADD,
