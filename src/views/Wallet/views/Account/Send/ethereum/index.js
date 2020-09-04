@@ -206,13 +206,14 @@ const StyledIcon = styled(Icon)`
 const getAddressInputState = (
     address: string,
     addressErrors: boolean,
-    addressWarnings: boolean
+    addressWarnings: boolean,
+    domainResolving: boolean
 ): ?string => {
     let state = null;
     if (address && !addressErrors) {
         state = 'success';
     }
-    if (addressWarnings && !addressErrors) {
+    if ((addressWarnings && !addressErrors) || domainResolving) {
         state = 'warning';
     }
     if (addressErrors) {
@@ -270,6 +271,7 @@ const AccountSend = (props: Props) => {
         infos,
         sending,
         advanced,
+        domainResolving,
     } = props.sendForm;
 
     const {
@@ -314,6 +316,7 @@ const AccountSend = (props: Props) => {
         amount.length === 0 ||
         address.length === 0 ||
         sending ||
+        domainResolving ||
         account.imported;
 
     let amountText = '';
@@ -348,7 +351,12 @@ const AccountSend = (props: Props) => {
             </Title>
             <InputRow>
                 <Input
-                    state={getAddressInputState(address, !!errors.address, !!warnings.address)}
+                    state={getAddressInputState(
+                        address,
+                        !!errors.address,
+                        !!warnings.address,
+                        domainResolving
+                    )}
                     autoComplete="off"
                     autoCorrect="off"
                     autoCapitalize="off"

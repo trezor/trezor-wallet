@@ -13,7 +13,13 @@ import * as RippleSendFormActions from './ripple/SendFormActions';
 
 export type SendFormAction =
     | {
-          type: typeof SEND.INIT | typeof SEND.VALIDATION | typeof SEND.CHANGE | typeof SEND.CLEAR,
+          type:
+              | typeof SEND.INIT
+              | typeof SEND.VALIDATION
+              | typeof SEND.CHANGE
+              | typeof SEND.CLEAR
+              | typeof SEND.DOMAIN_RESOLVING
+              | typeof SEND.DOMAIN_COMPLETE,
           networkType: 'ethereum',
           state: EthereumState,
       }

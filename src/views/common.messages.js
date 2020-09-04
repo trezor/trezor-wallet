@@ -31,6 +31,14 @@ const definedMessages: Messages = defineMessages({
             'Looks like it is {deviceLabel} Account #{number} address of {network} network',
         description: 'Example: Looks like it is My Trezor Account #1 address of ETH network',
     },
+    TR_DOMAIN_RESOLVING: {
+        id: 'TR_DOMAIN_RESOLVING',
+        defaultMessage: 'Resolving {domain}...',
+    },
+    TR_DOMAIN_COMPLETE: {
+        id: 'TR_DOMAIN_COMPLETE',
+        defaultMessage: '{domain} resolved to: {address}',
+    },
     TR_IMPORTED_ACCOUNT_HASH: {
         id: 'TR_IMPORTED_ACCOUNT_HASH',
         defaultMessage: 'Imported account #{number}',

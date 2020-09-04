@@ -6,7 +6,8 @@ import * as PENDING from 'actions/constants/pendingTx';
 import * as AccountsActions from 'actions/AccountsActions';
 import * as Web3Actions from 'actions/Web3Actions';
 import { mergeAccount, enhanceTransaction } from 'utils/accountUtils';
-
+import { namehash } from 'utils/ethUtils';
+import * as dotCrypto from 'actions/constants/dotCrypto';
 import type { Dispatch, GetState, PromiseAction, Network } from 'flowtype';
 import type { BlockchainNotification } from 'trezor-connect';
 import type { Token } from 'reducers/TokensReducer';
@@ -142,4 +143,19 @@ export const onError = (network: string): PromiseAction<void> => async (
     dispatch: Dispatch
 ): Promise<void> => {
     dispatch(Web3Actions.disconnect(network));
+};
+
+export const resolveDomain = (domain: string, ticker: string): PromiseAction<void> => async (
+    dispatch: Dispatch
+): Promise<string> => {
+    const instance = await dispatch(Web3Actions.initWeb3('eth'));
+    const ProxyReader = new instance.web3.eth.Contract(
+        dotCrypto.ProxyReader.abi,
+        dotCrypto.ProxyReader.address
+    );
+    const node = namehash(domain);
+    return ProxyReader.methods
+        .get(`crypto.${ticker}.address`, node)
+        .call()
+        .catch(() => '');
 };

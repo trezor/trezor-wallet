@@ -144,6 +144,9 @@ export const init = (): AsyncAction => async (
             networkType: 'ethereum',
             state: stateFromStorage,
         });
+        if (stateFromStorage.domainResolving) {
+            dispatch(onDomainChange(stateFromStorage.address));
+        }
         return;
     }
 
@@ -233,6 +236,38 @@ export const onClear = (): AsyncAction => async (
     });
 };
 
+export const onDomainChange = (domain: string): AsyncAction => async (
+    dispatch: Dispatch,
+    getState: GetState
+): Promise<void> => {
+    const state = getState().sendFormEthereum;
+
+    dispatch({
+        type: SEND.DOMAIN_RESOLVING,
+        networkType: 'ethereum',
+        state: {
+            ...state,
+            address: domain,
+            resolvedDomain: '',
+            domainResolving: true,
+        },
+    });
+
+    const address = await dispatch(BlockchainActions.resolveDomain(domain, 'ETH'));
+    dispatch({
+        type: SEND.DOMAIN_COMPLETE,
+        networkType: 'ethereum',
+        state: {
+            ...state,
+            untouched: false,
+            touched: { ...state.touched, address: true },
+            address: address || domain,
+            resolvedDomain: address ? domain : '',
+            domainResolving: false,
+        },
+    });
+};
+
 /*
  * Called from UI on "address" field change
  */
@@ -241,16 +276,25 @@ export const onAddressChange = (address: string): ThunkAction => (
     getState: GetState
 ): void => {
     const state: State = getState().sendFormEthereum;
-    dispatch({
-        type: SEND.CHANGE,
-        networkType: 'ethereum',
-        state: {
-            ...state,
-            untouched: false,
-            touched: { ...state.touched, address: true },
-            address,
-        },
-    });
+
+    if (state.domainResolving) {
+        return;
+    }
+    if (address.endsWith('.crypto')) {
+        dispatch(onDomainChange(address));
+    } else {
+        dispatch({
+            type: SEND.CHANGE,
+            networkType: 'ethereum',
+            state: {
+                ...state,
+                untouched: false,
+                touched: { ...state.touched, address: true },
+                address,
+                domainResolving: false,
+            },
+        });
+    }
 };
 
 /*

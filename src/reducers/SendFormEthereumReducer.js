@@ -42,6 +42,8 @@ export type State = {
     infos: { [k: string]: MessageDescriptor },
 
     sending: boolean,
+    domainResolving: boolean,
+    resolvedDomain: string,
 };
 
 export const initialState: State = {
@@ -74,6 +76,8 @@ export const initialState: State = {
     nonce: '0',
     total: '0',
     sending: false,
+    domainResolving: false,
+    resolvedDomain: '',
     errors: {},
     warnings: {},
     infos: {},
@@ -87,6 +91,8 @@ export default (state: State = initialState, action: Action): State => {
         case SEND.INIT:
         case SEND.CHANGE:
         case SEND.VALIDATION:
+        case SEND.DOMAIN_RESOLVING:
+        case SEND.DOMAIN_COMPLETE:
         case SEND.CLEAR:
             return action.state;
 

@@ -8,3 +8,5 @@ export const TX_COMPLETE: 'send__tx_complete' = 'send__tx_complete';
 export const TX_ERROR: 'send__tx_error' = 'send__tx_error';
 export const TOGGLE_ADVANCED: 'send__toggle_advanced' = 'send__toggle_advanced';
 export const CLEAR: 'send__clear' = 'send__clear';
+export const DOMAIN_RESOLVING: 'send__domain_resolving' = 'send__domain_resolving';
+export const DOMAIN_COMPLETE: 'send__domain_complete' = 'send__domain_complete';

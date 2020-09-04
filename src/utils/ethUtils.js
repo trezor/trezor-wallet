@@ -3,6 +3,16 @@
 import BigNumber from 'bignumber.js';
 import EthereumjsUtil from 'ethereumjs-util';
 
+export const namehash = (domain: string): string => {
+    if (!domain) {
+        return '0x0000000000000000000000000000000000000000000000000000000000000000';
+    }
+    const [label, ...remainder] = domain.split('.');
+    return `0x${EthereumjsUtil.keccak256(
+        namehash(remainder.join('.')) + EthereumjsUtil.keccak256(label).toString('hex')
+    ).toString('hex')}`;
+};
+
 export const decimalToHex = (dec: number): string => new BigNumber(dec).toString(16);
 
 export const padLeftEven = (hex: string): string => (hex.length % 2 !== 0 ? `0${hex}` : hex);

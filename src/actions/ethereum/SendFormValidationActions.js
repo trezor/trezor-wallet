@@ -81,8 +81,10 @@ export const validation = (): PayloadAction<State> => (
     state.errors = {};
     state.warnings = {};
     state.infos = {};
+
     state = dispatch(recalculateTotalAmount(state));
     state = dispatch(updateCustomFeeLabel(state));
+    state = dispatch(domainResolution(state));
     state = dispatch(addressValidation(state));
     state = dispatch(addressLabel(state));
     state = dispatch(amountValidation(state));
@@ -160,6 +162,32 @@ export const addressValidation = ($state: State): PayloadAction<State> => (): St
         !EthereumjsUtil.isValidChecksumAddress(address)
     ) {
         state.errors.address = l10nMessages.TR_ADDRESS_CHECKSUM_IS_NOT_VALID;
+    }
+    return state;
+};
+
+/*
+ * Domain resolving
+ */
+export const domainResolution = ($state: State): PayloadAction<State> => (): State => {
+    const state = { ...$state };
+
+    if (state.domainResolving) {
+        state.warnings.address = {
+            ...l10nCommonMessages.TR_DOMAIN_RESOLVING,
+            values: {
+                domain: state.address,
+            },
+        };
+    }
+    if (state.resolvedDomain) {
+        state.infos.address = {
+            ...l10nCommonMessages.TR_DOMAIN_COMPLETE,
+            values: {
+                domain: state.resolvedDomain,
+                address: state.address,
+            },
+        };
     }
     return state;
 };
