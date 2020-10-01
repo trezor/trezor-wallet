@@ -1,6 +1,6 @@
 ![Alt text](trezor-rocks.png?raw=true "Trezor Wallet rocks")
 
-# Trezor Wallet
+# Trezor Super Wallet
 
 You can try this wallet live [HERE](https://beta-wallet.trezor.io/next/)
 
